@@ -1,6 +1,13 @@
 body {
   font-family: sans-serif;
   margin: 0;
+  /* background: blue; */
+}
+
+#maparea { 
+  /* background: red; */
+  width: fit;
+  height: fit;
 }
 
 .tooltip {
@@ -14,4 +21,3 @@ body {
   pointer-events: none;
   z-index: 10;
 }
-
