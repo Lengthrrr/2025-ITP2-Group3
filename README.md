@@ -43,4 +43,15 @@ Install reqs to virtual env `pip install -r requirements.txt`
 
 Run python code `python /working_with_data/volcanoes_to_geo.py`
 
+## Features to implement
+
+Adding zoom capability
+
+Click to add side bar
+
+Different maps
+
+Quiz mode
+
+
 
