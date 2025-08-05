@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Region A",
+        "info": "This is Region A. You can write anything here."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Region B",
+        "info": "Welcome to Region B!"
+      },
+      "geometry": { 
+        "type": "Polygon",
+        "coordinates": [[[112.0, 2.0], [123.0, 2.0], [123.0, 10.0], [102.0, 10.0], [112.0, 2.0]]]
+      }
+    }
+  ]
+}
+

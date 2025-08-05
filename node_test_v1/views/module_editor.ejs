@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>D3 World Map</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <div id="maparea" width="1000" height="600">
+      <svg width="1000" height="600"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <form> 
+        <br> 
+        <h3> Select your mode </h3>
+        
+        <label for="view">
+            <input type="radio" id="button_view" name="editor_mode" value="view" checked> View 
+        </label><br>
+
+        <label for="create">
+            <input type="radio" id="button_create" name="editor_mode" value="create"> Create
+        </label><br>
+
+        <label for="edit">
+            <input type="radio" id="button_edit" name="editor_mode" value="edit"> Edit
+        </label><br>
+    </form>
+
+    <form> 
+        <h3> Select create type </h3>
+        
+        <label for="red">
+            <input type="radio" id="create_marker" name="create_type" value="marker"> Marker 
+        </label><br>
+
+        <label for="blue">
+            <input type="radio" id="create_polygon" name="create_type" value="polygon"> Polygon
+        </label><br>
+
+        <label for="green">
+            <input type="radio" id="create_country" name="create_type" value="country"> Country
+        </label><br>
+    </form>
+    
+    <button type="button" id="create_confirm"> Confirm </button>
+
+<div id="marker-edit-form" style="display:none; position:absolute; background:#fff; border:1px solid #aaa; padding:10px; box-shadow:0 2px 8px rgba(0,0,0,0.15); z-index:1000;">
+  <label>
+    Name:<br />
+    <input type="text" id="marker-name" />
+  </label>
+  <br />
+  <label>
+    Description:<br />
+    <textarea id="marker-desc" rows="3" cols="30"></textarea>
+  </label>
+  <br />
+  <button id="save-marker-btn">Save</button>
+  <button id="cancel-marker-btn">Cancel</button>
+</div>
+
+    <form> 
+        <h3> TODO: Select edit type, save, create, discard changes, etc. </h3>
+        
+        <label for="red">
+            <input type="radio" id="create_marker" name="create_type" value="marker"> Delete Marker 
+        </label><br>
+
+        <label for="blue">
+            <input type="radio" id="create_polygon" name="create_type" value="polygon"> Edit
+        </label><br>
+
+        <label for="green">
+            <input type="radio" id="create_country" name="create_type" value="country"> Country
+        </label><br>
+    </form>
+
+    <!-- <button type="button" id="edit_save"> Confirm </button> -->
+
+    <!-- <br> -->
+
+    <!-- <button type="button" id="edit_save"> Confirm </button> -->
+
+    <br>
+    
+    <button type="button"> This is a test button</button>
+
+    <script type="module" src="modules/d3handler.js"></script>
+    <script src="modules/editor.js"></script>
+
+
+  </body>
+</html>
+
+
