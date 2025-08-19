@@ -19,6 +19,9 @@ db.serialize(() => {
             module_name TEXT,
             admin_id INTEGER,
             start_time INTEGER,
+            module_title VARCHAR,
+            module_description VARCHAR,
+            type VARCHAR,
             FOREIGN KEY (admin_id) REFERENCES admin(user_id)
         );
     `);
