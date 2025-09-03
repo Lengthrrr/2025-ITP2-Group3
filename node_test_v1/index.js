@@ -7,11 +7,15 @@ const fs = require("fs");
 const app = express();
 const port = 8001;
 
+const bodyParser = require("body-parser");
+const { spawn } = require("child_process");
 const path = require('path');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./sqlite_handler.js");
 
@@ -106,6 +110,37 @@ app.get("/home", (req, res) => {
 
 app.get("/module", (req, res) => {
   res.render("module", { error: null });
+});
+
+app.get("/administration", (req, res) => {
+  res.render("administration", { error: null });
+});
+
+app.post("/administration", (req, res) => {
+    const userInput = req.body.pataIn;
+
+    // Spawn Python process
+    const py = spawn("python3", ["geemap_scripts/create_geemap.py"]);
+
+    let result = "";
+    py.stdout.on("data", (data) => {
+        result += data.toString();
+        console.log(result);
+    });
+
+
+    py.stderr.on("data", (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    py.on("close", (code) => {
+        console.log(`child process exited with code ${code}`);
+        res.send(`<pre>${result}</pre>`);
+    });
+
+    // send user input to Python script
+    py.stdin.write(userInput);
+    py.stdin.end();
 });
 
 app.use(requireAuth);
