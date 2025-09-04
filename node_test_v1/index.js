@@ -143,7 +143,7 @@ app.post("/administration", (req, res) => {
     py.stdin.end();
 });
 
-app.use(requireAuth);
+// app.use(requireAuth);
 
 app.get("/module_editor", (req, res) => {
   res.render("module_editor", { error: null });
