@@ -1,98 +1,134 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>D3 World Map</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-  </head>
-  <body>
-    <div id="maparea" width="1000" height="600">
-      <svg width="1000" height="600"></svg>
-      <div class="tooltip" id="tooltip"></div>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Module Editor</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    #geemap-frame { width: 100%; height: 600px; border: none; }
+    #mode-buttons { margin: 10px 0; }
+    .marker-popup input, .marker-popup textarea { width: 100%; margin-bottom: 4px; }
+    #manual-marker-form { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    #manual-marker-form input, #manual-marker-form textarea { width: 100%; margin-bottom: 8px; }
+    #manual-marker-form button { padding: 6px 12px; }
+  </style>
+</head>
+<body>
+  <div id="mode-buttons">
+    <button id="view-mode">View Mode</button>
+    <button id="place-mode">Place Mode</button>
+    <button id="save-markers">Save Markers</button>
+  </div>
 
-    <form> 
-        <br> 
-        <h3> Select your mode </h3>
-        
-        <label for="view">
-            <input type="radio" id="button_view" name="editor_mode" value="view" checked> View 
-        </label><br>
-
-        <label for="create">
-            <input type="radio" id="button_create" name="editor_mode" value="create"> Create
-        </label><br>
-
-        <label for="edit">
-            <input type="radio" id="button_edit" name="editor_mode" value="edit"> Edit
-        </label><br>
+  <!-- Manual marker entry section -->
+  <div id="manual-marker-form">
+    <h3>Add Marker Manually</h3>
+    <form id="marker-form">
+      <label>Country:
+        <input type="text" id="country" required>
+      </label>
+      <label>Type:
+        <input type="text" id="type" required>
+      </label>
+      <label>Marker Type:
+        <input type="text" id="markerType" required>
+      </label>
+      <label>Latitude:
+        <input type="number" id="latitude" step="any">
+      </label>
+      <label>Longitude:
+        <input type="number" id="longitude" step="any">
+      </label>
+      <label>HTML Description:
+        <textarea id="description" rows="4" required></textarea>
+      </label>
+      <button type="submit">Send Marker</button>
     </form>
+  </div>
 
-    <form> 
-        <h3> Select create type </h3>
-        
-        <label for="red">
-            <input type="radio" id="create_marker" name="create_type" value="marker"> Marker 
-        </label><br>
+  <iframe id="geemap-frame" src=""></iframe>
 
-        <label for="blue">
-            <input type="radio" id="create_polygon" name="create_type" value="polygon"> Polygon
-        </label><br>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id') || '1';
+    const iframe = document.getElementById('geemap-frame');
+    iframe.src = `/module/geemaps/geemap_id_${id}.html`;
 
-        <label for="green">
-            <input type="radio" id="create_country" name="create_type" value="country"> Country
-        </label><br>
-    </form>
-    
-    <button type="button" id="create_confirm"> Confirm </button>
+    let mode = 'view';
+    document.getElementById('view-mode').onclick = () => mode = 'view';
+    document.getElementById('place-mode').onclick = () => mode = 'place';
 
-<div id="marker-edit-form" style="display:none; position:absolute; background:#fff; border:1px solid #aaa; padding:10px; box-shadow:0 2px 8px rgba(0,0,0,0.15); z-index:1000;">
-  <label>
-    Name:<br />
-    <input type="text" id="marker-name" />
-  </label>
-  <br />
-  <label>
-    Description:<br />
-    <textarea id="marker-desc" rows="3" cols="30"></textarea>
-  </label>
-  <br />
-  <button id="save-marker-btn">Save</button>
-  <button id="cancel-marker-btn">Cancel</button>
-</div>
+    iframe.onload = () => {
+      const map = iframe.contentWindow._geemap_map;
+      if (!map) {
+        console.error("Could not access the map object inside iframe.");
+        return;
+      }
 
-    <form> 
-        <h3> TODO: Select edit type, save, create, discard changes, etc. </h3>
-        
-        <label for="red">
-            <input type="radio" id="create_marker" name="create_type" value="marker"> Delete Marker 
-        </label><br>
+      const markerLayer = L.layerGroup().addTo(map);
+      const markers = [];
 
-        <label for="blue">
-            <input type="radio" id="create_polygon" name="create_type" value="polygon"> Edit
-        </label><br>
+      function createEditablePopup(marker) {
+        const container = document.createElement('div');
+        container.className = 'marker-popup';
+        container.innerHTML = `
+          <label>Title: <input type="text" value="Marker"></label>
+          <label>Description: <textarea>Describe here</textarea></label>
+          <label>Type: <input type="text" value="Point"></label>
+          <button class="save-marker">Save</button>
+        `;
+        container.querySelector('.save-marker').onclick = () => {
+          const title = container.querySelector('input').value;
+          const desc = container.querySelector('textarea').value;
+          const type = container.querySelectorAll('input')[1].value || 'Point';
+          const latlng = marker.getLatLng();
+          markers.push({ title, desc, type, lat: latlng.lat, lng: latlng.lng });
+          alert('Marker saved!');
+        };
+        return container;
+      }
 
-        <label for="green">
-            <input type="radio" id="create_country" name="create_type" value="country"> Country
-        </label><br>
-    </form>
+      map.on('click', (e) => {
+        if (mode !== 'place') return;
 
-    <!-- <button type="button" id="edit_save"> Confirm </button> -->
+        const marker = L.marker(e.latlng, { draggable: true }).addTo(markerLayer);
+        marker.bindPopup(createEditablePopup(marker)).openPopup();
+      });
 
-    <!-- <br> -->
+      document.getElementById('save-markers').onclick = () => {
+        fetch('/save-markers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(markers)
+        }).then(res => res.json())
+          .then(data => alert('Saved: ' + JSON.stringify(data)))
+          .catch(err => console.error(err));
+      };
+    };
 
-    <!-- <button type="button" id="edit_save"> Confirm </button> -->
+    // Handle manual marker form submission
+    document.getElementById('marker-form').addEventListener('submit', (e) => {
+      // e.preventDefault();
+      const markerData = {
+        moduleId: parseInt(id),
+        country: document.getElementById('country').value,
+        type: (document.getElementById('type').value),
+        markerType: (document.getElementById('markerType').value),
+        lat: parseFloat(document.getElementById('latitude').value),
+        lng: parseFloat(document.getElementById('longitude').value),
+        description: document.getElementById('description').value
+      };
+        console.log(markerData);
 
-    <br>
-    
-    <button type="button"> This is a test button</button>
-
-    <script type="module" src="modules/d3handler.js"></script>
-    <script src="modules/editor.js"></script>
-
-
-  </body>
+      fetch('/manual-marker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(markerData)
+      })
+      .then(res => res.json())
+      .then(data => alert('Server received: ' + JSON.stringify(data)))
+      .catch(err => console.error(err));
+    });
+  </script>
+</body>
 </html>
-
-
