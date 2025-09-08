@@ -8,6 +8,9 @@
     #geemap-frame { width: 100%; height: 600px; border: none; }
     #mode-buttons { margin: 10px 0; }
     .marker-popup input, .marker-popup textarea { width: 100%; margin-bottom: 4px; }
+    #manual-marker-form { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    #manual-marker-form input, #manual-marker-form textarea { width: 100%; margin-bottom: 8px; }
+    #manual-marker-form button { padding: 6px 12px; }
   </style>
 </head>
 <body>
@@ -15,6 +18,32 @@
     <button id="view-mode">View Mode</button>
     <button id="place-mode">Place Mode</button>
     <button id="save-markers">Save Markers</button>
+  </div>
+
+  <!-- Manual marker entry section -->
+  <div id="manual-marker-form">
+    <h3>Add Marker Manually</h3>
+    <form id="marker-form">
+      <label>Country:
+        <input type="text" id="country" required>
+      </label>
+      <label>Type:
+        <input type="text" id="type" required>
+      </label>
+      <label>Marker Type:
+        <input type="text" id="markerType" required>
+      </label>
+      <label>Latitude:
+        <input type="number" id="latitude" step="any">
+      </label>
+      <label>Longitude:
+        <input type="number" id="longitude" step="any">
+      </label>
+      <label>HTML Description:
+        <textarea id="description" rows="4" required></textarea>
+      </label>
+      <button type="submit">Send Marker</button>
+    </form>
   </div>
 
   <iframe id="geemap-frame" src=""></iframe>
@@ -76,6 +105,30 @@
           .catch(err => console.error(err));
       };
     };
+
+    // Handle manual marker form submission
+    document.getElementById('marker-form').addEventListener('submit', (e) => {
+      // e.preventDefault();
+      const markerData = {
+        moduleId: parseInt(id),
+        country: document.getElementById('country').value,
+        type: (document.getElementById('type').value),
+        markerType: (document.getElementById('markerType').value),
+        lat: parseFloat(document.getElementById('latitude').value),
+        lng: parseFloat(document.getElementById('longitude').value),
+        description: document.getElementById('description').value
+      };
+        console.log(markerData);
+
+      fetch('/manual-marker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(markerData)
+      })
+      .then(res => res.json())
+      .then(data => alert('Server received: ' + JSON.stringify(data)))
+      .catch(err => console.error(err));
+    });
   </script>
 </body>
 </html>
