@@ -147,8 +147,9 @@ app.get("/module_editor", (req, res) => {
 });
 
 app.post("/manual-marker", (req, res) => {
-  const { moduleId, country, type, markerType, lat, lng, description } = req.body;
-    console.log("Module id: " + parseFloat(moduleId))
+  const { moduleId, country, type, markerType, lat, lng, description } =
+    req.body;
+  console.log("Module id: " + parseFloat(moduleId));
 
   const configPath = path.join(
     process.cwd(),
@@ -199,7 +200,12 @@ app.post("/manual-marker", (req, res) => {
   runCreateGeemap(moduleId);
 
   console.log(`Added new marker to map_config_${moduleId}.py`);
-  res.redirect(`/module_editor/?id=${moduleId}`);
+  // res.redirect(`/module_editor/?id=2`);
+  return res.json({
+    success: true,
+    message: "Some success message",
+    data: "some data if there's any",
+  });
 });
 
 app.get("/quiz", (req, res) => {

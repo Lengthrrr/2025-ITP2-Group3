@@ -1,5 +1,33 @@
 hmm
 
 prod html has an on 'click' function
-prod html has an on place function right underneath, we can override that.
+prod html has an on place function right underneath, we can override thatg
 We can override that somehow
+
+Genereal Information
+    - About
+    - Contact Us
+
+Login
+
+    - Student (Specific Course)
+        - Home Page
+        - Modules
+        - Maps
+        - Quizzes
+
+    - Teacher (Specific Person attached to Courses)
+        - Home Page
+            - Can add modules in addition
+        - Modules
+            - Can edit modules in addition
+        - Maps
+            - Maps are just modules in another section
+        - Quizzes
+            - Can edit Quizzes in Addition
+
+
+
+
+
+
