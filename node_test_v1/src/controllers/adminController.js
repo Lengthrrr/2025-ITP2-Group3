@@ -1,29 +1,88 @@
+const db = require("../config/db");
+const bcrypt = require("bcrypt");
 
-
-const { spawn } = require("child_process");
-const path = require("path");
-
-exports.getAdministration = (req, res) => res.render("administration", { error: null });
-
-exports.postAdministration = (req, res) => {
-  const userInput = req.body.pataIn;
-
-  const py = spawn("python3", ["geemap_scripts/create_geemap.py"]);
-  let result = "";
-
-  py.stdout.on("data", (data) => {
-    result += data.toString();
-    console.log(result);
+// Render dashboard
+function getDashboard(req, res) {
+  res.render("adminDashboard", {
+    queryResult: [],
+    queryError: null,
+    accountMessage: null,
   });
+}
 
-  py.stderr.on("data", (data) => console.error(`stderr: ${data}`));
+// Run arbitrary query
+function postQuery(req, res) {
+  const { sql } = req.body;
 
-  py.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
-    res.send(`<pre>${result}</pre>`);
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      return res.render("adminDashboard", {
+        queryResult: [],
+        queryError: err.message,
+        accountMessage: null,
+      });
+    }
+    return res.render("adminDashboard", {
+      queryResult: rows,
+      queryError: null,
+      accountMessage: null,
+    });
   });
+}
 
-  py.stdin.write(userInput);
-  py.stdin.end();
-};
+// Create accounts (lecturer/admin/course)
+async function postCreateUser(req, res) {
+  const { role, username, password } = req.body;
 
+  try {
+    const hash = await bcrypt.hash(password, 10);
+
+    if (role === "course") {
+      db.run(
+        `INSERT INTO course (course_code, course_password) VALUES (?, ?)`,
+        [username, hash],
+        (err) => {
+          if (err) {
+            return res.render("adminDashboard", {
+              queryResult: [],
+              queryError: null,
+              accountMessage: "Error: " + err.message,
+            });
+          }
+          return res.render("adminDashboard", {
+            queryResult: [],
+            queryError: null,
+            accountMessage: `Course '${username}' created successfully.`,
+          });
+        }
+      );
+    } else {
+      db.run(
+        `INSERT INTO admin (user_name, user_hashed_password_with_salt, role) VALUES (?, ?, ?)`,
+        [username, hash, role],
+        (err) => {
+          if (err) {
+            return res.render("adminDashboard", {
+              queryResult: [],
+              queryError: null,
+              accountMessage: "Error: " + err.message,
+            });
+          }
+          return res.render("adminDashboard", {
+            queryResult: [],
+            queryError: null,
+            accountMessage: `${role} '${username}' created successfully.`,
+          });
+        }
+      );
+    }
+  } catch (e) {
+    res.render("adminDashboard", {
+      queryResult: [],
+      queryError: null,
+      accountMessage: "Error creating user: " + e.message,
+    });
+  }
+}
+
+module.exports = { getDashboard, postQuery, postCreateUser };

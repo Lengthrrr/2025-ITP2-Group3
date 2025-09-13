@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const { requireSystemAdmin } = require("../middlewares/requireAuth");
 const adminController = require("../controllers/adminController");
 
-// Admin page
-router.get("/administration", adminController.getAdministration);
-router.post("/administration", adminController.postAdministration);
+// Protect all routes with requireSystemAdmin
+router.get("/admin/dashboard", requireSystemAdmin, adminController.getDashboard);
+router.post("/admin/query", requireSystemAdmin, adminController.postQuery);
+router.post("/admin/create-user", requireSystemAdmin, adminController.postCreateUser);
 
 module.exports = router;
-

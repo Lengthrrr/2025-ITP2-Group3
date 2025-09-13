@@ -4,6 +4,14 @@ exports.getHome = (req, res) => {
   res.render("home", { error: null });
 };
 
+exports.redirectLogin = (req, res) => {
+  res.redirect("login");
+};
+
+exports.getLogin = (req, res) => {
+  res.render("login", { error: null });
+};
+
 exports.postLogin = (req, res) => {
   accessControl.attemptLogin(req, res);
 };

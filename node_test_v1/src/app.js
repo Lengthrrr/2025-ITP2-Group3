@@ -20,5 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Mount routes
 app.use("/", routes);
 
+// Routes
+// app.use("/auth", require("./routes/authRoutes"));
+// app.use("/admin", require("./routes/adminRoutes"));
+
+
 module.exports = app;
 
