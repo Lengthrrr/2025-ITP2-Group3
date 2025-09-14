@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Administrator Dashboard</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 18px; /* thicker scrollbar */
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent; /* transparent track */
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #4f46e5, #3b82f6); /* blue gradient */
+      border-radius: 9px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, #6366f1, #60a5fa);
+    }
+
+    /* Firefox scrollbar */
+    * {
+      scrollbar-width: thick;
+      scrollbar-color: #4f46e5 transparent;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #e5e7eb;
+      background-image: url('/Images/sky3.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow-y: scroll;
+    }
+
+    /* Fixed gradient overlay */
+    #gradient-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Gradient Overlay -->
+  <div id="gradient-overlay"></div>
+
+  <div class="content w-full max-w-6xl mx-auto px-6 py-12 space-y-12">
+
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-gray-400 bg-clip-text text-transparent">
+      System Administrator Dashboard
+    </h1>
+
+    <!-- SQL Console -->
+    <section class="mb-12 bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
+      <h2 class="text-2xl font-semibold mb-6">Database Console</h2>
+      <form action="/admin/query" method="POST" class="space-y-4">
+        <textarea name="sql" rows="5" placeholder="Enter SQL query..."
+          class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 font-mono text-sm"></textarea>
+        <button type="submit" 
+          class="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition">
+          Run Query
+        </button>
+      </form>
+      <% if (typeof queryError !== "undefined" && queryError) { %>
+        <div class="mt-4 p-3 rounded-lg bg-red-500/20 border border-red-400 text-red-300">
+          <%= queryError %>
+        </div>
+      <% } %>
+      <% if (typeof queryResult !== "undefined" && queryResult.length > 0) { %>
+        <div class="mt-6 overflow-x-auto">
+          <table class="min-w-full border border-gray-700 text-sm">
+            <thead class="bg-gray-800 text-gray-300">
+              <tr>
+                <% Object.keys(queryResult[0]).forEach(col => { %>
+                  <th class="px-4 py-2 border-b border-gray-700 text-left"><%= col %></th>
+                <% }) %>
+              </tr>
+            </thead>
+            <tbody>
+              <% queryResult.forEach(row => { %>
+                <tr class="hover:bg-gray-800/60">
+                  <% Object.values(row).forEach(val => { %>
+                    <td class="px-4 py-2 border-b border-gray-700"><%= val %></td>
+                  <% }) %>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+
+    <!-- Account Management -->
+    <section class="bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
+      <h2 class="text-2xl font-semibold mb-6">Create New Account</h2>
+      <form action="/admin/create-user" method="POST" class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block mb-2 font-medium">Role</label>
+          <select name="role" required
+            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <option value="lecturer">Lecturer</option>
+            <option value="admin">Administrator</option>
+            <option value="course">Course</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-2 font-medium">Username / Course Code</label>
+          <input type="text" name="username" required
+            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        </div>
+        <div>
+          <label class="block mb-2 font-medium">Password</label>
+          <input type="password" name="password" required
+            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        </div>
+        <div class="flex items-end">
+          <button type="submit" 
+            class="w-full py-3 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition">
+            Create Account
+          </button>
+        </div>
+      </form>
+      <% if (typeof accountMessage !== "undefined" && accountMessage) { %>
+        <div class="mt-6 p-3 rounded-lg bg-green-500/20 border border-green-400 text-green-300">
+          <%= accountMessage %>
+        </div>
+      <% } %>
+    </section>
+
+    <!-- Joe Biden Photos Section -->
+    <section class="bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
+      <h2 class="text-2xl font-semibold mb-6">Joe Biden Photos</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        <img src="https://cdn-useast1.kapwing.com/static/templates/joe-biden-shocked-blinking-meme-template-regular-40bf67d0.webp" alt="Joe Biden 1" class="rounded-lg shadow-lg">
+        <img src="https://assets.teenvogue.com/photos/5820e08cbb861ba6058838db/1:1/w_1051,h_1051,c_limit/memes-tout.jpg" alt="Joe Biden 2" class="rounded-lg shadow-lg">
+        <img src="../Images/meme1.jpg" alt="Joe Biden 3" class="rounded-lg shadow-lg">
+        <img src="../Images/meme2.jpg" alt="Joe Biden 4" class="rounded-lg shadow-lg">
+        <img src="../Images/meme3.png" alt="Joe Biden 5" class="rounded-lg shadow-lg">
+        <img src="../Images/meme4.jpg" alt="Joe Biden 6" class="rounded-lg shadow-lg">
+        <img src="../Images/meme5.jpg" alt="Joe Biden 7" class="rounded-lg shadow-lg">
+        <img src="../Images/meme6.jpg" alt="Joe Biden 8" class="rounded-lg shadow-lg">
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

@@ -77,53 +77,11 @@ profiles = [
         "MarkerType": "latlong_marker",
         "DescriptionHTML": "<div><b>Random Point:</b> Example of arbitrary point marker.</div>"
     },
-
-      {
-          "Country": "India",
-              "Type": "Country",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """Test1122"""
-      },
-      {
-          "Country": "India",
-              "Type": "Country",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """TTT!!"""
-      },
-
-      {
-          "Country": "QQQ",
-              "Lat": 215.353333,
-              "Lon": 149.234161,
-              "Type": "LatLong",
-              "MarkerType": "latlong_marker",
-              "DescriptionHTML": """TTT123321"""
-      },
-      {
-          "Country": "QQ2",
-              "Lat": -35.353333,
-              "Lon": 149.234161,
-              "Type": "LatLong",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """Test222123"""
-      },
-      {
-          "Country": "Thailand",
-              "Type": "Country",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """Test 8"""
-      },
-      {
-          "Country": "Brazil",
-              "Type": "Country",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """brazil"""
-      },
-      {
-          "Country": "Indonesia",
-              "Type": "Country",
-              "MarkerType": "country_marker",
-              "DescriptionHTML": """Description for indonesia"""
-      },
+    {
+        "Country": "Japan",
+        "Type": "Country",
+        "MarkerType": "country_marker",
+        "DescriptionHTML": """So KAWAII E>.<3 eep"""
+    },
 ]
 

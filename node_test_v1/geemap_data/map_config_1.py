@@ -96,5 +96,11 @@ profiles = [
               "MarkerType": "country_marker",
               "DescriptionHTML": """m6"""
       },
+      {
+          "Country": "a",
+              "Type": "a",
+              "MarkerType": "a",
+              "DescriptionHTML": """aa"""
+      },
 ]
 
