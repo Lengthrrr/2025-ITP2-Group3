@@ -6,18 +6,17 @@
 
 /* Base styles & Custom properties */
 :root {
-  --primary: #14b8a6; /* Teal */
-  --primary-dark: #0f766e; /* Darker Teal */
-  --secondary: #f0f9ff; /* Off-White */
-  --accent: #0ea5e9; /* Sky Blue */
+  --primary: #1b252f; /* Teal */
+  --primary-dark: #3b4440; /* Darker Teal */
+  --secondary: #302e21; /* Off-White */
+  --accent: #d2d1ce; /* Sky Blue */
   --dark-bg: #e5e7eb; /* Light Grey */
   --darker-bg: #d1d5db; /* Slightly Darker Grey */
-  --text-primary: #111827; /* Dark Text */
+  --text-primary: #ffffff; /* Dark Text */
   --text-secondary: #6b7280; /* Grey Text */
-  --navbar-bg: rgba(229, 231, 235, 0.7); /* Semi-transparent light navbar */
+  --navbar-bg: rgba(0, 0, 0, 0.589); /* Semi-transparent light navbar */
   --glass-effect: blur(12px);
   --transition-normal: all 0.3s ease;
-  --border-glow: rgba(20, 184, 166, 0.3); /* Teal glow */
   --neon-shadow: 0 0 15px rgba(14, 165, 233, 0.5); /* Sky Blue glow */
   --glow-cyan: 0 0 15px rgba(14, 165, 233, 0.5);
   --glow-indigo: 0 0 15px rgba(20, 184, 166, 0.5);
@@ -51,11 +50,20 @@ a {
   color: inherit;
 }
 
+.container-btn {
+  width: 100%;
+  max-width: 1980px;
+  margin-left: 185px;
+  margin-right: 1080px;
+  padding: 0 0.5rem;
+}
+
 .container {
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  max-width: 1980px;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 0.5rem;
 }
 
 /* Custom Scrollbar */
@@ -87,18 +95,17 @@ a {
   -webkit-backdrop-filter: var(--glass-effect); /* For Safari */
   border-bottom: 1px solid var(--border-glow);
   z-index: 1000;
-  transition: var(--transition-normal);
+  /* transition: var(--transition-normal); */
   height: 70px;
 }
 
 #navbar.scrolled {
-  padding: 0.5rem 0;
-  background-color: rgba(30, 58, 138, 0.9); /* More opaque when scrolled */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
 }
 
 /* Navbar Logo */
 .logo {
+  margin-left: 65px;
   display: flex;
   align-items: center;
 }
@@ -116,7 +123,7 @@ a {
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(to right, var(--accent), var(--secondary));
+  background: white;
   transition: width 0.3s ease;
   transform: translateX(-50%);
 }
@@ -363,15 +370,6 @@ section:first-of-type {
   box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
-/* Grid System */
-.grid {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.grid-cols-1 {
-  grid-template-columns: repeat(1, 1fr);
-}
 
 /* Responsive Layout */
 @media (min-width: 640px) {
@@ -440,22 +438,6 @@ section:first-of-type {
 }
 
 /* Background Decorations */
-.bg-grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: 50px 50px;
-  background-image: linear-gradient(
-      to right,
-      rgba(249, 115, 22, 0.05) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, rgba(249, 115, 22, 0.05) 1px, transparent 1px);
-  z-index: -1;
-  pointer-events: none;
-}
 
 .bg-glow {
   position: fixed;
@@ -485,7 +467,7 @@ section:first-of-type {
 
 /* Footer Styles */
 footer {
-  background-color: rgba(30, 58, 138, 0.8);
+  background-color: rgba(0, 0, 0, 0.589);
   backdrop-filter: var(--glass-effect);
   border-top: 1px solid var(--border-glow);
   padding: 3rem 0;
@@ -557,18 +539,11 @@ button:focus {
 
 /* Style the scrollbar for a futuristic look */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #f97316, #1e3a8a);
+  background: linear-gradient(to bottom, #252b81, #16642a);
   border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #f97316, #a7f3d0);
 }
