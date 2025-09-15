@@ -4,7 +4,6 @@ const path = require("path");
 const dbPath = path.join(__dirname, "database.db"); // same folder as insertDefaults.js
 const db = new sqlite3.Database(dbPath);
 
-
 db.serialize(() => {
   // -------------------- Users (lecturers + admins) --------------------
   db.run(`
@@ -27,17 +26,27 @@ db.serialize(() => {
     );
   `);
 
+  // -------------------- Join table: links lecturers <-> courses --------------------
+  db.run(`
+    CREATE TABLE IF NOT EXISTS course_lecturer (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      course_id INTEGER NOT NULL,
+      lecturer_id INTEGER NOT NULL,
+      FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE,
+      FOREIGN KEY (lecturer_id) REFERENCES user(user_id) ON DELETE CASCADE,
+      UNIQUE(course_id, lecturer_id)
+    );
+  `);
+
   // -------------------- Modules --------------------
   db.run(`
     CREATE TABLE IF NOT EXISTS module (
       module_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      module_name TEXT,
-      lecturer_id INTEGER,
+      course_id TEXT,
       start_time INTEGER,
       module_title VARCHAR,
       module_description VARCHAR,
-      type VARCHAR,
-      FOREIGN KEY (lecturer_id) REFERENCES user(user_id)
+      type VARCHAR
     );
   `);
 

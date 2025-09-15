@@ -53,7 +53,7 @@ async function attemptLogin(req, res) {
         if (user.role === "admin") {
           return res.redirect("/admin/dashboard");
         } else {
-          return res.redirect("/module_editor");
+          return res.redirect("/lecturer/dashboard");
         }
       }
     );

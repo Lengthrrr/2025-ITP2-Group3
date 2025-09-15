@@ -11,7 +11,16 @@ function runAsync(query, params = []) {
   return new Promise((resolve, reject) => {
     db.run(query, params, function (err) {
       if (err) reject(err);
-      else resolve(this.changes); // number of rows changed
+      else resolve(this.lastID || this.changes);
+    });
+  });
+}
+
+function getAsync(query, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(query, params, (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
     });
   });
 }
@@ -27,22 +36,30 @@ async function insertDefaults() {
     const hash = await bcrypt.hash(entry.password, 10);
 
     if (entry.table === "course") {
-      const changes = await runAsync(
+      await runAsync(
         `INSERT OR IGNORE INTO course (course_code, hashed_password) VALUES (?, ?)`,
         [entry.value, hash]
       );
-      console.log(
-        changes ? `✅ Inserted default course "${entry.value}"` : `⚠️ Course "${entry.value}" already exists`
-      );
+      console.log(`✅ Ensured default course "${entry.value}"`);
     } else if (entry.table === "user") {
-      const changes = await runAsync(
+      await runAsync(
         `INSERT OR IGNORE INTO user (username, hashed_password, role) VALUES (?, ?, ?)`,
         [entry.value, hash, entry.role]
       );
-      console.log(
-        changes ? `✅ Inserted ${entry.role} "${entry.value}"` : `⚠️ ${entry.role} "${entry.value}" already exists`
-      );
+      console.log(`✅ Ensured ${entry.role} "${entry.value}"`);
     }
+  }
+
+  // Link default lecturer to default course
+  const course = await getAsync(`SELECT course_id FROM course WHERE course_code = ?`, ["course"]);
+  const lecturer = await getAsync(`SELECT user_id FROM user WHERE username = ? AND role = 'lecturer'`, ["lecturer"]);
+
+  if (course && lecturer) {
+    await runAsync(
+      `INSERT OR IGNORE INTO course_lecturer (course_id, lecturer_id) VALUES (?, ?)`,
+      [course.course_id, lecturer.user_id]
+    );
+    console.log(`✅ Linked lecturer "${lecturer.user_id}" to course "${course.course_id}"`);
   }
 
   // -------------------- Insert Default Modules --------------------
@@ -55,20 +72,18 @@ async function insertDefaults() {
   ];
 
   for (const mod of modules) {
-    const changes = await runAsync(
-      `INSERT OR IGNORE INTO module (module_name, lecturer_id, start_time, module_title, module_description, type) 
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      ["course", 1, 0, `${mod.name}`, mod.description, "general"]
+    await runAsync(
+      `INSERT OR IGNORE INTO module (course_id, start_time, module_title, module_description, type) 
+       VALUES (?, ?, ?, ?, ?)`,
+      ["1", 0, `${mod.name}`, mod.description, "general"]
     );
-    console.log(
-      changes ? `✅ Inserted module "${mod.name}"` : `⚠️ Module "${mod.name}" already exists`
-    );
+    console.log(`✅ Ensured module "${mod.name}"`);
   }
 }
 
 insertDefaults()
   .then(() => {
-    console.log("🎉 Default users and modules inserted (with bcrypt hashes).");
+    console.log("🎉 Default users, course links, and modules inserted (with bcrypt hashes).");
     db.close();
   })
   .catch((err) => {
