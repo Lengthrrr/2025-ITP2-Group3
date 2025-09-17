@@ -204,8 +204,38 @@
             </div>
             <div class="w-20 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto"></div>
           </div>
-<div id="region-modules" class="grid md:grid-cols-3 gap-6"></div>
-          </div>
+<j!-- Explore by Region Section -->
+    <section id="region-modules" class="mb-20">
+      <!-- <h2 class="text-3xl font-bold mb-6">Explore by Regions</h2> -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <% if (modules && modules.length > 0) { %>
+          <% modules.forEach(m => { %>
+            <div class="relative group">
+              <div class="absolute inset-0 bg-indigo-500/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-indigo-500/20 rounded-lg p-6 relative z-10 h-full group-hover:border-indigo-500/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-indigo-300 group-hover:text-indigo-200 transition-colors">
+                      <%= m.module_title %>
+                    </div>
+                  </div>
+                  <p class="text-gray-400 mb-4"><%= m.module_description %></p>
+                  <a href="/lecturer/module_editor?id=<%= m.module_id %>" 
+                     class="mt-auto text-indigo-400 hover:text-indigo-300 inline-flex items-center">
+                    More
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-gray-400 col-span-3 text-center">No region modules available for this course.</p>
+        <% } %>
+      </div>
+    </section>          </div>
         </div>
     </section>
 
@@ -218,7 +248,27 @@
             </div>
             <div class="w-20 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto"></div>
           </div>
-    <div id="modules" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+<div id="modules" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% if (modules && modules.length > 0) { %>
+    <% modules.forEach(m => { %>
+      <div class="relative group overflow-hidden rounded-xl">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/80 to-purple-600/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
+          <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+            <div class="text-xl font-medium text-white mb-2"><%= m.module_title %></div>
+            <p class="text-gray-200 mb-4"><%= m.module_description %></p>
+            <a href="/lecturer/module_editor?id=<%= m.module_id %>" 
+               class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded text-white hover:bg-white/30 transition-colors duration-300">
+              View Details
+            </a>
+          </div>
+        </div>
+        <img src="Images/week<%= m.module_id %>.jpg" alt="<%= m.module_title %>" class="aspect-video object-cover rounded-xl w-full h-full">
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p class="text-gray-400 col-span-3 text-center">No course modules available.</p>
+  <% } %>
+</div>
     </section>
 
         <!-- Quiz Section -->
@@ -267,9 +317,9 @@
         </div>
       </div>
     </section>
-    <section>
-<h2>Login</h2> <% if (error) { %><p style="color:red"><%= error %></p><% } %> <form action="/home/" style="margin-left: 30px;" method="POST"> <input name="username" placeholder="Username" required> <input name="password" type="password" placeholder="Password" required> <button type="submit">Sign</button> </form>
-        </section>
+    <!-- <section> -->
+<!-- <h2>Login</h2> <% if (error) { %><p style="color:red"><%= error %></p><% } %> <form action="/home/" style="margin-left: 30px;" method="POST"> <input name="username" placeholder="Username" required> <input name="password" type="password" placeholder="Password" required> <button type="submit">Sign</button> </form> -->
+<!--         </section> -->
   </main>
 
   <!-- Footer -->
@@ -311,71 +361,71 @@
 </div>
 <!-- partial -->
 <script src='https://cdn.tailwindcss.com'></script><script  src="script.js"></script>
-<script>
-async function loadModules() {
-  const res = await fetch("/api/module_course");
-  const modules = await res.json();
-
-  const container = document.getElementById("modules");
-  container.innerHTML = ""; // clear old content
-
-  modules.forEach(m => {
-    const card = `
-      <div class="relative group overflow-hidden rounded-xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/80 to-purple-600/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-          <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-            <div class="text-xl font-medium text-white mb-2">${m.module_title}</div>
-            <p class="text-gray-200 mb-4">${m.module_description}</p>
-                  <a href="/module?id=${m.module_id}" 
-           class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded text-white hover:bg-white/30 transition-colors duration-300">
-          View Details
-        </a>
-          </div>
-        </div>
-        <img src="Images/week${m.module_id}.jpg" alt="${m.module_title}" class="aspect-video object-cover rounded-xl w-full h-full">
-      </div>
-    `;
-    container.insertAdjacentHTML("beforeend", card);
-  });
-}
-
-loadModules();
-</script>
-<script>
-async function loadRegionModules() {
-  const res = await fetch("/api/module_region");
-  const modules = await res.json();
-
-  const container = document.getElementById("region-modules");
-  container.innerHTML = "";
-
-  modules.forEach((m, i) => {
-    const card = `
-      <div class="relative group">
-        <div class="absolute inset-0 bg-indigo-500/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-        <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-indigo-500/20 rounded-lg p-6 relative z-10 h-full group-hover:border-indigo-500/40 transition-all duration-300">
-          <div class="flex flex-col h-full">
-            <div class="flex items-center mb-4">
-              <div class="font-medium text-lg text-indigo-300 group-hover:text-indigo-200 transition-colors">${m.module_title}</div>
-            </div>
-            <p class="text-gray-400 mb-4">${m.module_description}</p>
-            <a href="/module?id=${m.module_id}" 
-               class="mt-auto text-indigo-400 hover:text-indigo-300 inline-flex items-center">
-              More
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML("beforeend", card);
-  });
-}
-
-loadRegionModules();
-</script>
+<!-- <script> -->
+<!-- async function loadModules() { -->
+<!--   const res = await fetch("/api/module_course"); -->
+<!--   const modules = await res.json(); -->
+<!---->
+<!--   const container = document.getElementById("modules"); -->
+<!--   container.innerHTML = ""; // clear old content -->
+<!---->
+<!--   modules.forEach(m => { -->
+<!--     const card = ` -->
+<!--       <div class="relative group overflow-hidden rounded-xl"> -->
+<!--         <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/80 to-purple-600/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center"> -->
+<!--           <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300"> -->
+<!--             <div class="text-xl font-medium text-white mb-2">${m.module_title}</div> -->
+<!--             <p class="text-gray-200 mb-4">${m.module_description}</p> -->
+<!--                   <a href="/module?id=${m.module_id}"  -->
+<!--            class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded text-white hover:bg-white/30 transition-colors duration-300"> -->
+<!--           View Details -->
+<!--         </a> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--         <img src="Images/week${m.module_id}.jpg" alt="${m.module_title}" class="aspect-video object-cover rounded-xl w-full h-full"> -->
+<!--       </div> -->
+<!--     `; -->
+<!--     container.insertAdjacentHTML("beforeend", card); -->
+<!--   }); -->
+<!-- } -->
+<!---->
+<!-- loadModules(); -->
+<!-- </script> -->
+<!-- <script> -->
+<!-- async function loadRegionModules() { -->
+<!--   const res = await fetch("/api/module_region"); -->
+<!--   const modules = await res.json(); -->
+<!---->
+<!--   const container = document.getElementById("region-modules"); -->
+<!--   container.innerHTML = ""; -->
+<!---->
+<!--   modules.forEach((m, i) => { -->
+<!--     const card = ` -->
+<!--       <div class="relative group"> -->
+<!--         <div class="absolute inset-0 bg-indigo-500/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--         <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-indigo-500/20 rounded-lg p-6 relative z-10 h-full group-hover:border-indigo-500/40 transition-all duration-300"> -->
+<!--           <div class="flex flex-col h-full"> -->
+<!--             <div class="flex items-center mb-4"> -->
+<!--               <div class="font-medium text-lg text-indigo-300 group-hover:text-indigo-200 transition-colors">${m.module_title}</div> -->
+<!--             </div> -->
+<!--             <p class="text-gray-400 mb-4">${m.module_description}</p> -->
+<!--             <a href="/module?id=${m.module_id}"  -->
+<!--                class="mt-auto text-indigo-400 hover:text-indigo-300 inline-flex items-center"> -->
+<!--               More -->
+<!--               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"> -->
+<!--                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path> -->
+<!--               </svg> -->
+<!--             </a> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--     `; -->
+<!--     container.insertAdjacentHTML("beforeend", card); -->
+<!--   }); -->
+<!-- } -->
+<!---->
+<!-- loadRegionModules(); -->
+<!-- </script> -->
 
 </body>
 </html>

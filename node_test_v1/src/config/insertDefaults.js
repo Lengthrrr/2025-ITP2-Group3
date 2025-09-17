@@ -64,18 +64,18 @@ async function insertDefaults() {
 
   // -------------------- Insert Default Modules --------------------
   const modules = [
-    { name: "India", description: "General information about India." },
-    { name: "China", description: "General information about China." },
-    { name: "Japan", description: "General information about Japan." },
-    { name: "Taiwan", description: "General information about Taiwan." },
-    { name: "Australia", description: "General information about Australia." },
+    { name: "Data from files", description: "This map shows data including volcanoes and tectonic plates from multiple file types including xlsx and shape files.", heading: "Course Schedule"},
+    { name: "China", description: "General information about China." , heading: "Course Schedule"},
+    { name: "Indo-Pacific Statistics", description: "Course content for week 3. This includes basic statistics for each of the countries of the Indo-Pacific" , heading: "Course Schedule"},
+    { name: "Taiwan", description: "General information about Taiwan." , heading: "Course Schedule"},
+    { name: "Australia", description: "General information about Australia." , heading: "Course Schedule"},
   ];
 
   for (const mod of modules) {
     await runAsync(
-      `INSERT OR IGNORE INTO module (course_id, start_time, module_title, module_description, type) 
-       VALUES (?, ?, ?, ?, ?)`,
-      ["1", 0, `${mod.name}`, mod.description, "general"]
+      `INSERT OR IGNORE INTO module (course_id, module_heading, start_time, module_title, module_description, type) 
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      ["1", mod.heading, 0, `${mod.name}`, mod.description, "general"]
     );
     console.log(`✅ Ensured module "${mod.name}"`);
   }

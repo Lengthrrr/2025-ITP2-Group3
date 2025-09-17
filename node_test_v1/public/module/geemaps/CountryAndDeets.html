@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_44875b6d0c3c361de6101b4b6d7c690c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_44875b6d0c3c361de6101b4b6d7c690c" ></div>
+        
+    
+            
+        
+</body>
+<script>
+    
+    
+            var map_44875b6d0c3c361de6101b4b6d7c690c = L.map(
+                "map_44875b6d0c3c361de6101b4b6d7c690c",
+                {
+                    center: [-10.0, 140.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 3,
+  "zoomControl": true,
+  "preferCanvas": false,
+  "eeInitialize": true,
+  "addGoogleMap": false,
+  "pluginLatlngpopup": false,
+  "pluginFullscreen": true,
+  "pluginDraw": true,
+  "DrawExport": false,
+  "pluginMinimap": false,
+  "locateControl": false,
+  "searchControl": true,
+  "basemap": "OpenStreetMap",
+  "layersControl": true,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e0ec12591967dcdc3a824f5c0b82bbd3 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 30,
+  "maxNativeZoom": 30,
+  "noWrap": false,
+  "attribution": "OpenStreetMap",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e0ec12591967dcdc3a824f5c0b82bbd3.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var options = {
+              position: "topleft",
+              draw: {},
+              edit: {},
+            }
+                // FeatureGroup is to store editable layers.
+                var drawnItems_draw_control_012c4056645c619b539c3a2316ce513f =
+                    new L.featureGroup().addTo(
+                        map_44875b6d0c3c361de6101b4b6d7c690c
+                    );
+
+            options.edit.featureGroup = drawnItems_draw_control_012c4056645c619b539c3a2316ce513f;
+            var draw_control_012c4056645c619b539c3a2316ce513f = new L.Control.Draw(
+                options
+            ).addTo( map_44875b6d0c3c361de6101b4b6d7c690c );
+            map_44875b6d0c3c361de6101b4b6d7c690c.on(L.Draw.Event.CREATED, function(e) {
+                var layer = e.layer,
+                    type = e.layerType;
+                var coords = JSON.stringify(layer.toGeoJSON());
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                });
+                drawnItems_draw_control_012c4056645c619b539c3a2316ce513f.addLayer(layer);
+            });
+            map_44875b6d0c3c361de6101b4b6d7c690c.on('draw:created', function(e) {
+                drawnItems_draw_control_012c4056645c619b539c3a2316ce513f.addLayer(e.layer);
+            });
+
+            
+        
+    
+
+            var geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3 = {
+  "collapsed": true,
+  "position": "topleft",
+  "defaultMarkGeocode": true,
+  "zoom": 11,
+  "provider": "nominatim",
+  "providerOptions": {
+},
+};
+
+            // note: geocoder name should start with lowercase
+            var geocoderName_geocoder_acb2413cd9a584b655745b9e7186bed3 = geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3["provider"];
+
+            var customGeocoder_geocoder_acb2413cd9a584b655745b9e7186bed3 = L.Control.Geocoder[ geocoderName_geocoder_acb2413cd9a584b655745b9e7186bed3 ](
+                geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3['providerOptions']
+            );
+            geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3["geocoder"] = customGeocoder_geocoder_acb2413cd9a584b655745b9e7186bed3;
+
+            L.Control.geocoder(
+                geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3
+            ).on('markgeocode', function(e) {
+                var zoom = geocoderOpts_geocoder_acb2413cd9a584b655745b9e7186bed3['zoom'] || map_44875b6d0c3c361de6101b4b6d7c690c.getZoom();
+                map_44875b6d0c3c361de6101b4b6d7c690c.setView(e.geocode.center, zoom);
+            }).addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+
+        
+    
+            map_44875b6d0c3c361de6101b4b6d7c690c.fitBounds(
+                [[-10, 140], [-10, 140]],
+                {"maxZoom": 3}
+            );
+        
+    
+            var tile_layer_d0289b470582cd5e2ca1b1449959d75f = L.tileLayer(
+                "https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "(C) OpenStreetMap contributors (C) CARTO",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_d0289b470582cd5e2ca1b1449959d75f.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var tile_layer_109e7bcf010ea524ac99367134dbc8ad = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/370eb02e0e5c93faede006b9441bbcdb-8676efe68bd33b23c842a1d729c9d64b/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.18,
+}
+
+            );
+        
+    
+            tile_layer_109e7bcf010ea524ac99367134dbc8ad.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var tile_layer_98a538a259675f13f985e9b95ac7b89a = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/79d0bcc516e192a41a1e97ad35855d56-42a337a5ec761618242c5d0e7e765576/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.95,
+}
+
+            );
+        
+    
+            tile_layer_98a538a259675f13f985e9b95ac7b89a.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var tile_layer_1fa312a014ed64149446fb787ce7d90f = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/6730a7cd698661765f3bff92a5d2b168-ae9808b98b9ef3e3084b9fa6fbcbd0ac/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1.0,
+}
+
+            );
+        
+    
+            tile_layer_1fa312a014ed64149446fb787ce7d90f.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var feature_group_f4c141c822f9b700b1784f4c7784165c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_91a93a2fe293d9aab53003f080930051 = L.marker(
+                [22.387790674364442, 114.12901279055357],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_d03c1012f95c044e482d679224dd4279 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_f0b3e7b1375cee3a0a27017291dea0d4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_08443463d3db09aa89363eaf449053a6 = $(`<div id="html_08443463d3db09aa89363eaf449053a6" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Hong Kong</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_f0b3e7b1375cee3a0a27017291dea0d4.setContent(html_08443463d3db09aa89363eaf449053a6);
+            
+        
+
+        marker_91a93a2fe293d9aab53003f080930051.bindPopup(popup_f0b3e7b1375cee3a0a27017291dea0d4)
+        ;
+
+        
+    
+    
+                marker_91a93a2fe293d9aab53003f080930051.setIcon(div_icon_d03c1012f95c044e482d679224dd4279);
+            
+    
+            var marker_7243d960f55ab34435514900af5c44e6 = L.marker(
+                [22.199232536860933, 113.54534170302755],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_ed33de47cafc482f8c828beb3626b2e0 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_1cb79e0bb821c758783c5fcbdd96d7de = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2fd2f3040f95a34392e8769a06807847 = $(`<div id="html_2fd2f3040f95a34392e8769a06807847" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Macau</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_1cb79e0bb821c758783c5fcbdd96d7de.setContent(html_2fd2f3040f95a34392e8769a06807847);
+            
+        
+
+        marker_7243d960f55ab34435514900af5c44e6.bindPopup(popup_1cb79e0bb821c758783c5fcbdd96d7de)
+        ;
+
+        
+    
+    
+                marker_7243d960f55ab34435514900af5c44e6.setIcon(div_icon_ed33de47cafc482f8c828beb3626b2e0);
+            
+    
+            var marker_bb03c06e5a31cc80155cc58bcec97c77 = L.marker(
+                [23.747734992932095, 120.95456393909166],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_0137ef527597a874df66b6409dc7aa32 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_34cfd7848a1020204c1076f367b8cddd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_76b3b05181b9e363f53d209671da06a9 = $(`<div id="html_76b3b05181b9e363f53d209671da06a9" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Taiwan</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_34cfd7848a1020204c1076f367b8cddd.setContent(html_76b3b05181b9e363f53d209671da06a9);
+            
+        
+
+        marker_bb03c06e5a31cc80155cc58bcec97c77.bindPopup(popup_34cfd7848a1020204c1076f367b8cddd)
+        ;
+
+        
+    
+    
+                marker_bb03c06e5a31cc80155cc58bcec97c77.setIcon(div_icon_0137ef527597a874df66b6409dc7aa32);
+            
+    
+            var marker_b067b9bf24ad5988bff4e0bace6eb0c6 = L.marker(
+                [37.522233130614474, 137.7154425680189],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_68ab26f90dceb686015b555b6418ac3a = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_d9042ecbea1ac63cb775cb7524f3e784 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f41585b0e0ba21edb226b963e7a200c8 = $(`<div id="html_f41585b0e0ba21edb226b963e7a200c8" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Japan</div>       <div><b>Capital:</b> Tokyo</div>       <div><b>Ruling:</b> LDP–Komeito coalition</div>       <div><b>Opposition:</b> CDP</div>       <div><b>Religions:</b> Shinto (48.6%), Buddhism (46.4%)</div>     </div>     </div>`)[0];
+                popup_d9042ecbea1ac63cb775cb7524f3e784.setContent(html_f41585b0e0ba21edb226b963e7a200c8);
+            
+        
+
+        marker_b067b9bf24ad5988bff4e0bace6eb0c6.bindPopup(popup_d9042ecbea1ac63cb775cb7524f3e784)
+        ;
+
+        
+    
+    
+                marker_b067b9bf24ad5988bff4e0bace6eb0c6.setIcon(div_icon_68ab26f90dceb686015b555b6418ac3a);
+            
+    
+            var marker_bd1824aae50bfd83aad0464c1cb3f90e = L.marker(
+                [36.365151960272854, 127.80691118128888],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_db354a57ebece93c417053c27fc0e2f3 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_f70f55cefd2b9e6825e21a2d4048c388 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_58a806329eecf8c40ef540c105764f83 = $(`<div id="html_58a806329eecf8c40ef540c105764f83" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Korea, South</div>       <div><b>Capital:</b> Seoul</div>       <div><b>Ruling:</b> People Power Party (PPP)</div>       <div><b>Opposition:</b> Democratic Party (DP)</div>       <div><b>Religions:</b> Unaffiliated (46.5%), Christian (29%)</div>     </div>     </div>`)[0];
+                popup_f70f55cefd2b9e6825e21a2d4048c388.setContent(html_58a806329eecf8c40ef540c105764f83);
+            
+        
+
+        marker_bd1824aae50bfd83aad0464c1cb3f90e.bindPopup(popup_f70f55cefd2b9e6825e21a2d4048c388)
+        ;
+
+        
+    
+    
+                marker_bd1824aae50bfd83aad0464c1cb3f90e.setIcon(div_icon_db354a57ebece93c417053c27fc0e2f3);
+            
+    
+            var marker_a9e2f424b5b06d0c1f0fac9c012b086c = L.marker(
+                [40.13263055559148, 127.14447566638405],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_94d04080a1e2f0dbc3bb064316b4a05c = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6910a9f71a968473342444e531e043f2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5b7dfef1ebdeb713d1ff3d5e0cc3406a = $(`<div id="html_5b7dfef1ebdeb713d1ff3d5e0cc3406a" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Korea, North</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_6910a9f71a968473342444e531e043f2.setContent(html_5b7dfef1ebdeb713d1ff3d5e0cc3406a);
+            
+        
+
+        marker_a9e2f424b5b06d0c1f0fac9c012b086c.bindPopup(popup_6910a9f71a968473342444e531e043f2)
+        ;
+
+        
+    
+    
+                marker_a9e2f424b5b06d0c1f0fac9c012b086c.setIcon(div_icon_94d04080a1e2f0dbc3bb064316b4a05c);
+            
+    
+            var marker_a391f7b6fc4dd92ed85bd3b27789b15f = L.marker(
+                [43.05070544671613, 118.31375432757322],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_b46e0d4e15dc5b61f89340563ddba214 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_794391a98e13e89d5ae3afb649785f7d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_74a2fc0a14d863a0ebf1af356d98f1be = $(`<div id="html_74a2fc0a14d863a0ebf1af356d98f1be" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">China</div>       <div><b>Capital:</b> Beijing</div>       <div><b>Ruling:</b> Chinese Communist Party (CCP)</div>       <div><b>Opposition:</b> None (one-party state)</div>       <div><b>Religions:</b> Unaffiliated (52.1%), Chinese Folk Religion (21.9%)</div>     </div>     </div>`)[0];
+                popup_794391a98e13e89d5ae3afb649785f7d.setContent(html_74a2fc0a14d863a0ebf1af356d98f1be);
+            
+        
+
+        marker_a391f7b6fc4dd92ed85bd3b27789b15f.bindPopup(popup_794391a98e13e89d5ae3afb649785f7d)
+        ;
+
+        
+    
+    
+                marker_a391f7b6fc4dd92ed85bd3b27789b15f.setIcon(div_icon_b46e0d4e15dc5b61f89340563ddba214);
+            
+    
+            var marker_b9331e90f443d70208f950e39fa43eea = L.marker(
+                [46.965771697940795, 103.14085456837161],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_36c6add5fd3b6f9fe276727521a1999d = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_cc54c678220084cfbe5f71eaea73f9aa = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ab61a1f2d71c3bf9e1917b566cc11da2 = $(`<div id="html_ab61a1f2d71c3bf9e1917b566cc11da2" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Mongolia</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_cc54c678220084cfbe5f71eaea73f9aa.setContent(html_ab61a1f2d71c3bf9e1917b566cc11da2);
+            
+        
+
+        marker_b9331e90f443d70208f950e39fa43eea.bindPopup(popup_cc54c678220084cfbe5f71eaea73f9aa)
+        ;
+
+        
+    
+    
+                marker_b9331e90f443d70208f950e39fa43eea.setIcon(div_icon_36c6add5fd3b6f9fe276727521a1999d);
+            
+    
+            var marker_846ab62635f677d6e682e95f3de07709 = L.marker(
+                [3.755839717044864, 73.22005440131291],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_6030bd1a92793a04e1252ec90616e5fb = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e77b820a384b9a8c5d8e4a5c95dd746e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f134fbf9c3c00345bea63b2f5b4640b5 = $(`<div id="html_f134fbf9c3c00345bea63b2f5b4640b5" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Maldives</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_e77b820a384b9a8c5d8e4a5c95dd746e.setContent(html_f134fbf9c3c00345bea63b2f5b4640b5);
+            
+        
+
+        marker_846ab62635f677d6e682e95f3de07709.bindPopup(popup_e77b820a384b9a8c5d8e4a5c95dd746e)
+        ;
+
+        
+    
+    
+                marker_846ab62635f677d6e682e95f3de07709.setIcon(div_icon_6030bd1a92793a04e1252ec90616e5fb);
+            
+    
+            var marker_97a5ea019ed81a0aec83185ca3bd008f = L.marker(
+                [27.39589337705387, 90.43193237656575],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_59845cf4e529e70b7c33bf824f99d7ff = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_03c3317a5da21f9ff86c284af6017dc2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_77e0c3e82477619f0ef5777da386377e = $(`<div id="html_77e0c3e82477619f0ef5777da386377e" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Bhutan</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_03c3317a5da21f9ff86c284af6017dc2.setContent(html_77e0c3e82477619f0ef5777da386377e);
+            
+        
+
+        marker_97a5ea019ed81a0aec83185ca3bd008f.bindPopup(popup_03c3317a5da21f9ff86c284af6017dc2)
+        ;
+
+        
+    
+    
+                marker_97a5ea019ed81a0aec83185ca3bd008f.setIcon(div_icon_59845cf4e529e70b7c33bf824f99d7ff);
+            
+    
+            var marker_308efef952608722a955c6633030faac = L.marker(
+                [33.814940000597346, 65.94778510434948],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_533e0e21ab7b888f326ed17fb79632d4 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_145734d2a499a0145f54a21f37129d4f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_950d9159da4f1e50c3bc8f964935a3d1 = $(`<div id="html_950d9159da4f1e50c3bc8f964935a3d1" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Afghanistan</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_145734d2a499a0145f54a21f37129d4f.setContent(html_950d9159da4f1e50c3bc8f964935a3d1);
+            
+        
+
+        marker_308efef952608722a955c6633030faac.bindPopup(popup_145734d2a499a0145f54a21f37129d4f)
+        ;
+
+        
+    
+    
+                marker_308efef952608722a955c6633030faac.setIcon(div_icon_533e0e21ab7b888f326ed17fb79632d4);
+            
+    
+            var marker_13a760baa9baba1aa5351bcf1ee62592 = L.marker(
+                [29.88406293231801, 69.19999765510346],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_62ae9344d2926146f19ac4f54f932bdc = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_1883b6ca138d3bdc53d49771a2901a0e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a98efdfbc37d6a97585931f55b0cc1cd = $(`<div id="html_a98efdfbc37d6a97585931f55b0cc1cd" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Pakistan</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_1883b6ca138d3bdc53d49771a2901a0e.setContent(html_a98efdfbc37d6a97585931f55b0cc1cd);
+            
+        
+
+        marker_13a760baa9baba1aa5351bcf1ee62592.bindPopup(popup_1883b6ca138d3bdc53d49771a2901a0e)
+        ;
+
+        
+    
+    
+                marker_13a760baa9baba1aa5351bcf1ee62592.setIcon(div_icon_62ae9344d2926146f19ac4f54f932bdc);
+            
+    
+            var marker_40085664388a6fb2ad0f1d8a01df446d = L.marker(
+                [28.267652586988536, 83.9761416224727],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_2d861f7f6ab376c917158cc0946a9791 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_8ac84c25f62a7f0a3ac1667ca549444f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_05a62abce712f7d34c5f607f5f9a1480 = $(`<div id="html_05a62abce712f7d34c5f607f5f9a1480" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Nepal</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_8ac84c25f62a7f0a3ac1667ca549444f.setContent(html_05a62abce712f7d34c5f607f5f9a1480);
+            
+        
+
+        marker_40085664388a6fb2ad0f1d8a01df446d.bindPopup(popup_8ac84c25f62a7f0a3ac1667ca549444f)
+        ;
+
+        
+    
+    
+                marker_40085664388a6fb2ad0f1d8a01df446d.setIcon(div_icon_2d861f7f6ab376c917158cc0946a9791);
+            
+    
+            var marker_a7739699a1c10bad5eded078473c9b60 = L.marker(
+                [7.612632691554339, 80.70289259697314],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_3293181a8bfbd3aa996ac2ca29783aab = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_b412d4307c742de32149cd93d4e2fe70 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0649c4dd5dff5e905bcaf379476a243a = $(`<div id="html_0649c4dd5dff5e905bcaf379476a243a" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Sri Lanka</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_b412d4307c742de32149cd93d4e2fe70.setContent(html_0649c4dd5dff5e905bcaf379476a243a);
+            
+        
+
+        marker_a7739699a1c10bad5eded078473c9b60.bindPopup(popup_b412d4307c742de32149cd93d4e2fe70)
+        ;
+
+        
+    
+    
+                marker_a7739699a1c10bad5eded078473c9b60.setIcon(div_icon_3293181a8bfbd3aa996ac2ca29783aab);
+            
+    
+            var marker_ea76b401013e8077ff006d5f3aefdda6 = L.marker(
+                [22.76232877465652, 79.57964433730989],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_e859a80962bceb015cb28a75aa43d405 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_9ca93b21c8511bb4e2b632220dce272b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7c4a74aa24f8471bae30b0d0e5c243eb = $(`<div id="html_7c4a74aa24f8471bae30b0d0e5c243eb" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">India</div>       <div><b>Capital:</b> New Delhi</div>       <div><b>Ruling:</b> BJP-led coalition</div>       <div><b>Opposition:</b> INDIA bloc</div>       <div><b>Religions:</b> Hinduism (79.8%), Islam (14.2%)</div>     </div>     </div>`)[0];
+                popup_9ca93b21c8511bb4e2b632220dce272b.setContent(html_7c4a74aa24f8471bae30b0d0e5c243eb);
+            
+        
+
+        marker_ea76b401013e8077ff006d5f3aefdda6.bindPopup(popup_9ca93b21c8511bb4e2b632220dce272b)
+        ;
+
+        
+    
+    
+                marker_ea76b401013e8077ff006d5f3aefdda6.setIcon(div_icon_e859a80962bceb015cb28a75aa43d405);
+            
+    
+            var marker_011fb8596384a239d927dfe18f628c0f = L.marker(
+                [23.84574043942299, 90.28182335177792],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_42cc97f49d8dc319197afe64e41da276 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_5ce060e02ea0197b21eb2597939f8015 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_971a579026a7a1399ebfa1bf180d918e = $(`<div id="html_971a579026a7a1399ebfa1bf180d918e" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Bangladesh</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_5ce060e02ea0197b21eb2597939f8015.setContent(html_971a579026a7a1399ebfa1bf180d918e);
+            
+        
+
+        marker_011fb8596384a239d927dfe18f628c0f.bindPopup(popup_5ce060e02ea0197b21eb2597939f8015)
+        ;
+
+        
+    
+    
+                marker_011fb8596384a239d927dfe18f628c0f.setIcon(div_icon_42cc97f49d8dc319197afe64e41da276);
+            
+    
+            var marker_b90cccc83b5703b807b7ead62e4be736 = L.marker(
+                [7.421739697577492, 134.51196114704882],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_7723e5d5080b6d0549c79e6893cd5218 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e9ed65d43052cb6edf087a68c82dc127 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dde485172d32bb70f8f2294820e3cd4f = $(`<div id="html_dde485172d32bb70f8f2294820e3cd4f" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Palau</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_e9ed65d43052cb6edf087a68c82dc127.setContent(html_dde485172d32bb70f8f2294820e3cd4f);
+            
+        
+
+        marker_b90cccc83b5703b807b7ead62e4be736.bindPopup(popup_e9ed65d43052cb6edf087a68c82dc127)
+        ;
+
+        
+    
+    
+                marker_b90cccc83b5703b807b7ead62e4be736.setIcon(div_icon_7723e5d5080b6d0549c79e6893cd5218);
+            
+    
+            var marker_24af43f65736e094ab631501e737d269 = L.marker(
+                [-0.5196902693703978, 166.9300085424907],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_509c1edae9f87f542a2392a4e891dea2 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_fb7aad40668f6cb026fb9cc17d2fd2e7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4b0fe5e058ba405f672b7a871f1ab6d3 = $(`<div id="html_4b0fe5e058ba405f672b7a871f1ab6d3" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Nauru</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_fb7aad40668f6cb026fb9cc17d2fd2e7.setContent(html_4b0fe5e058ba405f672b7a871f1ab6d3);
+            
+        
+
+        marker_24af43f65736e094ab631501e737d269.bindPopup(popup_fb7aad40668f6cb026fb9cc17d2fd2e7)
+        ;
+
+        
+    
+    
+                marker_24af43f65736e094ab631501e737d269.setIcon(div_icon_509c1edae9f87f542a2392a4e891dea2);
+            
+    
+            var marker_acd692c7c3c2eea66e2a9b128feabc85 = L.marker(
+                [-7.364418118863148, 178.033549136044],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_b8e282b7605fc91878da70aa1109d979 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_225aee5923ef355ceee568a0b6e41a46 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3f33427771172089ad3c9aa42acf4be5 = $(`<div id="html_3f33427771172089ad3c9aa42acf4be5" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Tuvalu</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_225aee5923ef355ceee568a0b6e41a46.setContent(html_3f33427771172089ad3c9aa42acf4be5);
+            
+        
+
+        marker_acd692c7c3c2eea66e2a9b128feabc85.bindPopup(popup_225aee5923ef355ceee568a0b6e41a46)
+        ;
+
+        
+    
+    
+                marker_acd692c7c3c2eea66e2a9b128feabc85.setIcon(div_icon_b8e282b7605fc91878da70aa1109d979);
+            
+    
+            var marker_3ef53eb8e70ce3fc38cdacd4510c52e6 = L.marker(
+                [-20.0175946147572, -174.9119489914185],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_1862e9f356a7e6f76eb564b63c5b07a1 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e208a5b90f331670bb326c9c52120a7f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_51a2950c27d2640b1ffedd43de033beb = $(`<div id="html_51a2950c27d2640b1ffedd43de033beb" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Tonga</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_e208a5b90f331670bb326c9c52120a7f.setContent(html_51a2950c27d2640b1ffedd43de033beb);
+            
+        
+
+        marker_3ef53eb8e70ce3fc38cdacd4510c52e6.bindPopup(popup_e208a5b90f331670bb326c9c52120a7f)
+        ;
+
+        
+    
+    
+                marker_3ef53eb8e70ce3fc38cdacd4510c52e6.setIcon(div_icon_1862e9f356a7e6f76eb564b63c5b07a1);
+            
+    
+            var marker_855aa864f6620b16b2988694cec9bccd = L.marker(
+                [-13.743920554728245, -172.19234596875376],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_5fe7a494b00dd4d0cd231fec5af5fb3e = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_0ba39d8e0c3a8f0dd7ee69c2ebc89cd0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fd718ae5b008ef01284dcc5ff1c749a0 = $(`<div id="html_fd718ae5b008ef01284dcc5ff1c749a0" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Samoa</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_0ba39d8e0c3a8f0dd7ee69c2ebc89cd0.setContent(html_fd718ae5b008ef01284dcc5ff1c749a0);
+            
+        
+
+        marker_855aa864f6620b16b2988694cec9bccd.bindPopup(popup_0ba39d8e0c3a8f0dd7ee69c2ebc89cd0)
+        ;
+
+        
+    
+    
+                marker_855aa864f6620b16b2988694cec9bccd.setIcon(div_icon_5fe7a494b00dd4d0cd231fec5af5fb3e);
+            
+    
+            var marker_555d87c2eb59f9e09b6df3cdfe3ab928 = L.marker(
+                [0.7857998577077607, -165.7333994623135],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_44a329993773cbfe91380afb5624620d = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6f6f795a7720aa9d4effa7904bab9b51 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_92d9d35ee0c391646422c53231a4d1c6 = $(`<div id="html_92d9d35ee0c391646422c53231a4d1c6" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Kiribati</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_6f6f795a7720aa9d4effa7904bab9b51.setContent(html_92d9d35ee0c391646422c53231a4d1c6);
+            
+        
+
+        marker_555d87c2eb59f9e09b6df3cdfe3ab928.bindPopup(popup_6f6f795a7720aa9d4effa7904bab9b51)
+        ;
+
+        
+    
+    
+                marker_555d87c2eb59f9e09b6df3cdfe3ab928.setIcon(div_icon_44a329993773cbfe91380afb5624620d);
+            
+    
+            var marker_a5f0e675bdbfd7423e5d61fa37dedcca = L.marker(
+                [-6.4805081712950665, 145.2374284821042],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_455d512a20b684b944175590216ff095 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e38835d524c1318b38f9ac3b5f1cb2fd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d7adf89be9330847a89b48eb55d5ecce = $(`<div id="html_d7adf89be9330847a89b48eb55d5ecce" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Papua New Guinea</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_e38835d524c1318b38f9ac3b5f1cb2fd.setContent(html_d7adf89be9330847a89b48eb55d5ecce);
+            
+        
+
+        marker_a5f0e675bdbfd7423e5d61fa37dedcca.bindPopup(popup_e38835d524c1318b38f9ac3b5f1cb2fd)
+        ;
+
+        
+    
+    
+                marker_a5f0e675bdbfd7423e5d61fa37dedcca.setIcon(div_icon_455d512a20b684b944175590216ff095);
+            
+    
+            var marker_7a57424dbf1017560157a64372e3c04a = L.marker(
+                [-41.718561426167454, 172.8800286782241],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_d5c265dedb96da22daed1b2737d25fb6 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_63917a840a9834e8e0d2e06d237e2670 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fbff34a281eef22b882bdfb45666a5a9 = $(`<div id="html_fbff34a281eef22b882bdfb45666a5a9" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">New Zealand</div>       <div><b>Capital:</b> Wellington</div>       <div><b>Ruling:</b> National-led coalition</div>       <div><b>Opposition:</b> Labour</div>       <div><b>Religions:</b> No Religion (51.6%), Christianity (32.3%)</div>     </div>     </div>`)[0];
+                popup_63917a840a9834e8e0d2e06d237e2670.setContent(html_fbff34a281eef22b882bdfb45666a5a9);
+            
+        
+
+        marker_7a57424dbf1017560157a64372e3c04a.bindPopup(popup_63917a840a9834e8e0d2e06d237e2670)
+        ;
+
+        
+    
+    
+                marker_7a57424dbf1017560157a64372e3c04a.setIcon(div_icon_d5c265dedb96da22daed1b2737d25fb6);
+            
+    
+            var marker_fd9da103f65a197532cdfafaa677a358 = L.marker(
+                [-17.447280901915903, 178.5252826795865],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_748257bf16f430e2ccd09e7ea02ffcab = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_dcec13a74c5abafe71ed8ba5875662d9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5961a7efa73ca4afeae91da7c2a15d96 = $(`<div id="html_5961a7efa73ca4afeae91da7c2a15d96" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Fiji</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_dcec13a74c5abafe71ed8ba5875662d9.setContent(html_5961a7efa73ca4afeae91da7c2a15d96);
+            
+        
+
+        marker_fd9da103f65a197532cdfafaa677a358.bindPopup(popup_dcec13a74c5abafe71ed8ba5875662d9)
+        ;
+
+        
+    
+    
+                marker_fd9da103f65a197532cdfafaa677a358.setIcon(div_icon_748257bf16f430e2ccd09e7ea02ffcab);
+            
+    
+            var marker_a3903a3462d2d5d93f6fbd1b764503ce = L.marker(
+                [-16.189696735491363, 167.6841762105141],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_847f81a67eed4ec92dfae862934e7a2f = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_a018efd36e43deffe0ffdbe173fe319d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2f7ec634a9598aa45bac1ecf5c34bb87 = $(`<div id="html_2f7ec634a9598aa45bac1ecf5c34bb87" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Vanuatu</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_a018efd36e43deffe0ffdbe173fe319d.setContent(html_2f7ec634a9598aa45bac1ecf5c34bb87);
+            
+        
+
+        marker_a3903a3462d2d5d93f6fbd1b764503ce.bindPopup(popup_a018efd36e43deffe0ffdbe173fe319d)
+        ;
+
+        
+    
+    
+                marker_a3903a3462d2d5d93f6fbd1b764503ce.setIcon(div_icon_847f81a67eed4ec92dfae862934e7a2f);
+            
+    
+            var marker_22d230378f38bd154d702154b2a270c9 = L.marker(
+                [-2.272295717746994, 117.20707912628488],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_bc410b55465a458b02172c2d21cea9a7 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_12eff43367e8bf6e481ae24028f801e5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c71c1bf685b37299550f92d6e231ec7f = $(`<div id="html_c71c1bf685b37299550f92d6e231ec7f" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Indonesia</div>       <div><b>Capital:</b> Nusantara (transitional)</div>       <div><b>Ruling:</b> Gerindra (President)</div>       <div><b>Opposition:</b> PDI-P (role in flux)</div>       <div><b>Religions:</b> Muslim (87.2%), Protestant (7%)</div>     </div>     </div>`)[0];
+                popup_12eff43367e8bf6e481ae24028f801e5.setContent(html_c71c1bf685b37299550f92d6e231ec7f);
+            
+        
+
+        marker_22d230378f38bd154d702154b2a270c9.bindPopup(popup_12eff43367e8bf6e481ae24028f801e5)
+        ;
+
+        
+    
+    
+                marker_22d230378f38bd154d702154b2a270c9.setIcon(div_icon_bc410b55465a458b02172c2d21cea9a7);
+            
+    
+            var marker_eaed14a458c58eba0f941ba04b81258b = L.marker(
+                [1.3570675569067032, 103.8184748218595],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_3642c454acfdbfe74a392cbad5c319c3 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_1a3d6a4c295183b2619a45f36bd4e296 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_69fde1cf0d56c5019871b1ba36fd91de = $(`<div id="html_69fde1cf0d56c5019871b1ba36fd91de" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Singapore</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_1a3d6a4c295183b2619a45f36bd4e296.setContent(html_69fde1cf0d56c5019871b1ba36fd91de);
+            
+        
+
+        marker_eaed14a458c58eba0f941ba04b81258b.bindPopup(popup_1a3d6a4c295183b2619a45f36bd4e296)
+        ;
+
+        
+    
+    
+                marker_eaed14a458c58eba0f941ba04b81258b.setIcon(div_icon_3642c454acfdbfe74a392cbad5c319c3);
+            
+    
+            var marker_68b7a5aec160cd7ab9703093327f999d = L.marker(
+                [4.52140660887556, 114.74898511561206],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_f03352223150bc890065a2ffe2311f36 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_de030e5de28229185da5e5eea5b27d2b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5c11594ea39ddd67994b43e089aa21cd = $(`<div id="html_5c11594ea39ddd67994b43e089aa21cd" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Brunei</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_de030e5de28229185da5e5eea5b27d2b.setContent(html_5c11594ea39ddd67994b43e089aa21cd);
+            
+        
+
+        marker_68b7a5aec160cd7ab9703093327f999d.bindPopup(popup_de030e5de28229185da5e5eea5b27d2b)
+        ;
+
+        
+    
+    
+                marker_68b7a5aec160cd7ab9703093327f999d.setIcon(div_icon_f03352223150bc890065a2ffe2311f36);
+            
+    
+            var marker_9997ba44a953339c31e9d65ab7f3ffa7 = L.marker(
+                [11.715520965690407, 122.91816679938358],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_97a8c4280e92964a07ed794ea5db39b9 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_7cb43be5e9f2d8bd27116c67efebd3a4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fc30f15891905fc6c584fbe964af57cc = $(`<div id="html_fc30f15891905fc6c584fbe964af57cc" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Philippines</div>       <div><b>Capital:</b> Manila</div>       <div><b>Ruling:</b> Alyansa para sa Bagong Pilipinas</div>       <div><b>Opposition:</b> DuterTen coalition</div>       <div><b>Religions:</b> Roman Catholic (78.8%), Islam (6.4%)</div>     </div>     </div>`)[0];
+                popup_7cb43be5e9f2d8bd27116c67efebd3a4.setContent(html_fc30f15891905fc6c584fbe964af57cc);
+            
+        
+
+        marker_9997ba44a953339c31e9d65ab7f3ffa7.bindPopup(popup_7cb43be5e9f2d8bd27116c67efebd3a4)
+        ;
+
+        
+    
+    
+                marker_9997ba44a953339c31e9d65ab7f3ffa7.setIcon(div_icon_97a8c4280e92964a07ed794ea5db39b9);
+            
+    
+            var marker_aa3461ee220a1d16580be97746d03c36 = L.marker(
+                [-8.821213376648215, 125.85320561931425],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_7f7dc2a13c924a54cf5b11f1f4cfa64f = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_15bb6a1afd7b30d349be3e63f1e17145 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c426d84637f2fea5a5da41b8b058a1f8 = $(`<div id="html_c426d84637f2fea5a5da41b8b058a1f8" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Timor-Leste</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_15bb6a1afd7b30d349be3e63f1e17145.setContent(html_c426d84637f2fea5a5da41b8b058a1f8);
+            
+        
+
+        marker_aa3461ee220a1d16580be97746d03c36.bindPopup(popup_15bb6a1afd7b30d349be3e63f1e17145)
+        ;
+
+        
+    
+    
+                marker_aa3461ee220a1d16580be97746d03c36.setIcon(div_icon_7f7dc2a13c924a54cf5b11f1f4cfa64f);
+            
+    
+            var marker_35b970a53eb58437f715bef79ec81427 = L.marker(
+                [3.811659318597391, 109.7190027834344],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_42ed730f937f520099f2c101b4512128 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_d0c91f7c0e9c0f8ce49b761392cc795f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_019c333f95a7f575bf72db6fb02ff66b = $(`<div id="html_019c333f95a7f575bf72db6fb02ff66b" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Malaysia</div>       <div><b>Capital:</b> Kuala Lumpur</div>       <div><b>Ruling:</b> Pakatan Harapan (PH)</div>       <div><b>Opposition:</b> Perikatan Nasional (PN)</div>       <div><b>Religions:</b> Islam (63.5%), Buddhism (18.7%)</div>     </div>     </div>`)[0];
+                popup_d0c91f7c0e9c0f8ce49b761392cc795f.setContent(html_019c333f95a7f575bf72db6fb02ff66b);
+            
+        
+
+        marker_35b970a53eb58437f715bef79ec81427.bindPopup(popup_d0c91f7c0e9c0f8ce49b761392cc795f)
+        ;
+
+        
+    
+    
+                marker_35b970a53eb58437f715bef79ec81427.setIcon(div_icon_42ed730f937f520099f2c101b4512128);
+            
+    
+            var marker_c7c4ceadd0930738bb678ae5a1737f58 = L.marker(
+                [15.091658103416334, 101.01282994522896],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_eeae28e52c2bd10902bbaf8b9abc81b3 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_18c6f25a296eeebae8891679a5f5672e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8ec1be4102240fafc445b6e933e6a1a1 = $(`<div id="html_8ec1be4102240fafc445b6e933e6a1a1" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Thailand</div>       <div><b>Capital:</b> Bangkok</div>       <div><b>Ruling:</b> Pheu Thai coalition</div>       <div><b>Opposition:</b> People's Party (formerly MFP)</div>       <div><b>Religions:</b> Theravada Buddhism (90–95%), Muslim (~5%)</div>     </div>     </div>`)[0];
+                popup_18c6f25a296eeebae8891679a5f5672e.setContent(html_8ec1be4102240fafc445b6e933e6a1a1);
+            
+        
+
+        marker_c7c4ceadd0930738bb678ae5a1737f58.bindPopup(popup_18c6f25a296eeebae8891679a5f5672e)
+        ;
+
+        
+    
+    
+                marker_c7c4ceadd0930738bb678ae5a1737f58.setIcon(div_icon_eeae28e52c2bd10902bbaf8b9abc81b3);
+            
+    
+            var marker_86ef2f4ef1be8863b536dd294d90373f = L.marker(
+                [21.061131105881508, 96.51642838308169],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_5fd4a11ee57d4ab5e7ebd30035ee2fc0 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_8a5674f72358950d9aceba186f1e9df5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f1aa2dfedf12b9030506cb2b639a76d3 = $(`<div id="html_f1aa2dfedf12b9030506cb2b639a76d3" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Burma</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_8a5674f72358950d9aceba186f1e9df5.setContent(html_f1aa2dfedf12b9030506cb2b639a76d3);
+            
+        
+
+        marker_86ef2f4ef1be8863b536dd294d90373f.bindPopup(popup_8a5674f72358950d9aceba186f1e9df5)
+        ;
+
+        
+    
+    
+                marker_86ef2f4ef1be8863b536dd294d90373f.setIcon(div_icon_5fd4a11ee57d4ab5e7ebd30035ee2fc0);
+            
+    
+            var marker_cb370dc73815e54f71af4b6b1d2488d7 = L.marker(
+                [18.481964676964097, 103.80470439075098],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_adafae14897b065b1f07ef4cd17df87a = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_4633ca1267603ff4eb649aa2c2b514be = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8e24752d51bb3e66da0bca9fe70d360f = $(`<div id="html_8e24752d51bb3e66da0bca9fe70d360f" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Laos</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_4633ca1267603ff4eb649aa2c2b514be.setContent(html_8e24752d51bb3e66da0bca9fe70d360f);
+            
+        
+
+        marker_cb370dc73815e54f71af4b6b1d2488d7.bindPopup(popup_4633ca1267603ff4eb649aa2c2b514be)
+        ;
+
+        
+    
+    
+                marker_cb370dc73815e54f71af4b6b1d2488d7.setIcon(div_icon_adafae14897b065b1f07ef4cd17df87a);
+            
+    
+            var marker_1bb7de882410c63ef62c9d23119d37d5 = L.marker(
+                [12.712646900782518, 104.91760401001636],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_698b9597fbc0b83f22f5a676879797c5 = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_131b7d4ba95c78100e45870ee48218ce = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_455c99111f7acb02559d19ac531b68d1 = $(`<div id="html_455c99111f7acb02559d19ac531b68d1" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Cambodia</div>       <div><b>Capital:</b> —</div>       <div><b>Ruling:</b> —</div>       <div><b>Opposition:</b> —</div>       <div><b>Religions:</b> —</div>     </div>     </div>`)[0];
+                popup_131b7d4ba95c78100e45870ee48218ce.setContent(html_455c99111f7acb02559d19ac531b68d1);
+            
+        
+
+        marker_1bb7de882410c63ef62c9d23119d37d5.bindPopup(popup_131b7d4ba95c78100e45870ee48218ce)
+        ;
+
+        
+    
+    
+                marker_1bb7de882410c63ef62c9d23119d37d5.setIcon(div_icon_698b9597fbc0b83f22f5a676879797c5);
+            
+    
+            var marker_a4e3ee5b33609743ca87b3a53ca80644 = L.marker(
+                [16.550457571831, 106.35068105868669],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_ad684c54088165d0f9e51dde861e8ffa = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6be5ca5fc3f39ce92e765059fd42abe9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cf9ee267d6059ed43a6574c6feda8906 = $(`<div id="html_cf9ee267d6059ed43a6574c6feda8906" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Vietnam</div>       <div><b>Capital:</b> Hanoi</div>       <div><b>Ruling:</b> Communist Party of Vietnam (CPV)</div>       <div><b>Opposition:</b> None (one-party)</div>       <div><b>Religions:</b> Irreligion/Folk Religion (76.5%), Buddhism (13.3%)</div>     </div>     </div>`)[0];
+                popup_6be5ca5fc3f39ce92e765059fd42abe9.setContent(html_cf9ee267d6059ed43a6574c6feda8906);
+            
+        
+
+        marker_a4e3ee5b33609743ca87b3a53ca80644.bindPopup(popup_6be5ca5fc3f39ce92e765059fd42abe9)
+        ;
+
+        
+    
+    
+                marker_a4e3ee5b33609743ca87b3a53ca80644.setIcon(div_icon_ad684c54088165d0f9e51dde861e8ffa);
+            
+    
+            var marker_fc740fd8a31804f754999e1f16b49575 = L.marker(
+                [-25.765568325727887, 134.30234228701],
+                {
+}
+            ).addTo(feature_group_f4c141c822f9b700b1784f4c7784165c);
+        
+    
+            var div_icon_ce10af918328c6584e4e124b92b3470f = L.divIcon({
+  "html": "\n\u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n            transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n            border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_0ef35a8a5c5edbb88cb270d137360d52 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_eb3971c1e750a4f9cca6b11ddecfaa01 = $(`<div id="html_eb3971c1e750a4f9cca6b11ddecfaa01" style="width: 100.0%; height: 100.0%;">     <div style="font-family:system-ui;min-width:240px;line-height:1.35">       <div style="font-weight:700;margin-bottom:4px">Australia</div>       <div><b>Capital:</b> Canberra</div>       <div><b>Ruling:</b> Australian Labor Party</div>       <div><b>Opposition:</b> Liberal-Nationals Coalition</div>       <div><b>Religions:</b> No Religion (38.7%), Catholic (19.6%)</div>     </div>     </div>`)[0];
+                popup_0ef35a8a5c5edbb88cb270d137360d52.setContent(html_eb3971c1e750a4f9cca6b11ddecfaa01);
+            
+        
+
+        marker_fc740fd8a31804f754999e1f16b49575.bindPopup(popup_0ef35a8a5c5edbb88cb270d137360d52)
+        ;
+
+        
+    
+    
+                marker_fc740fd8a31804f754999e1f16b49575.setIcon(div_icon_ce10af918328c6584e4e124b92b3470f);
+            
+    
+            feature_group_f4c141c822f9b700b1784f4c7784165c.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            var layer_control_790ef92d869440a1cca3bed7e55c87c6_layers = {
+                base_layers : {
+                },
+                overlays :  {
+                    "OpenStreetMap" : tile_layer_e0ec12591967dcdc3a824f5c0b82bbd3,
+                    "CartoDB.Positron" : tile_layer_d0289b470582cd5e2ca1b1449959d75f,
+                    "Outside Indo-Pacific" : tile_layer_109e7bcf010ea524ac99367134dbc8ad,
+                    "Indo-Pacific (fill)" : tile_layer_98a538a259675f13f985e9b95ac7b89a,
+                    "Indo-Pacific (outline)" : tile_layer_1fa312a014ed64149446fb787ce7d90f,
+                    "Country markers" : feature_group_f4c141c822f9b700b1784f4c7784165c,
+                },
+            };
+            let layer_control_790ef92d869440a1cca3bed7e55c87c6 = L.control.layers(
+                layer_control_790ef92d869440a1cca3bed7e55c87c6_layers.base_layers,
+                layer_control_790ef92d869440a1cca3bed7e55c87c6_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+
+        
+    
+            tile_layer_e0ec12591967dcdc3a824f5c0b82bbd3.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            tile_layer_d0289b470582cd5e2ca1b1449959d75f.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            tile_layer_109e7bcf010ea524ac99367134dbc8ad.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            tile_layer_98a538a259675f13f985e9b95ac7b89a.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+            tile_layer_1fa312a014ed64149446fb787ce7d90f.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+    
+                marker_91a93a2fe293d9aab53003f080930051.setIcon(div_icon_d03c1012f95c044e482d679224dd4279);
+            
+    
+                marker_7243d960f55ab34435514900af5c44e6.setIcon(div_icon_ed33de47cafc482f8c828beb3626b2e0);
+            
+    
+                marker_bb03c06e5a31cc80155cc58bcec97c77.setIcon(div_icon_0137ef527597a874df66b6409dc7aa32);
+            
+    
+                marker_b067b9bf24ad5988bff4e0bace6eb0c6.setIcon(div_icon_68ab26f90dceb686015b555b6418ac3a);
+            
+    
+                marker_bd1824aae50bfd83aad0464c1cb3f90e.setIcon(div_icon_db354a57ebece93c417053c27fc0e2f3);
+            
+    
+                marker_a9e2f424b5b06d0c1f0fac9c012b086c.setIcon(div_icon_94d04080a1e2f0dbc3bb064316b4a05c);
+            
+    
+                marker_a391f7b6fc4dd92ed85bd3b27789b15f.setIcon(div_icon_b46e0d4e15dc5b61f89340563ddba214);
+            
+    
+                marker_b9331e90f443d70208f950e39fa43eea.setIcon(div_icon_36c6add5fd3b6f9fe276727521a1999d);
+            
+    
+                marker_846ab62635f677d6e682e95f3de07709.setIcon(div_icon_6030bd1a92793a04e1252ec90616e5fb);
+            
+    
+                marker_97a5ea019ed81a0aec83185ca3bd008f.setIcon(div_icon_59845cf4e529e70b7c33bf824f99d7ff);
+            
+    
+                marker_308efef952608722a955c6633030faac.setIcon(div_icon_533e0e21ab7b888f326ed17fb79632d4);
+            
+    
+                marker_13a760baa9baba1aa5351bcf1ee62592.setIcon(div_icon_62ae9344d2926146f19ac4f54f932bdc);
+            
+    
+                marker_40085664388a6fb2ad0f1d8a01df446d.setIcon(div_icon_2d861f7f6ab376c917158cc0946a9791);
+            
+    
+                marker_a7739699a1c10bad5eded078473c9b60.setIcon(div_icon_3293181a8bfbd3aa996ac2ca29783aab);
+            
+    
+                marker_ea76b401013e8077ff006d5f3aefdda6.setIcon(div_icon_e859a80962bceb015cb28a75aa43d405);
+            
+    
+                marker_011fb8596384a239d927dfe18f628c0f.setIcon(div_icon_42cc97f49d8dc319197afe64e41da276);
+            
+    
+                marker_b90cccc83b5703b807b7ead62e4be736.setIcon(div_icon_7723e5d5080b6d0549c79e6893cd5218);
+            
+    
+                marker_24af43f65736e094ab631501e737d269.setIcon(div_icon_509c1edae9f87f542a2392a4e891dea2);
+            
+    
+                marker_acd692c7c3c2eea66e2a9b128feabc85.setIcon(div_icon_b8e282b7605fc91878da70aa1109d979);
+            
+    
+                marker_3ef53eb8e70ce3fc38cdacd4510c52e6.setIcon(div_icon_1862e9f356a7e6f76eb564b63c5b07a1);
+            
+    
+                marker_855aa864f6620b16b2988694cec9bccd.setIcon(div_icon_5fe7a494b00dd4d0cd231fec5af5fb3e);
+            
+    
+                marker_555d87c2eb59f9e09b6df3cdfe3ab928.setIcon(div_icon_44a329993773cbfe91380afb5624620d);
+            
+    
+                marker_a5f0e675bdbfd7423e5d61fa37dedcca.setIcon(div_icon_455d512a20b684b944175590216ff095);
+            
+    
+                marker_7a57424dbf1017560157a64372e3c04a.setIcon(div_icon_d5c265dedb96da22daed1b2737d25fb6);
+            
+    
+                marker_fd9da103f65a197532cdfafaa677a358.setIcon(div_icon_748257bf16f430e2ccd09e7ea02ffcab);
+            
+    
+                marker_a3903a3462d2d5d93f6fbd1b764503ce.setIcon(div_icon_847f81a67eed4ec92dfae862934e7a2f);
+            
+    
+                marker_22d230378f38bd154d702154b2a270c9.setIcon(div_icon_bc410b55465a458b02172c2d21cea9a7);
+            
+    
+                marker_eaed14a458c58eba0f941ba04b81258b.setIcon(div_icon_3642c454acfdbfe74a392cbad5c319c3);
+            
+    
+                marker_68b7a5aec160cd7ab9703093327f999d.setIcon(div_icon_f03352223150bc890065a2ffe2311f36);
+            
+    
+                marker_9997ba44a953339c31e9d65ab7f3ffa7.setIcon(div_icon_97a8c4280e92964a07ed794ea5db39b9);
+            
+    
+                marker_aa3461ee220a1d16580be97746d03c36.setIcon(div_icon_7f7dc2a13c924a54cf5b11f1f4cfa64f);
+            
+    
+                marker_35b970a53eb58437f715bef79ec81427.setIcon(div_icon_42ed730f937f520099f2c101b4512128);
+            
+    
+                marker_c7c4ceadd0930738bb678ae5a1737f58.setIcon(div_icon_eeae28e52c2bd10902bbaf8b9abc81b3);
+            
+    
+                marker_86ef2f4ef1be8863b536dd294d90373f.setIcon(div_icon_5fd4a11ee57d4ab5e7ebd30035ee2fc0);
+            
+    
+                marker_cb370dc73815e54f71af4b6b1d2488d7.setIcon(div_icon_adafae14897b065b1f07ef4cd17df87a);
+            
+    
+                marker_1bb7de882410c63ef62c9d23119d37d5.setIcon(div_icon_698b9597fbc0b83f22f5a676879797c5);
+            
+    
+                marker_a4e3ee5b33609743ca87b3a53ca80644.setIcon(div_icon_ad684c54088165d0f9e51dde861e8ffa);
+            
+    
+                marker_fc740fd8a31804f754999e1f16b49575.setIcon(div_icon_ce10af918328c6584e4e124b92b3470f);
+            
+    
+            feature_group_f4c141c822f9b700b1784f4c7784165c.addTo(map_44875b6d0c3c361de6101b4b6d7c690c);
+        
+</script>
+</html>

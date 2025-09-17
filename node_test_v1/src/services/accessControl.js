@@ -25,7 +25,7 @@ async function attemptLogin(req, res) {
           login: "success",
         };
 
-        return res.redirect("/home");
+        return res.redirect(`/student/course/${course.course_id}`);
       }
     );
   } else {

@@ -6,7 +6,9 @@ const lecturerController = require("../controllers/lecturerController");
 
 // Dashboard - view courses
 router.get("/lecturer/dashboard", requireLecturer, lecturerController.getDashboard);
-router.get("/lecturer/course", requireLecturer, lecturerController.getCourse);
+// router.get("/lecturer/course", requireLecturer, lecturerController.getCourse);
+router.get("/lecturer/course/:courseId", requireLecturer, lecturerController.getCourse);
+router.get("/lecturer/module_editor", requireLecturer, lecturerController.getModuleEditor);
 
 // Create new course (form submission)
 router.post("/lecturer/create-course", requireLecturer, lecturerController.createCourse);

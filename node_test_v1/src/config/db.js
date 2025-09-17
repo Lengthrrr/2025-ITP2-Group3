@@ -43,6 +43,7 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS module (
       module_id INTEGER PRIMARY KEY AUTOINCREMENT,
       course_id TEXT,
+        module_heading VARCHAR,
       start_time INTEGER,
       module_title VARCHAR,
       module_description VARCHAR,

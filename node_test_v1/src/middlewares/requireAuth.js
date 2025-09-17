@@ -1,11 +1,3 @@
-module.exports = (req, res, next) => {
-  if (!req.session.user || req.session.user.login !== "success") {
-    return res.redirect("/home/");
-  }
-  next();
-};
-
-
 function requireSystemAdmin(req, res, next) {
   if (req.session?.user?.role === "admin") {
     return next();
@@ -20,6 +12,12 @@ function requireLecturer(req, res, next) {
   return next();
 }
 
+function requireCourse(req, res, next) {
+  if (!req.session.user || req.session.user.role !== "course") {
+    return res.status(403).send("Access denied. Logged in students only.");
+  }
+  return next();
+}
 
-module.exports = { requireSystemAdmin, requireLecturer };
+module.exports = { requireSystemAdmin, requireLecturer, requireCourse };
 
