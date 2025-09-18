@@ -28,6 +28,16 @@ General Information
 
 
 
+I need to:
+    Link modules to db to home page
+    Link the student stuff
+    Link the staff stuff
+    Link the modules to work as we want
+    Allow for creation of modules in HP
+    Allow for creation of sections in HP
+    Allow for customisation of HP.
+    Allow for working viewing of student HP
+
 
 
 

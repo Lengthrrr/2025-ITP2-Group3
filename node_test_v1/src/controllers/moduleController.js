@@ -5,7 +5,7 @@ const { runCreateGeemap } = require("../services/pythonService");
 
 // Render pages
 exports.getModule = (req, res) => res.render("module", { error: null });
-exports.getModuleEditor = (req, res) => res.render("module_editor", { error: null });
+exports.getModuleEditor = (req, res) => res.render("lecturerModuleeditor", { error: null });
 exports.postModuleViewer = (req, res) => res.render("module_viewer", { error: null });
 
 // API endpoints

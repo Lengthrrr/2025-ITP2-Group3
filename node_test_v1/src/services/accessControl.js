@@ -25,7 +25,7 @@ async function attemptLogin(req, res) {
           login: "success",
         };
 
-        return res.redirect("/home");
+        return res.redirect(`/student/course/${course.course_id}`);
       }
     );
   } else {
@@ -53,7 +53,7 @@ async function attemptLogin(req, res) {
         if (user.role === "admin") {
           return res.redirect("/admin/dashboard");
         } else {
-          return res.redirect("/module_editor");
+          return res.redirect("/lecturer/dashboard");
         }
       }
     );
