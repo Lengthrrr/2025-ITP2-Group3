@@ -1,58 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Lecturer Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>Lecturer Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #1E90FF 0%, #4682B4 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #104E8B 0%, #2F4F4F 100%);
+        }
+        .input-field:focus {
+            border-color: #FFFFFF;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+        .course-card {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.5), rgba(17, 24, 39, 0.7));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .course-card:hover {
+            border-color: #FFFFFF;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+        .main-content {
+            padding-top: 100px; /* Space for fixed logo and profile pic */
+            max-width: 48rem; /* Slightly wider for better form layout */
+        }
+        .logo-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 50;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+        .section-container {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.5), rgba(17, 24, 39, 0.7));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
+<body class="bg-black text-white min-h-screen">
 
-  <div class="max-w-4xl mx-auto py-10 px-6">
-    <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-      Lecturer Dashboard
-    </h1>
-
-    <% if (error) { %>
-      <div class="mb-6 p-3 bg-red-500/20 border border-red-400 text-red-300 rounded-lg">
-        <%= error %>
-      </div>
-    <% } %>
-
-    <!-- Course List -->
-    <section class="mb-10">
-      <h2 class="text-2xl font-semibold mb-4">Your Courses</h2>
-      <% if (courses.length === 0) { %>
-        <p class="text-gray-400">You are not part of any courses yet.</p>
-      <% } else { %>
-        <div class="grid gap-4">
-          <% courses.forEach(course => { %>
-            <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 flex justify-between items-center">
-              <span class="font-semibold"><%= course.course_code %></span>
-              <a href="course/<%= course.course_id %>"
-                 class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-medium">
-                Enter
-              </a>
+    <!-- Main Content -->
+    <div class="main-content mx-auto py-12 px-6">
+        <h1 class="text-4xl font-bold text-center mb-12 text-white">Lecturer Dashboard</h1>
+        <% if (error) { %>
+            <div class="mb-8 p-4 bg-red-500/20 border border-red-400 text-red-300 rounded-lg text-center">
+                <%= error %>
             </div>
-          <% }) %>
-        </div>
-      <% } %>
-    </section>
+        <% } %>
 
-    <!-- Create Course -->
-    <section class="bg-gray-800 border border-gray-700 rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-4">Create New Course</h2>
-      <form action="/lecturer/create-course" method="POST" class="space-y-4">
-        <input type="text" name="course_code" placeholder="Course Code" required
-          class="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-        <input type="password" name="password" placeholder="Password" required
-          class="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-        <button type="submit"
-          class="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg font-semibold hover:from-cyan-400 hover:to-purple-400 transition">
-          Create Course
-        </button>
-      </form>
-    </section>
-  </div>
+        <!-- Course List -->
+        <section class="mb-12 section-container">
+            <h2 class="text-2xl font-semibold mb-6 text-white">Your Courses</h2>
+            <% if (courses.length === 0) { %>
+                <p class="text-gray-400 text-center">You are not part of any courses yet.</p>
+            <% } else { %>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <% courses.forEach(course => { %>
+                        <div class="course-card rounded-lg p-5 flex justify-between items-center">
+                            <span class="font-semibold text-white"><%= course.course_code %></span>
+                            <a href="course?id=<%= course.course_id %>" class="px-4 py-2 btn-gradient rounded-lg font-medium text-white text-sm">Enter</a>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+
+        <!-- Create Course -->
+        <section class="mb-12 section-container">
+            <h2 class="text-2xl font-semibold mb-6 text-white">Create New Course</h2>
+            <form action="/lecturer/create-course" method="POST" class="space-y-5">
+                <input type="text" name="course_code" placeholder="Course Code" required class="w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white input-field" style="border-width: 1px;">
+                <input type="password" name="password" placeholder="Password" required class="w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white input-field" style="border-width: 1px;">
+                <button type="submit" class="w-full py-3 btn-gradient rounded-lg font-semibold text-white transition">Create Course</button>
+            </form>
+        </section>
+
+        <!-- Delete Course -->
+        <section class="section-container">
+            <h2 class="text-2xl font-semibold mb-6 text-white">Delete Course</h2>
+            <form action="/lecturer/delete-course" method="POST" class="space-y-5">
+                <input type="text" name="course_code" placeholder="Course Code" required class="w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white input-field" style="border-width: 1px;">
+                <input type="password" name="password" placeholder="Password" required class="w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white input-field" style="border-width: 1px;">
+                <button type="submit" class="w-full py-3 btn-gradient rounded-lg font-semibold text-white transition">Delete Course</button>
+            </form>
+        </section>
+    </div>
 </body>
 </html>
-
