@@ -1,165 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>System Administrator Dashboard</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 18px; /* thicker scrollbar */
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent; /* transparent track */
-    }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(to bottom, #4f46e5, #3b82f6); /* blue gradient */
-      border-radius: 9px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(to bottom, #6366f1, #60a5fa);
-    }
-
-    /* Firefox scrollbar */
-    * {
-      scrollbar-width: thick;
-      scrollbar-color: #4f46e5 transparent;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Space Grotesk', sans-serif;
-      color: #e5e7eb;
-      background-image: url('/Images/sky3.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      position: relative;
-      overflow-y: scroll;
-    }
-
-    /* Fixed gradient overlay */
-    #gradient-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .content {
-      position: relative;
-      z-index: 10;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>System Administrator Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #1E90FF 0%, #4682B4 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #104E8B 0%, #2F4F4F 100%);
+        }
+        .input-field:focus, .textarea-field:focus, select:focus {
+            border-color: #FFFFFF;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+        .section-card {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.5), rgba(17, 24, 39, 0.7));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .section-card:hover {
+            border-color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+        .course-card:hover {
+            border-color: #FFFFFF;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .main-content {
+            padding-top: 100px; /* Space for fixed logo and profile pic */
+            max-width: 72rem; /* Matches max-w-6xl */
+        }
+        .logo-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 50;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E90FF;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #104E8B;
+        }
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #1E90FF transparent;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-black text-white min-h-screen">
 
-  <!-- Fixed Gradient Overlay -->
-  <div id="gradient-overlay"></div>
 
-  <div class="content w-full max-w-6xl mx-auto px-6 py-12 space-y-12">
+    <!-- Main Content -->
+    <div class="main-content mx-auto px-6 py-12 space-y-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 text-white">System Administrator Dashboard</h1>
 
-    <h1 class="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-400 to-gray-400 bg-clip-text text-transparent">
-      System Administrator Dashboard
-    </h1>
+        <!-- SQL Console -->
+        <section class="section-card rounded-xl p-8">
+            <h2 class="text-2xl font-semibold mb-2 text-white">Database Management</h2>
+            <p class="text-gray-400 mb-6">Execute SQL queries to manage and retrieve data from the database.</p>
+            <form action="/admin/query" method="POST" class="space-y-4">
+                <textarea name="sql" rows="5" placeholder="Enter SQL query (e.g., SELECT * FROM users)" class="textarea-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 text-white focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] font-mono text-sm" style="border-width: 1px;"></textarea>
+                <button type="submit" class="px-6 py-2 btn-gradient rounded-lg font-semibold text-white transition">Execute Query</button>
+            </form>
+            <% if (typeof queryError !== "undefined" && queryError) { %>
+                <div class="mt-4 p-3 rounded-lg bg-red-500/20 border border-red-400 text-red-300" style="border-width: 1px;">
+                    <%= queryError %>
+                </div>
+            <% } %>
+            <% if (typeof queryResult !== "undefined" && queryResult.length > 0) { %>
+                <div class="mt-6 overflow-x-auto">
+                    <table class="min-w-full border border-[#FFFFFF]/20 text-sm" style="border-width: 1px;">
+                        <thead class="bg-gray-800/50 text-gray-300">
+                            <tr>
+                                <% Object.keys(queryResult[0]).forEach(col => { %>
+                                    <th class="px-4 py-2 border-b border-[#FFFFFF]/20 text-left" style="border-width: 1px;"><%= col %></th>
+                                <% }) %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% queryResult.forEach(row => { %>
+                                <tr class="hover:bg-gray-800/30">
+                                    <% Object.values(row).forEach(val => { %>
+                                        <td class="px-4 py-2 border-b border-[#FFFFFF]/20" style="border-width: 1px;"><%= val %></td>
+                                    <% }) %>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </section>
 
-    <!-- SQL Console -->
-    <section class="mb-12 bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
-      <h2 class="text-2xl font-semibold mb-6">Database Console</h2>
-      <form action="/admin/query" method="POST" class="space-y-4">
-        <textarea name="sql" rows="5" placeholder="Enter SQL query..."
-          class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 font-mono text-sm"></textarea>
-        <button type="submit" 
-          class="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold transition">
-          Run Query
-        </button>
-      </form>
-      <% if (typeof queryError !== "undefined" && queryError) { %>
-        <div class="mt-4 p-3 rounded-lg bg-red-500/20 border border-red-400 text-red-300">
-          <%= queryError %>
-        </div>
-      <% } %>
-      <% if (typeof queryResult !== "undefined" && queryResult.length > 0) { %>
-        <div class="mt-6 overflow-x-auto">
-          <table class="min-w-full border border-gray-700 text-sm">
-            <thead class="bg-gray-800 text-gray-300">
-              <tr>
-                <% Object.keys(queryResult[0]).forEach(col => { %>
-                  <th class="px-4 py-2 border-b border-gray-700 text-left"><%= col %></th>
-                <% }) %>
-              </tr>
-            </thead>
-            <tbody>
-              <% queryResult.forEach(row => { %>
-                <tr class="hover:bg-gray-800/60">
-                  <% Object.values(row).forEach(val => { %>
-                    <td class="px-4 py-2 border-b border-gray-700"><%= val %></td>
-                  <% }) %>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-      <% } %>
-    </section>
+        <!-- Account Management -->
+        <section class="section-card rounded-xl p-8">
+            <h2 class="text-2xl font-semibold mb-2 text-white">User Account Creation</h2>
+            <p class="text-gray-400 mb-6">Create new user accounts for lecturers, administrators, or courses.</p>
+            <form action="/admin/create-user" method="POST" class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block mb-2 font-medium text-white">Role</label>
+                    <select name="role" required class="w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 text-white focus:outline-none focus:ring-2 focus:ring-[#FFFFFF]" style="border-width: 1px;">
+                        <option value="lecturer">Lecturer</option>
+                        <option value="admin">Administrator</option>
+                        <option value="course">Course</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2 font-medium text-white">Username / Course Code</label>
+                    <input type="text" name="username" required placeholder="e.g., jdoe or CS101" class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white" style="border-width: 1px;">
+                </div>
+                <div>
+                    <label class="block mb-2 font-medium text-white">Password</label>
+                    <input type="password" name="password" required placeholder="Enter a secure password" class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/20 focus:outline-none focus:ring-2 focus:ring-[#FFFFFF] text-white" style="border-width: 1px;">
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full py-3 btn-gradient rounded-lg font-semibold text-white transition">Create Account</button>
+                </div>
+            </form>
+            <% if (typeof accountMessage !== "undefined" && accountMessage) { %>
+                <div class="mt-6 p-3 rounded-lg bg-blue-500/20 border border-blue-400 text-blue-300" style="border-width: 1px;">
+                    <%= accountMessage %>
+                </div>
+            <% } %>
+        </section>
 
-    <!-- Account Management -->
-    <section class="bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
-      <h2 class="text-2xl font-semibold mb-6">Create New Account</h2>
-      <form action="/admin/create-user" method="POST" class="grid md:grid-cols-2 gap-6">
-        <div>
-          <label class="block mb-2 font-medium">Role</label>
-          <select name="role" required
-            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <option value="lecturer">Lecturer</option>
-            <option value="admin">Administrator</option>
-            <option value="course">Course</option>
-          </select>
-        </div>
-        <div>
-          <label class="block mb-2 font-medium">Username / Course Code</label>
-          <input type="text" name="username" required
-            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
-        <div>
-          <label class="block mb-2 font-medium">Password</label>
-          <input type="password" name="password" required
-            class="w-full p-3 rounded-lg bg-gray-800 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
-        <div class="flex items-end">
-          <button type="submit" 
-            class="w-full py-3 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition">
-            Create Account
-          </button>
-        </div>
-      </form>
-      <% if (typeof accountMessage !== "undefined" && accountMessage) { %>
-        <div class="mt-6 p-3 rounded-lg bg-green-500/20 border border-green-400 text-green-300">
-          <%= accountMessage %>
-        </div>
-      <% } %>
-    </section>
-
-    <!-- Joe Biden Photos Section -->
-    <section class="bg-gray-900/80 border border-gray-700 rounded-xl shadow-xl p-8">
-      <h2 class="text-2xl font-semibold mb-6">Joe Biden Photos</h2>
-      <div class="grid md:grid-cols-3 gap-4">
-        <img src="https://cdn-useast1.kapwing.com/static/templates/joe-biden-shocked-blinking-meme-template-regular-40bf67d0.webp" alt="Joe Biden 1" class="rounded-lg shadow-lg">
-        <img src="https://assets.teenvogue.com/photos/5820e08cbb861ba6058838db/1:1/w_1051,h_1051,c_limit/memes-tout.jpg" alt="Joe Biden 2" class="rounded-lg shadow-lg">
-        <img src="../Images/meme1.jpg" alt="Joe Biden 3" class="rounded-lg shadow-lg">
-        <img src="../Images/meme2.jpg" alt="Joe Biden 4" class="rounded-lg shadow-lg">
-        <img src="../Images/meme3.png" alt="Joe Biden 5" class="rounded-lg shadow-lg">
-        <img src="../Images/meme4.jpg" alt="Joe Biden 6" class="rounded-lg shadow-lg">
-        <img src="../Images/meme5.jpg" alt="Joe Biden 7" class="rounded-lg shadow-lg">
-        <img src="../Images/meme6.jpg" alt="Joe Biden 8" class="rounded-lg shadow-lg">
-      </div>
-    </section>
-
-  </div>
+        <!-- Media Gallery -->
+        <section class="section-card rounded-xl p-8">
+            <h2 class="text-2xl font-semibold mb-2 text-white">Joe biden photos</h2>
+            <p class="text-gray-400 mb-6">View and manage images in the media gallery.</p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <img src="https://cdn-useast1.kapwing.com/static/templates/joe-biden-shocked-blinking-meme-template-regular-40bf67d0.webp" alt="Image 1" class="rounded-lg shadow-lg">
+                <img src="https://assets.teenvogue.com/photos/5820e08cbb861ba6058838db/1:1/w_1051,h_1051,c_limit/memes-tout.jpg" alt="Image 2" class="rounded-lg shadow-lg">
+                <img src="../Images/meme1.jpg" alt="Image 3" class="rounded-lg shadow-lg">
+                <img src="../Images/meme2.jpg" alt="Image 4" class="rounded-lg shadow-lg">
+                <img src="../Images/meme3.png" alt="Image 5" class="rounded-lg shadow-lg">
+                <img src="../Images/meme4.jpg" alt="Image 6" class="rounded-lg shadow-lg">
+                <img src="../Images/meme5.jpg" alt="Image 7" class="rounded-lg shadow-lg">
+                <img src="../Images/meme6.jpg" alt="Image 8" class="rounded-lg shadow-lg">
+            </div>
+        </section>
+    </div>
 </body>
 </html>
