@@ -1,108 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login - The GIST</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="font-['Space_Grotesk'] text-white min-h-screen relative overflow-hidden">
-
-  <!-- Sky Background -->
-  <div class="absolute inset-0 z-0" style="background-image: url('Images/sky3.png'); background-size: cover; background-position: center;"></div>
-  <div class="absolute inset-0">
-    <div class="absolute top-20 left-10 w-96 h-96 bg-indigo-900/20 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-10 right-10 w-80 h-80 bg-purple-900/20 rounded-full blur-3xl"></div>
-    <div class="absolute top-40 right-20 w-64 h-64 bg-cyan-900/20 rounded-full blur-3xl"></div>
-  </div>
-
-  <!-- Main Container -->
-  <div class="relative z-10 w-full max-w-4xl mx-auto px-6 py-16">
-    <h1 class="text-4xl md:text-5xl font-bold text-center mb-10 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-      Welcome - Select Your Role
-    </h1>
-
-    <!-- Role Selection -->
-    <div id="role-selection" class="grid md:grid-cols-3 gap-6">
-      <!-- Course -->
-      <div class="role-card bg-gray-900/70 border border-gray-700 rounded-2xl p-6 cursor-pointer hover:border-cyan-400 transition" data-role="course">
-        <img src="https://img.icons8.com/color/96/000000/open-book.png" alt="Course" class="mx-auto mb-4">
-        <h2 class="text-2xl font-semibold text-center">Course</h2>
-        <p class="text-gray-400 text-center mt-2">Login with course code and password.</p>
-      </div>
-      <!-- Lecturer -->
-      <div class="role-card bg-gray-900/70 border border-gray-700 rounded-2xl p-6 cursor-pointer hover:border-cyan-400 transition" data-role="lecturer">
-        <img src="https://img.icons8.com/color/96/000000/teacher.png" alt="Lecturer" class="mx-auto mb-4">
-        <h2 class="text-2xl font-semibold text-center">Lecturer</h2>
-        <p class="text-gray-400 text-center mt-2">Manage modules, quizzes, and maps.</p>
-      </div>
-      <!-- Admin -->
-      <div class="role-card bg-gray-900/70 border border-gray-700 rounded-2xl p-6 cursor-pointer hover:border-cyan-400 transition" data-role="admin">
-        <img src="https://img.icons8.com/color/96/000000/admin-settings-male.png" alt="Admin" class="mx-auto mb-4">
-        <h2 class="text-2xl font-semibold text-center">Admin</h2>
-        <p class="text-gray-400 text-center mt-2">System configuration & access control.</p>
-      </div>
-    </div>
-
-    <!-- Login Form -->
-    <div id="login-form" class="hidden mt-12 max-w-md mx-auto bg-gray-900/80 border border-gray-700 rounded-xl p-8 shadow-xl">
-      <h2 id="form-role" class="text-2xl font-semibold mb-6 text-center">Login</h2>
-
-      <!-- Error Message -->
-      <% if (typeof error !== "undefined" && error) { %>
-        <div class="mb-4 p-3 rounded-lg bg-red-500/20 border border-red-400 text-red-300 text-center">
-          <%= error %>
-        </div>
-      <% } %>
-
-      <form action="/login" method="POST" class="space-y-5">
-        <input type="hidden" id="role-input" name="role">
-        <!-- Dynamic Inputs -->
-        <div id="dynamic-inputs"></div>
-        <button type="submit" 
-                class="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg font-semibold hover:from-cyan-400 hover:to-purple-400 transition">
-          Sign In
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Script -->
-  <script>
-    const roleCards = document.querySelectorAll('.role-card');
-    const loginForm = document.getElementById('login-form');
-    const formRole = document.getElementById('form-role');
-    const roleInput = document.getElementById('role-input');
-    const dynamicInputs = document.getElementById('dynamic-inputs');
-
-    roleCards.forEach(card => {
-      card.addEventListener('click', () => {
-        roleCards.forEach(c => c.classList.remove('ring-2','ring-cyan-400'));
-        card.classList.add('ring-2','ring-cyan-400');
-        loginForm.classList.remove('hidden');
-        const role = card.getAttribute('data-role');
-        formRole.textContent = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
-        roleInput.value = role;
-
-        // Switch form fields based on role
-        if (role === "course") {
-          dynamicInputs.innerHTML = `
-            <input type="text" name="course_code" placeholder="Course Code" required
-                   class="w-full p-3 rounded-lg bg-gray-900/50 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-            <input type="password" name="password" placeholder="Password" required
-                   class="w-full p-3 rounded-lg bg-gray-900/50 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-          `;
-        } else {
-          dynamicInputs.innerHTML = `
-            <input type="text" name="username" placeholder="Username" required
-                   class="w-full p-3 rounded-lg bg-gray-900/50 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-            <input type="password" name="password" placeholder="Password" required
-                   class="w-full p-3 rounded-lg bg-gray-900/50 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-          `;
+    <meta charset="UTF-8">
+    <title>Login - The GIST by MIP</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <script src="https://kit.fontawesome.com/01f25bfc6e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
         }
-        loginForm.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-  </script>
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, #000000, #1C1C1C);
+        }
+        .role-card {
+            transition: all 0.3s ease;
+        }
+        .role-card:hover {
+            transform: translateY(-4px);
+            border-color: #FFFFFF;
+        }
+        .input-field {
+            transition: all 0.3s ease;
+            border-width: 0.5px; /* Thinner border */
+        }
+        .input-field:focus {
+            border-color: #1E90FF;
+            box-shadow: 0 0 6px rgba(30, 144, 255, 0.2);
+        }
+        .btn-gradient {
+            background-image: linear-gradient(to right, #1E90FF, #000000);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            background-image: linear-gradient(to right, #104E8B, #000000);
+        }
+        .nav-link:hover {
+            color: #1E90FF;
+        }
+        .mobile-nav-link:hover {
+            color: #1E90FF;
+            background-color: #1C1C1C;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative">
+    <!-- Navigation Bar -->
+    <nav id="navbar" role="navigation" class="fixed top-0 left-0 right-0 bg-black/70 backdrop-blur-lg border-b border-[#FFFFFF] z-50 transition-all duration-300">
+        <div class="container mt-2 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="logo" style="margin-left: 40px;">
+                        <span class="font-bold text-4xl text-white"><a href="index.html">MIP</a></span>
+                    </div>
+                </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1 pt-3 pr-14">
+                    <a href="#services" class="nav-link text-gray-300 hover:text-[#1E90FF] px-4 py-2 rounded-md transition-colors duration-200">?</a>
+                </div>
+                <!-- Mobile Navigation Button -->
+                <div class="flex md:hidden">
+                    <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+                        <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+                            <span class="block h-0.5 w-5 bg-[#1E90FF] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+                            <span class="block h-0.5 w-5 bg-[#1E90FF] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+                            <span class="block h-0.5 w-5 bg-[#1E90FF] transform transition duration-300 ease-in-out" id="line3"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                <div class="pt-2 pb-4 space-y-1">
+                    <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-[#1E90FF] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+                    <a href="#general" class="mobile-nav-link block text-gray-300 hover:text-[#1E90FF] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+                    <a href="#services" class="mobile-nav-link block text-gray-300 hover:text-[#1E90FF] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
+                    <a href="#login" class="mobile-nav-link block text-gray-300 hover:text-[#1E90FF] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center relative py-20">
+        <div class="container mx-auto px-6">
+            <div class="max-w-lg mx-auto">
+                <div class="text-center mb-10">
+                    <h1 class="text-3xl md:text-4xl font-semibold text-white">Sign Into The GIST</h1>
+                    <div class="w-16 h-1 bg-[#1E90FF] mx-auto mt-3"></div>
+                </div>
+                <!-- Role Selection -->
+                <div id="role-selection" class="grid grid-cols-3 gap-4 mb-8">
+                    <!-- Course -->
+                    <div class="role-card bg-black/70 border border-[#FFFFFF]/50 rounded-lg p-4 cursor-pointer text-center ring-2 ring-[#1E90FF]" data-role="course">
+                        <h2 class="text-lg font-medium text-white">Course</h2>
+                    </div>
+                    <!-- Lecturer -->
+                    <div class="role-card bg-black/70 border border-[#FFFFFF]/50 rounded-lg p-4 cursor-pointer text-center" data-role="lecturer">
+                        <h2 class="text-lg font-medium text-white">Lecturer</h2>
+                    </div>
+                    <!-- Admin -->
+                    <div class="role-card bg-black/70 border border-[#FFFFFF]/50 rounded-lg p-4 cursor-pointer text-center" data-role="admin">
+                        <h2 class="text-lg font-medium text-white">Admin</h2>
+                    </div>
+                </div>
+                <!-- Login Form -->
+                <div id="login-form" class="bg-black/70 backdrop-blur-lg border border-[#FFFFFF] rounded-xl p-6 shadow-lg">
+                    <h2 id="form-role" class="text-xl font-medium mb-6 text-center text-white">Log into Course</h2>
+                    <!-- Error Message -->
+                    <% if (typeof error !== "undefined" && error) { %>
+                    <div class="mb-4 p-2 rounded-lg bg-red-500/20 border border-[#FFFFFF] text-red-300 text-center text-sm">
+                        <%= error %>
+                    </div>
+                    <% } %>
+                    <form action="/login" method="POST" class="space-y-4">
+                        <input type="hidden" id="role-input" name="role" value="course">
+                        <!-- Dynamic Inputs -->
+                        <div id="dynamic-inputs" class="space-y-4">
+                            <input type="text" name="course_code" placeholder="Course Code" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                            <input type="password" name="password" placeholder="Password" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                        </div>
+                        <button type="submit" class="w-full py-2 btn-gradient rounded-lg font-medium text-white text-sm">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="border-t border-[#FFFFFF]" style="background-color: #000000;">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="font-bold text-lg mr-2 text-white">MIP</div>
+                    <div class="text-lg font-medium flex items-center text-white">The GIST</div>
+                </div>
+                <div class="flex justify-center mb-4 md:mb-0">
+                    <a href="#general" class="text-gray-400 hover:text-[#1E90FF] mx-2 transition-colors">General Maps</a>
+                    <a href="#services" class="text-gray-400 hover:text-[#1E90FF] mx-2 transition-colors">Regional Maps</a>
+                    <a href="#portfolio" class="text-gray-400 hover:text-[#1E90FF] mx-2 transition-colors">Schedule</a>
+                    <a href="#contact" class="text-gray-400 hover:text-[#1E90FF] mx-2 transition-colors">Quizzes</a>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 text-sm mt-8">© 2025 MIP (Map of the Indo Pacific). All rights reserved.</div>
+        </div>
+    </footer>
+    <!-- Script -->
+    <script>
+        const roleCards = document.querySelectorAll('.role-card');
+        const loginForm = document.getElementById('login-form');
+        const formRole = document.getElementById('form-role');
+        const roleInput = document.getElementById('role-input');
+        const dynamicInputs = document.getElementById('dynamic-inputs');
+
+        // Function to select a role
+        function selectRole(role, card) {
+            roleCards.forEach(c => c.classList.remove('ring-2', 'ring-[#1E90FF]'));
+            card.classList.add('ring-2', 'ring-[#1E90FF]');
+            loginForm.classList.remove('hidden');
+            formRole.textContent = `Log into ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+            roleInput.value = role;
+            if (role === "course") {
+                dynamicInputs.innerHTML = `
+                    <input type="text" name="course_code" placeholder="Course Code" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                    <input type="password" name="password" placeholder="Password" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                `;
+            } else {
+                dynamicInputs.innerHTML = `
+                    <input type="text" name="username" placeholder="Username" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                    <input type="password" name="password" placeholder="Password" required class="input-field w-full p-3 rounded-lg bg-black/50 border border-[#FFFFFF]/30 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] text-white text-sm">
+                `;
+            }
+            loginForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Event listeners for role cards
+        roleCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const role = card.getAttribute('data-role');
+                selectRole(role, card);
+            });
+        });
+
+        // Select Course role by default on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const courseCard = document.querySelector('.role-card[data-role="course"]');
+            if (courseCard) {
+                selectRole('course', courseCard);
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.contains('h-0');
+            mobileMenu.classList.toggle('h-0', !isOpen);
+            mobileMenu.classList.toggle('h-auto', isOpen);
+            document.getElementById('line1').classList.toggle('rotate-45', isOpen);
+            document.getElementById('line1').classList.toggle('translate-y-2', isOpen);
+            document.getElementById('line2').classList.toggle('opacity-0', isOpen);
+            document.getElementById('line3').classList.toggle('-rotate-45', isOpen);
+            document.getElementById('line3').classList.toggle('-translate-y-2', isOpen);
+        });
+    </script>
 </body>
 </html>
