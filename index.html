@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
+  <script src="https://kit.fontawesome.com/01f25bfc6e.js" crossorigin="anonymous"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFF]/30 z-50 transition-all duration-300">
+    <div class="container mt-2 px-6 py-3">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <div class="logo" style="margin-left: 40px;">
+            <span class="font-bold text-4xl text-white"><a href ="index.html">MIP</a></span>
+          </div>
+        </div>
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-1 pt-3 pr-14">
+          <a href="#home" class="nav-link text-white hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Home</a>
+          <a href="#services" class="nav-link text-white hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+          <a href="#portfolio" class="nav-link text-white hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+          <a href="#contact" class="nav-link text-white hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
+          <i class="fa-solid fa-circle-user fa-2x text-white"></i>
+        </div>
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16L] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16L] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Menu -->
+     <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden h-0 overflow-hidden transition-all duration-300 ease-in-out">
+        <div class="pt-2 pb-4 space-y-1">
+          <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Home</a>
+          <a href="#services" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+          <a href="#portfolio" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+          <a href="#contact" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
+        </div>
+      </div>
+  </nav>
+  <!-- Main Content Sections -->
+  <main>
+<!-- Home Section -->
+<section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
+  <img src="Images/LANDING-PAGE-v2.png"
+       alt="Landing Page Image"
+       class="absolute top-0 left-0 w-full h-full object-cover z-0" />
+
+  <!-- Button Container -->
+  <div class="container-btn mt-20 mx-auto px-4 md:px-0 relative z-10 flex justify-center">
+    <div class="flex flex-col md:flex-row gap-6 mt-10 w-full md:w-auto justify-center md:justify-start md:ml-40">
+      <button class="md:w-64 px-6 py-3 text-base md:text-lg border border-white rounded-lg text-white font-medium text-center hover:bg-white hover:text-black transition">
+        World Map
+      </button>
+      <button class="md:w-64 px-6 py-3 text-base md:text-lg bg-white rounded-lg text-black font-medium text-center hover:bg-gray-200 transition">
+        Indo-Pacific Map
+      </button>
+    </div>
+  </div>
+
+  <!-- Scroll-down Arrow -->
+  <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-[#7EA16B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+</section>
+
+  
+    <!-- Services Section -->
+    <section id="services" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1"></div>
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Explore by Regions</div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Service Card 1 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">East Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Curious about East Asia? Learn more here and test your knowledge.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Service Card 2 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">South East Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Service Card 3 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Oceania</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Service Card 4 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">South Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Improve your knowledge about South Asia and become the expert right here, right now.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Service Card 5 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Indian Ocean Rim</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Yes the Indian Ocean is connected to the Indo-Pacific. Discover more and learn about its geographic treasures.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Service Card 6 -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Western Pacific Rim</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Improve user knowledge on the Western Pacific Rim now!</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+  <!-- Course Schedule Carousel -->
+<section id="portfolio" class="course-carousel py-20 bg-gray-900">
+  <h2 class="text-center text-4xl md:text-5xl font-bold text-white mb-10">Course Schedule</h2>
+
+  <div class="carousel-container">
+    <div class="carousel-track">
+
+      <!-- Week 1 -->
+      <div class="carousel-slide active">
+        <img src="Images/week1.jpg" alt="Week 1">
+        <div class="carousel-info">
+          <h2>Week 1</h2>
+          <p>Overview of Indo-Pacific Studies</p>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="carousel-slide">
+        <img src="Images/week2.jpg" alt="Week 2">
+        <div class="carousel-info">
+          <h2>Week 2</h2>
+          <p>Defining the Indo-Pacific region and its diversity</p>
+        </div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="carousel-slide">
+        <img src="Images/week3.jpg" alt="Week 3">
+        <div class="carousel-info">
+          <h2>Week 3</h2>
+          <p>Geopolitics and the Indian Ocean Region</p>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="carousel-slide">
+        <img src="Images/week.4.jpg" alt="Week 4">
+        <div class="carousel-info">
+          <h2>Week 4</h2>
+          <p>Non-state actors and assessment</p>
+        </div>
+      </div>
+
+      <!-- Week 5 -->
+      <div class="carousel-slide">
+        <img src="Images/week5.jpg" alt="Week 5">
+        <div class="carousel-info">
+          <h2>Week 5</h2>
+          <p>Indian Ocean’s role in global trade and security</p>
+        </div>
+      </div>
+
+      <!-- Week 6 -->
+      <div class="carousel-slide">
+        <img src="Images/week6.jpg" alt="Week 6">
+        <div class="carousel-info">
+          <h2>Week 6</h2>
+          <p>Australia’s global engagement</p>
+        </div>
+      </div>
+
+      <!-- Week 7 -->
+      <div class="carousel-slide">
+        <img src="Images/week7.jpg" alt="Week 7">
+        <div class="carousel-info">
+          <h2>Week 7</h2>
+          <p>Australia’s relations with Northeast Asia</p>
+        </div>
+      </div>
+
+      <!-- Week 8 -->
+      <div class="carousel-slide">
+        <img src="Images/week8.jpg" alt="Week 8">
+        <div class="carousel-info">
+          <h2>Week 8</h2>
+          <p>Assessment on Indo-Pacific knowledge</p>
+        </div>
+      </div>
+
+      <!-- Week 9 -->
+      <div class="carousel-slide">
+        <img src="Images/week9.jpg" alt="Week 9">
+        <div class="carousel-info">
+          <h2>Week 9</h2>
+          <p>Australia’s relations with Southeast Asia</p>
+        </div>
+      </div>
+
+      <!-- Week 10 -->
+      <div class="carousel-slide">
+        <img src="Images/week10.jpg" alt="Week 10">
+        <div class="carousel-info">
+          <h2>Week 10</h2>
+          <p>Australia’s Law of the Sea diplomacy</p>
+        </div>
+      </div>
+
+      <!-- Week 11 -->
+      <div class="carousel-slide">
+        <img src="Images/week11.jpg" alt="Week 11">
+        <div class="carousel-info">
+          <h2>Week 11</h2>
+          <p>UNCLOS and Antarctica</p>
+        </div>
+      </div>
+
+      <!-- Week 12 -->
+      <div class="carousel-slide">
+        <img src="Images/week12.jpg" alt="Week 12">
+        <div class="carousel-info">
+          <h2>Week 12</h2>
+          <p>Space and assessment</p>
+        </div>
+      </div>
+
+      <!-- Week 13 -->
+      <div class="carousel-slide">
+        <img src="Images/week13.jpg" alt="Week 13">
+        <div class="carousel-info">
+          <h2>Week 13</h2>
+          <p>Course synthesis and exam preparation</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="carousel-nav">
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+    </div>
+  </div>
+</section>
+
+
+   
+
+    <!-- Quiz Section -->
+    <section id="contact" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">You've Got This</div>
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#7EA16B] to-[#1C3144] bg-clip-text text-transparent">Quizzes Here</div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+          <div class="grid md:grid-cols-5 gap-8">
+            <div class="md:col-span-2">
+              <div class="bg-gray-900/70 backdrop-blur-lg border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl">
+                <div class="text-xl font-medium bg-gradient-to-r from-[#7EA16L] to-[#1C3144] bg-clip-text text-transparent mb-4">What to Expect</div>
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-widest">Multiple Choice</div>
+                      <div class="text-white">Choose The correct answer</div>
+                      <div class="text-white">(ONLY ONE)</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-wides">Timer</div>
+                      <div class="text-white">The boat progresses as you answer questions correctly - Don't let the boat go backwards</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-wides">Better Luck Next Time</div>
+                      <div class="text-white">Play again to improve your time and better your knowledge!</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Added Map Quiz Block -->
+            <div class="md:col-span-3">
+              <div id="map-quiz" class="bg-gray-900/70 border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl">
+                <h3 id="quiz-title" class="text-xl font-bold text-white mb-4">Identify the Region</h3>
+
+                <!-- Map container -->
+                <div id="quiz-map" class="w-full h-96 rounded-lg mb-4"></div>
+
+                <!-- Question -->
+                <p id="quiz-question" class="text-white mb-3"></p>
+
+                <!-- Multiple Choice Options -->
+                <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+
+                <!-- Feedback -->
+                <p id="quiz-feedback" class="text-white font-semibold mt-3"></p>
+
+                <!-- Next Button -->
+                <button id="next-btn" class="hidden mt-4 bg-[#7EA16B] text-white px-4 py-2 rounded-lg hover:bg-[#617d52] transition">
+                  Next Question
+                </button>
+              </div>
+
+<!-- New Boat Quiz Game -->
+<div id="boat-quiz" class="relative bg-gray-900/70 border border-[#1C3144]/20 p-6 rounded-xl shadow-xl mt-6">
+  <!-- Overlay Start Screen -->
+<div id="boat-overlay" class="absolute inset-0 bg-black/80 flex items-center justify-center rounded-xl z-20">
+  <button id="boat-start-btn" class="bg-[#7EA16B] text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-[#617d52] transition">
+    ▶ Play
+  </button>
+</div>
+
+  <h3 class="text-xl font-bold text-white mb-4">Boat Adventure Quiz</h3>
+
+  <!-- Boat Progress -->
+  <div class="w-full bg-gray-800 rounded-lg h-8 mb-4 relative">
+    <div id="boat-progress" class="absolute top-0 left-0 h-8 bg-[#7EA16B] rounded-lg transition-all duration-500" style="width: 0%;"></div>
+    <span id="boat-icon" class="absolute -top-2 left-0 text-3xl">⛵</span>
+    <span class="absolute -top-2 right-0 text-3xl">🏝️</span>
+  </div>
+
+  <!-- Retry Button -->
+  <button id="boat-retry-btn" class="hidden mt-4 bg-[#7EA16B] text-white px-4 py-2 rounded-lg hover:bg-[#617d52] transition">
+    Retry Quiz
+  </button>
+
+
+  <!-- Question -->
+  <p id="boat-question" class="text-white mb-3"></p>
+
+  <!-- Options -->
+  <div id="boat-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+
+  <!-- Feedback -->
+  <p id="boat-feedback" class="text-white font-semibold mt-3"></p>
+
+  <!-- Next Button -->
+  <button id="boat-next-btn" class="hidden mt-4 bg-[#1C3144] text-white px-4 py-2 rounded-lg hover:bg-[#2c4569] transition">
+    Next Question
+  </button>
+
+  <!-- Score -->
+  <p class="text-gray-300 mt-4">Score: <span id="boat-score">0</span></p>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="background-color:rgba(0, 0, 0, 0.589) border-t border-gray-800">
+    <div class="container mx-auto px-6 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <!-- Plain MIP logo, no square or gradient -->
+          <div class="font-bold text-lg mr-2">MIP</div>
+          <div class="text-lg font-medium flex items-center">The GIST</div>
+        </div>
+        <div class="flex justify-center mb-4 md:mb-0">
+          <a href="#about" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
+          <a href="#services" class="text-gray-400 hover:text-[#7EA16L] mx-2 transition-colors">Regional Maps</a>
+          <a href="#portfolio" class="text-gray-400 hover:text-[#7EA16L] mx-2 transition-colors">Schedule</a>
+          <a href="#contact" class="text-gray-400 hover:text-[#7EA16L] mx-2 transition-colors">Quizzes</a>
+        </div>
+      </div>
+      <div class="text-center text-gray-500 text-sm mt-8">© 2025 MIP (Map of the Indo Pacific). All rights reserved.</div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</div>
+<script src='https://cdn.tailwindcss.com'></script>
+<link rel="stylesheet" href="./style.css">
+<script src="./script.js"></script>
+</body>
+</html>
