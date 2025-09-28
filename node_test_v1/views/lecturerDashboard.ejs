@@ -87,7 +87,7 @@
                     <% courses.forEach(course => { %>
                         <div class="course-card rounded-lg p-5 flex justify-between items-center">
                             <span class="font-semibold text-white"><%= course.course_code %></span>
-                            <a href="course?id=<%= course.course_id %>" class="px-4 py-2 btn-gradient rounded-lg font-medium text-white text-sm">Enter</a>
+                            <a href="course/<%= course.course_id %>" class="px-4 py-2 btn-gradient rounded-lg font-medium text-white text-sm">Enter</a>
                         </div>
                     <% }) %>
                 </div>
