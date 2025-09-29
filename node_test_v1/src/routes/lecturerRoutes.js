@@ -10,7 +10,12 @@ router.get("/lecturer/dashboard", requireLecturer, lecturerController.getDashboa
 router.get("/lecturer/course/:courseId", requireLecturer, lecturerController.getCourse);
 router.get("/lecturer/module_editor", requireLecturer, lecturerController.getModuleEditor);
 
+
 // Create new course (form submission)
+router.post("/lecturer/create-module", requireLecturer, lecturerController.createModule);
+router.post("/lecturer/delete-module/:id", requireLecturer, lecturerController.deleteModule);
+router.post("/lecturer/edit-module/:id", requireLecturer, lecturerController.editModule);
+
 router.post("/lecturer/create-course", requireLecturer, lecturerController.createCourse);
 
 // View specific course (example: /lecturer/course/5)

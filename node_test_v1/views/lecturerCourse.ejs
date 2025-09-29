@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>The GIST by MIP</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="../style.css">
   <script src="https://kit.fontawesome.com/01f25bfc6e.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -43,7 +43,6 @@
         <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
         <a href="#general" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
         <a href="#services" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
-        <a href="#login" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Login</a>
       </div>
     </div>
   </div>
@@ -52,7 +51,7 @@
 <main>
   <!-- Home Section -->
   <section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
-    <img src="../../Home_Page/src/Images/LANDING-PAGE-v2.png" alt="Landing Page Image" class="absolute top-0 left-0 w-full h-full object-cover z-0" />
+    <img src="./Images/LANDING-PAGE-v2.png" alt="Landing Page Image" class="absolute top-0 left-0 w-full h-full object-cover z-0" />
     <div class="container-btn mt-20 mx-auto px-4 md:px-0 relative z-10">
       <div class="flex flex-col items-start text-left">
         <div class="flex flex-col md:flex-row gap-6 mt-10 w-full">
@@ -163,165 +162,135 @@
     </div>
   </section>
   <!-- Portfolio Section -->
+
   <section id="portfolio" class="min-h-screen flex items-center relative py-20">
-    <div class="container mx-auto px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <div class="inline-block mb-3">
-            <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Discovering New Places Every Week</div>
-            <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Course Schedule</div>
-          </div>
-          <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          <!-- Portfolio Item 1 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 1: Overview of Indo-Pacific Studies</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific (encompassing Indian, Southern, and Pacific Oceans, South and Southeast Asia, North and Northeast Asia, and west coasts of the Americas)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week1.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 2 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 2: Defining the Indo-Pacific region and its diversity</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific, with emphasis on cultural diversity across South Asia (India, Pakistan, Sri Lanka, Bangladesh, Bhutan, Nepal), Southeast Asia (mainland vs. island), and small island developing states</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week2.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 3 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 3: Geopolitics and the Indian Ocean Region</div>
-                <p class="text-gray-200 mb-4">Indian Ocean (including Australia’s Indian Ocean territories)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week3.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 4 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 4: Non-state actors and assessment</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific, with case studies from Southeast and South Asia</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week.4.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 5 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 5: Indian Ocean’s role in global trade and security</div>
-                <p class="text-gray-200 mb-4">Indian Ocean (including Australia’s Cocos and Christmas Islands)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week5.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 6 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 6: Australia’s global engagement</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific, with connections to global powers (Europe, US)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week6.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 7 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 7: Australia’s relations with Northeast Asia</div>
-                <p class="text-gray-200 mb-4">Northeast Asia (focus on Japan)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week7.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 8 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 8: Assessment on Indo-Pacific knowledge</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week8.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 9 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 9: Australia’s relations with Southeast Asia</div>
-                <p class="text-gray-200 mb-4">Southeast Asia (focus on Indonesia and East Timor)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week9.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 10 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 10: Australia’s Law of the Sea diplomacy</div>
-                <p class="text-gray-200 mb-4">Indian and Pacific Oceans (focus on maritime zones)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week10.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 11 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 11: UNCLOS and Antarctica</div>
-                <p class="text-gray-200 mb-4">Indian, Pacific, and Southern Oceans (Antarctica focus)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week11.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 12 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#1C3144]/80 to-[#7EA16B]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 12: Space and assessment</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific (space as a strategic domain)</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week12.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
-          </div>
-          <!-- Portfolio Item 13 -->
-          <div class="relative group overflow-hidden rounded-xl">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                <div class="text-xl font-medium bg-black bg-clip-text text-transparent mb-2">Week 13: Course synthesis and exam preparation</div>
-                <p class="text-gray-200 mb-4">Broad Indo-Pacific</p>
-                <button class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300">View Details</button>
-              </div>
-            </div>
-            <img src="Images/week13.jpg" alt="Indo-Pacific Studies" class="aspect-video object-cover rounded-xl w-full h-full">
+  <div class="container mx-auto px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="inline-block mb-3">
+          <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Discovering New Places Every Week</div>
+          <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">
+            Course Schedule
           </div>
         </div>
+        <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+      </div>
+
+      <!-- Add Module Button -->
+      <div class="mb-8 text-right">
+        <button onclick="openForm()" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg hover:bg-[#617d52]">
+          + Add Module
+        </button>
+      </div>
+
+      <!-- Modules -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <% modules.forEach((m, i) => { %>
+          <div class="relative group overflow-hidden rounded-xl border shadow">
+            <img src="<%= m.image ? m.image : '/Images/default.jpg' %>" 
+                 alt="<%= m.module_title %>" 
+                 class="aspect-video object-cover rounded-xl w-full h-full">
+
+            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition duration-300 z-10 flex items-center justify-center">
+              <div class="text-center p-4">
+                <div class="text-xl font-medium text-white mb-2">
+                  Week <%= i + 1 %>: <%= m.module_title %>
+                </div>
+                <p class="text-gray-200 mb-4"><%= m.module_description %></p>
+              </div>
+            </div>
+
+            <!-- Edit/Delete -->
+            <div class="absolute top-2 right-2 flex gap-2 z-20">
+              <button onclick='editModule(<%- JSON.stringify(m) %>)' 
+                      class="px-2 py-1 bg-blue-500 text-white rounded text-sm">Edit</button>
+              <button onclick="deleteModule(<%= m.module_id %>, '<%= courseId %>')" 
+                      class="px-2 py-1 bg-red-500 text-white rounded text-sm">Delete</button>
+            </div>
+          </div>
+        <% }) %>
       </div>
     </div>
-  </section>
-  <!-- Quiz Section -->
+  </div>
+</section>
+
+<!-- Modal Form -->
+<div id="moduleForm" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg relative">
+    <h2 class="text-xl font-bold mb-4" id="formTitle">Add Module</h2>
+    <form id="crudForm" enctype="multipart/form-data">
+      <input type="hidden" name="module_id" id="module_id" />
+      <input type="hidden" name="courseId" value="<%= courseId %>" />
+
+      <div class="mb-3">
+        <label class="block">Start Time</label>
+        <input type="number" name="start_time" id="start_time" class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-3">
+        <label class="block">Title</label>
+        <input type="text" name="module_title" id="module_title" class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-3">
+        <label class="block">Description</label>
+        <textarea name="module_description" id="module_description" class="w-full border rounded p-2"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="block">Type</label>
+        <input type="text" name="type" id="type" class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-3">
+        <label class="block">Image</label>
+        <input type="file" name="image" id="image" />
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeForm()" class="px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <section id="portfolio" class="min-h-screen flex items-center relative py-20"> -->
+<!--   <div class="container mx-auto px-6"> -->
+<!--     <div class="max-w-5xl mx-auto"> -->
+<!--       <div class="text-center mb-12"> -->
+<!--         <div class="inline-block mb-3"> -->
+<!--           <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Discovering New Places Every Week</div> -->
+<!--           <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent"> -->
+<!--             Course Schedule -->
+<!--           </div> -->
+<!--         </div> -->
+<!--         <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div> -->
+<!--       </div> -->
+<!---->
+<!--       <!-- Dynamic modules loop --> -->
+<!--       <div id="modules" class="grid md:grid-cols-2 gap-6"> -->
+<!--         <% modules.forEach((m, i) => { %> -->
+<!--           <div class="relative group overflow-hidden rounded-xl"> -->
+<!--             <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center"> -->
+<!--               <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300"> -->
+<!--                 <div class="text-xl font-medium text-white mb-2"> -->
+<!--                   Week <%= i + 1 %>: <%= m.module_title %> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-200 mb-4"><%= m.module_description %></p> -->
+<!--                 <a href="/lecturer/module_editor?id=<%= m.module_id %>"  -->
+<!--                    class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300"> -->
+<!--                   View Details -->
+<!--                 </a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--             <img src="Images/week<%= i + 1 %>.jpg" alt="<%= m.module_title %>"  -->
+<!--                  class="aspect-video object-cover rounded-xl w-full h-full"> -->
+<!--           </div> -->
+<!--         <% }) %> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </section> -->
   <section id="contact" class="min-h-screen flex items-center relative py-20">
     <div class="container mx-auto px-6">
       <div class="max-w-5xl mx-auto">
@@ -363,11 +332,6 @@
       </div>
     </div>
   </section>
-    <section>
-
-
-<h2>Login</h2> <% if (error) { %><p style="color:red"><%= error %></p><% } %> <form action="/home/" style="margin-left: 30px;" method="POST"> <input name="username" placeholder="Username" required> <input name="password" type="password" placeholder="Password" required> <button type="submit">Sign</button> </form>
-        </section>
   </main>
 
 <!-- Footer -->
@@ -388,80 +352,53 @@
     <div class="text-center text-gray-500 text-sm mt-8">© 2025 MIP (Map of the Indo Pacific). All rights reserved.</div>
   </div>
 </footer>
-<script src="./script.js"></script>
+<script src="../script.js"></script>
 </body>
 </html>
 
-  <script src="script.js"></script>
-</div>
 <!-- partial -->
-<script src='https://cdn.tailwindcss.com'></script><script  src="script.js"></script>
+<script src='https://cdn.tailwindcss.com'></script>
 <script>
-async function loadModules() {
-  const res = await fetch("/api/module_course");
-  const modules = await res.json();
-
-  const container = document.getElementById("modules");
-  container.innerHTML = ""; // clear old content
-
-  modules.forEach(m => {
-    const card = `
-      <div class="relative group overflow-hidden rounded-xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/80 to-purple-600/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center">
-          <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-            <div class="text-xl font-medium text-white mb-2">${m.module_title}</div>
-            <p class="text-gray-200 mb-4">${m.module_description}</p>
-                  <a href="/module?id=${m.module_id}" 
-           class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded text-white hover:bg-white/30 transition-colors duration-300">
-          View Details
-        </a>
-          </div>
-        </div>
-        <img src="Images/week${m.module_id}.jpg" alt="${m.module_title}" class="aspect-video object-cover rounded-xl w-full h-full">
-      </div>
-    `;
-    container.insertAdjacentHTML("beforeend", card);
-  });
+function openForm(module = null) {
+  document.getElementById("moduleForm").classList.remove("hidden");
+  if (module) {
+    document.getElementById("formTitle").innerText = "Edit Module";
+    document.getElementById("module_id").value = module.module_id;
+    document.getElementById("start_time").value = module.start_time;
+    document.getElementById("module_title").value = module.module_title;
+    document.getElementById("module_description").value = module.module_description;
+    document.getElementById("type").value = module.type;
+  } else {
+    document.getElementById("crudForm").reset();
+    document.getElementById("formTitle").innerText = "Add Module";
+  }
+}
+function closeForm() {
+  document.getElementById("moduleForm").classList.add("hidden");
 }
 
-loadModules();
-</script>
-<script>
-async function loadRegionModules() {
-  const res = await fetch("/api/module_region");
-  const modules = await res.json();
+document.getElementById("crudForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const id = formData.get("module_id");
 
-  const container = document.getElementById("region-modules");
-  container.innerHTML = "";
+  const method = id ? "PUT" : "POST";
+  const url = id ? `/api/module/${id}` : "/api/module";
 
-  modules.forEach((m, i) => {
-    const card = `
-      <div class="relative group">
-        <div class="absolute inset-0 bg-indigo-500/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-        <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-indigo-500/20 rounded-lg p-6 relative z-10 h-full group-hover:border-indigo-500/40 transition-all duration-300">
-          <div class="flex flex-col h-full">
-            <div class="flex items-center mb-4">
-              <div class="font-medium text-lg text-indigo-300 group-hover:text-indigo-200 transition-colors">${m.module_title}</div>
-            </div>
-            <p class="text-gray-400 mb-4">${m.module_description}</p>
-            <a href="/module?id=${m.module_id}" 
-               class="mt-auto text-indigo-400 hover:text-indigo-300 inline-flex items-center">
-              More
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML("beforeend", card);
-  });
+  await fetch(url, { method, body: formData });
+  location.reload();
+});
+
+function editModule(module) {
+  openForm(module);
 }
 
-loadRegionModules();
+async function deleteModule(id, courseId) {
+  if (confirm("Delete this module?")) {
+    await fetch(`/api/module/${id}`, { method: "DELETE" });
+    location.reload();
+  }
+}
 </script>
 
-</body>
-</html>
 

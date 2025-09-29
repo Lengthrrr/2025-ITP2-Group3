@@ -70,6 +70,7 @@ exports.postManualMarker = async (req, res) => {
   return res.json({ success: true, message: "Marker added successfully" });
 };
 exports.getCourse = (req, res) => {
+
   const lecturerId = req.session.user.id;
   const courseId = req.params.courseId;
 
@@ -112,10 +113,85 @@ console.log(courseId);
       }
         console.log("mods")
     console.log(modules);
-      res.render("lecturerCourse", { modules, error: null });
+      res.render("lecturerCourse", {courseId,  modules, error: null });
     });
   });
 };
+
+exports.createModule = (req, res) => {
+  const { course_id, start_time, module_title, module_description, type } = req.body;
+  const module_heading = "Course Schedule";
+
+  db.run(
+    `INSERT INTO module (course_id, module_heading, start_time, module_title, module_description, type) 
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [course_id, module_heading, start_time, module_title, module_description, type],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+
+      const module_id = this.lastID;
+
+      if (req.file) {
+        const ext = path.extname(req.file.originalname).toLowerCase();
+        const targetDir = path.join(__dirname, "public", "lecturer", "course", course_id, module_heading);
+        const targetPath = path.join(targetDir, `${module_id}${ext}`);
+
+        fs.mkdirSync(targetDir, { recursive: true });
+        fs.renameSync(req.file.path, targetPath);
+
+        const imagePath = `/lecturer/course/${course_id}/${module_heading}/${module_id}${ext}`;
+        db.run(`UPDATE module SET image=? WHERE module_id=?`, [imagePath, module_id]);
+      }
+
+      res.json({ module_id });
+    }
+  );
+}
+
+exports.editModule = (req, res) => {
+ const { id } = req.params;
+  const { course_id, start_time, module_title, module_description, type } = req.body;
+
+  db.run(
+    `UPDATE module SET start_time=?, module_title=?, module_description=?, type=? WHERE module_id=?`,
+    [start_time, module_title, module_description, type, id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+
+      if (req.file) {
+        const ext = path.extname(req.file.originalname).toLowerCase();
+        const targetDir = path.join(__dirname, "public", "lecturer", "course", course_id, "Course Schedule");
+        const targetPath = path.join(targetDir, `${id}${ext}`);
+
+        fs.mkdirSync(targetDir, { recursive: true });
+        fs.renameSync(req.file.path, targetPath);
+
+        const imagePath = `/lecturer/course/${course_id}/Course Schedule/${id}${ext}`;
+        db.run(`UPDATE module SET image=? WHERE module_id=?`, [imagePath, id]);
+      }
+
+      res.json({ updated: this.changes });
+    }
+  );
+}
+
+exports.deleteModule = (req, res) => {
+  const { id } = req.params;
+  db.get(`SELECT course_id, module_heading, image FROM module WHERE module_id=?`, [id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (row && row.image) {
+      const filePath = path.join(__dirname, "public", row.image);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    }
+
+    db.run(`DELETE FROM module WHERE module_id=?`, [id], function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ deleted: this.changes });
+    });
+  });
+}
+
 exports.getDashboard = (req, res) => {
   const lecturerId = req.session.user.id;
 
