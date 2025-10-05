@@ -31,6 +31,8 @@ Install relevant node modules with
 npm install express
 `
 
+(You might have to delete the node modules folder if you are getting an error.)
+
 Run the server with `node src/server.js`
 
 If that doesn't work lmk
