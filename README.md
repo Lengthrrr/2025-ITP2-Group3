@@ -25,11 +25,19 @@ Clone repository
 
 Move into node_test_v1 `cd node_test_v1`
 
-Run the server with `node index.js`
+Install relevant node modules with
+
+`
+npm install express
+`
+
+Run the server with `node src/server.js`
 
 If that doesn't work lmk
 
-You should be able to go to [http://localhost:8001/home/](http://localhost:8001/home/) to get to the homepage
+You should be able to go to [http://localhost:8001/](http://localhost:8001/) to get to the login page
+
+Login is `User Testing` for the username and password
 
 
 ## Starting server (OLD)
