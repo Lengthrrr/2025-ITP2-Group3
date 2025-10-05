@@ -27,7 +27,7 @@ function getAsync(query, params = []) {
 
 async function insertDefaults() {
   const defaults = [
-    { table: "course", field: "course_code", value: "course", password: "course" },
+    { table: "course", field: "course_code", value: "User Testing", password: "User Testing" },
     { table: "user", field: "username", value: "lecturer", password: "lecturer", role: "lecturer" },
     { table: "user", field: "username", value: "admin", password: "admin", role: "admin" },
   ];
@@ -64,18 +64,20 @@ async function insertDefaults() {
 
   // -------------------- Insert Default Modules --------------------
   const modules = [
-    { name: "Data from files", description: "This map shows data including volcanoes and tectonic plates from multiple file types including xlsx and shape files.", heading: "Course Schedule"},
-    { name: "China", description: "General information about China." , heading: "Course Schedule"},
-    { name: "Indo-Pacific Statistics", description: "Course content for week 3. This includes basic statistics for each of the countries of the Indo-Pacific" , heading: "Course Schedule"},
-    { name: "Taiwan", description: "General information about Taiwan." , heading: "Course Schedule"},
-    { name: "Australia", description: "General information about Australia." , heading: "Course Schedule"},
+    { name: "Week 1: East Asia", description: "This week's content focuses on the East Asian area. Try to learn the East Asian countries along with their capitals. Also make sure to learn general population information.", heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week1.jpg"},
+    { name: "Week 2: South East Asia", description: "This week's content adds onto last weeks content. Try to learn the added countries, along with their capitals and general population information." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week2.png"},
+    { name: "Week 3: Oceania", description: "Course content for week 3. This week's content focuses on the Oceania area." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week3.png"},
+    // { name: "Taiwan", description: "General information about Taiwan." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK"},
+    // { name: "Australia", description: "General information about Australia." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK"},
+    { name: "Main Map", description: "Main Map of the world. It contains content from all the weeks." , heading: "General Maps", boss_desc: "EXPLORING MAPS BELOW", image_file: "week4.jpg"},
+
   ];
 
   for (const mod of modules) {
     await runAsync(
-      `INSERT OR IGNORE INTO module (course_id, module_heading, start_time, module_title, module_description, type) 
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      ["1", mod.heading, 0, `${mod.name}`, mod.description, "general"]
+      `INSERT OR IGNORE INTO module (course_id, module_heading, module_heading_description, start_time, module_title, module_description, type, image_file) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      ["1", mod.heading, mod.boss_desc, 0, `${mod.name}`, mod.description, "general", mod.image_file]
     );
     console.log(`✅ Ensured module "${mod.name}"`);
   }

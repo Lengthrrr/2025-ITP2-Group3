@@ -44,10 +44,12 @@ db.serialize(() => {
       module_id INTEGER PRIMARY KEY AUTOINCREMENT,
       course_id TEXT,
         module_heading VARCHAR,
+        module_heading_description VARCHAR,
       start_time INTEGER,
       module_title VARCHAR,
       module_description VARCHAR,
-      type VARCHAR
+      type VARCHAR,
+        image_file VARCHAR
     );
   `);
 
