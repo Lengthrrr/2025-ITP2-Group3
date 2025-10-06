@@ -49,7 +49,8 @@ db.serialize(() => {
       module_title VARCHAR,
       module_description VARCHAR,
       type VARCHAR,
-        image_file VARCHAR
+        image_file VARCHAR,
+        format VARCHAR
     );
   `);
 

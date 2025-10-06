@@ -3,6 +3,13 @@ const bcrypt = require("bcrypt")
 const path = require("path");
 const fs = require("fs");
 
+exports.getMapQuiz = (req, res) => {
+    res.render("studentMapQuiz")
+}
+exports.getMultipleQuiz = (req, res) => {
+    res.render("studentMultipleQuiz", {})
+}
+
 exports.getModule = (req, res) => {
   const moduleId = req.params.moduleId; // expecting route: /student/module/:moduleId
 

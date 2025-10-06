@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map the Indo-Pacific</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link rel='stylesheet' href='./style.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
+</head>
+
+<body>
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+          <span class="font-bold text-4xl text-white"><a href="index.html">MIP</a></span>
+        </div>
+      </div>
+      <!-- Desktop Navigation and Mobile Button  -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="index.html#regional-maps" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+          <a href="index.html#course-schedule" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+          <a href="index.html#quiz" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Study Tools</a>
+        </div>
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <a href="index.html#regional-maps" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+        <a href="index.html#course-schedule" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+        <a href="index.html#quiz" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Study Tools</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <main>
+    <section id="boat-quiz-section" class="py-8">
+    <div class="mx-auto px-4 w-full max-w-3xl">
+        <div id="boat-quiz" class="relative bg-gray-900/70 border border-[#1C3144]/30 p-4 rounded-xl shadow-xl">
+          <h1 class="text-xl font-bold text-white mb-4 text-center">Boat Adventure Quiz</h1>
+          <!-- Progress Bar -->
+          <div class="w-full bg-gray-800 rounded-lg h-7 mb-3 relative overflow-hidden">
+            <div id="boat-progress" class="absolute top-0 left-0 h-7 bg-[#7EA16B] rounded-lg transition-all duration-500" style="width:0%"></div>
+            <span id="boat-icon" class="absolute -top-1 left-0 text-2xl">⛵</span>
+            <span class="absolute -top-1 right-0 text-2xl">🏝️</span>
+          </div>
+          <!-- Question -->
+          <p id="boat-question" class="text-white font-medium mb-3 min-h-[1.75rem] text-sm"></p>
+          <!-- Options -->
+          <div id="boat-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
+          <!-- Feedback -->
+          <p id="boat-feedback" class="text-white font-semibold mt-2 min-h-[1.1rem] text-sm"></p>
+          <!-- Controls -->
+          <div class="flex items-center gap-3 mt-3 justify-center flex-wrap">
+            <button id="boat-next-btn" class="hidden bg-[#1C3144] text-white px-6 py-2.5 rounded-lg hover:bg-[#2c4569] transition text-sm font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/60 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center gap-2">
+              <span>Next</span>
+            </button>
+            <button id="boat-retry-btn" class="hidden bg-[#7EA16B] text-white px-5 py-2 rounded-lg hover:bg-[#617d52] transition text-sm font-medium shadow focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/60 focus:ring-offset-2 focus:ring-offset-gray-900">Retry</button>
+          </div>
+          <!-- Score -->
+          <p class="text-[#7EA16B]-500 text-[14px] mt-4 text-center">Score: <span id="boat-score" class="font-semibold text-white">0</span></p>
+        </div>
+        <div class="mt-6 flex justify-between text-sm text-gray-500">
+            <a href="index.html#quiz" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<!-- Footer -->
+  <footer class="background-color:rgba(0, 0, 0, 0.589) border-t border-gray-800">
+    <div class="container mx-auto px-12 py-12">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <!-- Plain MIP logo, no square or gradient -->
+          <div class="font-bold text-3xl mr-2">MIP</div>
+          <div class="text-xl font-medium flex items-center">The GIST</div>
+        </div>
+        <div class="flex justify-center mb-4 md:mb-0">
+          <a href="#home" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
+          <a href="#regional-maps" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a>
+          <a href="#course-schedule" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Course Schedule</a>
+          <a href="#study-tools" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Study Tools</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Copyright tag -->
+  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
+    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+  </div>
+  <script src="./script.js" defer></script>
+</body>
+</html>

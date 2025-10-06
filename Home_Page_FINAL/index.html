@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map the Indo-Pacific</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link rel='stylesheet' href='./style.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
+</head>
+
+<body>
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+          <span class="font-bold text-4xl text-white"><a href="index.html">MIP</a></span>
+        </div>
+      </div>
+      <!-- Desktop Navigation and Mobile Button  -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="#regional-maps" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+          <a href="#course-schedule" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+          <a href="#quiz" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Study Tools</a>
+        </div>
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <a href="#regional-maps" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
+        <a href="#course-schedule" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
+        <a href="#quiz" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Study Tools</a>
+      </div>
+    </div>
+  </div>
+</nav>
+  <!-- Main Content Sections -->
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="landing-hero relative">
+      <div class="landing-overlay">
+        <h1 class="landing-title">MIP, The GIST.</h1>
+        <p class="landing-subtitle">Explore the Indo-Pacific and get ready to test your understanding!</p>
+        <div class="landing-actions">
+          <button class="landing-btn outline">World Map</button>
+          <a href="IndoPacific.html" class="landing-btn solid">Indo-Pacific Map</a>
+        </div>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </div>
+    </section>
+  
+    <!-- Regional Maps Section -->
+    <section id="regional-maps" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Explore by Region</div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- East Asia Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">East Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">A center of economic power and strategic rivalry, also prone to earthquakes, tsunamis, and volcanic activity.</p>
+                  <a href="EastAsia.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- South East Asia Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">South-East Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">A maritime hub of trade and cultural diversity, shaped by monsoons, typhoons, and active volcanoes.</p>
+                  <a href="SouthEastAsia.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Oceania Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Oceania</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Australia, New Zealand, and Pacific islands, facing security challenges, rising seas, cyclones, and seismic risks.</p>
+                  <a href="Oceania.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- South Asia Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">South Asia</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">Anchored by India and Pakistan, defined by dense populations, monsoon reliance, and Himalayan seismic hazards.</p>
+                  <a href="SouthAsia.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Indian Ocean Rim Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Indian Ocean Rim</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">A strategic energy and trade corridor, exposed to cyclones, tsunamis, and fragile coastal ecosystems.</p>
+                  <a href="IndianOceanRim.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+            <!-- Western Pacific Rim Card -->
+            <div class="relative group">
+              <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
+              <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
+                <div class="flex flex-col h-full">
+                  <div class="flex items-center mb-4">
+                    <div class="font-medium text-lg text-[#FFFFFF]">Western Pacific Rim</div>
+                  </div>
+                  <p class="text-gray-400 mb-4">A dynamic arc of coastal states along the “Ring of Fire,” marked by major trade flows and frequent natural disasters.</p>
+                  <a href="WesternPacificRim.html" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="course-schedule" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Course Schedule</div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+        
+          <div class="space-y-4 max-w-4xl mx-auto">
+
+            <!-- Week 1 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week1-content">
+                <span class="font-semibold">Week 1: Overview of Indo-Pacific Studies</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week1-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific (encompassing Indian, Southern, and Pacific Oceans, South and Southeast Asia, North and Northeast Asia, and west coasts of the Americas)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week1.jpg" alt="Week 1 Overview" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week2-content">
+                <span class="font-semibold">Week 2: Defining the Indo-Pacific region and its diversity</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week2-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific, with emphasis on cultural diversity across South Asia (India, Pakistan, Sri Lanka, Bangladesh, Bhutan, Nepal), Southeast Asia (mainland vs. island), and small island developing states.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week2.jpg" alt="Week 2 Diversity" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week3-content">
+                <span class="font-semibold">Week 3: Geopolitics and the Indian Ocean Region</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week3-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Indian Ocean (including Australia’s Indian Ocean territories)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week3.jpg" alt="Week 3 Geopolitics" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week4-content">
+                <span class="font-semibold">Week 4: Non-state actors and assessment</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week4-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific, with case studies from Southeast and South Asia.</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week.4.jpg" alt="Week 4 Non-state actors" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+            <!-- Week 5 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week5-content">
+                <span class="font-semibold">Week 5: Indian Ocean’s role in global trade and security</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week5-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Indian Ocean (including Australia’s Cocos and Christmas Islands)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week5.jpg" alt="Week 5 Trade and Security" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+            <!-- Week 6 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week6-content">
+                <span class="font-semibold">Week 6: Australia’s global engagement</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week6-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific, with connections to global powers (Europe, US).</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week6.jpg" alt="Week 6 Global Engagement" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+            <!-- Week 7 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week7-content">
+                <span class="font-semibold">Week 7: Australia’s relations with Northeast Asia</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week7-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Northeast Asia (focus on Japan)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week7.jpg" alt="Week 7 Northeast Asia" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+            <!-- Week 8 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week8-content">
+                <span class="font-semibold">Week 8: Assessment on Indo-Pacific knowledge</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week8-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week8.jpg" alt="Week 8 Assessment" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Week 9 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week9-content">
+                <span class="font-semibold">Week 9: Australia’s relations with Southeast Asia</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week9-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Southeast Asia (focus on Indonesia and East Timor)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week9.jpg" alt="Week 9 Southeast Asia" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 10 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week10-content">
+                <span class="font-semibold">Week 10: Australia’s Law of the Sea diplomacy</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week10-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Indian and Pacific Oceans (focus on maritime zones)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week10.jpg" alt="Week 10 Law of the Sea" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 11 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week11-content">
+                <span class="font-semibold">Week 11: UNCLOS and Antarctica</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week11-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Indian, Pacific, and Southern Oceans (Antarctica focus)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week11.jpg" alt="Week 11 Antarctica" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 12 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week12-content">
+                <span class="font-semibold">Week 12: Space and assessment</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week12-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific (space as a strategic domain)</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week12.jpg" alt="Week 12 Space" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Week 13 -->
+            <div class="bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden">
+              <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="week13-content">
+                <span class="font-semibold">Week 13: Course synthesis and exam preparation</span>
+                <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+              </button>
+              <div id="week13-content" class="week-content-wrapper" aria-hidden="true">
+                <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                  <p>Broad Indo-Pacific</p>
+                  <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">Explore <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+                  <img src="Images/week13.jpg" alt="Week 13 Synthesis" class="w-full h-48 object-cover rounded-lg"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Study Tools</div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <div class="bg-gray-900/70 backdrop-blur-lg border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl flex flex-col h-full">
+                <div class="text-xl font-medium bg-clip-text text-transparent mb-4" style="color:white;">BOAT QUIZ</div>
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-widest">Objective</div>
+                      <div class="text-white">Test and reinforce core Indo-Pacific knowledge through timed multiple-choice questions.</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-widest">How it works</div>
+                      <div class="text-white">Sail the boat to the island-- correct answers move it forward; incorrect ones push it back.
+                      </div>
+                    </div>
+                  </div>
+                  <a href="boat-quiz.html" class="mt-auto inline-flex items-center gap-2 bg-[#1C3144] hover:bg-[#111d29] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/50 focus:ring-offset-1 focus:ring-offset-gray-900" aria-label="Start Map Quiz">
+                    PLAY
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- MAP QUIZ CARD -->
+            <div>
+              <div class="bg-gray-900/70 backdrop-blur-lg border border-[#1C3144]/30 p-6 rounded-xl shadow-xl flex flex-col h-full">
+                <div class="text-xl font-medium bg-clip-text text-transparent mb-4" style="color:white;">MAP QUIZ</div>
+                <div class="space-y-4">
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-widest">Objective</div>
+                      <div class="text-white">Build geographical awareness of the Indo-Pacific by identifying regions and maritime features.</div>
+                    </div>
+                  </div>
+                  <div class="flex items-start">
+                    <div>
+                      <div class="text-s text-[#7EA16B] tracking-widest">How it works</div>
+                      <div class="text-white">A region is highlighted-- pick the correct name from four choices; no timer, and you can restart anytime.</div>
+                    </div>
+                  </div>
+                  <a href="map-guess.html" class="mt-auto inline-flex items-center gap-2 bg-[#1C3144] hover:bg-[#111d29] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  PLAY
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="background-color:rgba(0, 0, 0, 0.589) border-t border-gray-800">
+    <div class="container mx-auto px-12 py-12">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <!-- Plain MIP logo, no square or gradient -->
+          <div class="font-bold text-3xl mr-2">MIP</div>
+          <div class="text-xl font-medium flex items-center">The GIST</div>
+        </div>
+        <div class="flex justify-center mb-4 md:mb-0">
+          <a href="#home" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
+          <a href="#regional-maps" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a>
+          <a href="#course-schedule" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Course Schedule</a>
+          <a href="#study-tools" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Study Tools</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Copyright tag -->
+  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
+    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+  </div>
+  <script src="./script.js" defer></script>
+</body>
+</html>

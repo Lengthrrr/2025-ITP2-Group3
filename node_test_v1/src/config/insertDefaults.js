@@ -51,7 +51,7 @@ async function insertDefaults() {
   }
 
   // Link default lecturer to default course
-  const course = await getAsync(`SELECT course_id FROM course WHERE course_code = ?`, ["course"]);
+  const course = await getAsync(`SELECT course_id FROM course WHERE course_code = ?`, ["User Testing"]);
   const lecturer = await getAsync(`SELECT user_id FROM user WHERE username = ? AND role = 'lecturer'`, ["lecturer"]);
 
   if (course && lecturer) {
@@ -64,20 +64,38 @@ async function insertDefaults() {
 
   // -------------------- Insert Default Modules --------------------
   const modules = [
-    { name: "Week 1: East Asia", description: "This week's content focuses on the East Asian area. Try to learn the East Asian countries along with their capitals. Also make sure to learn general population information.", heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week1.jpg"},
-    { name: "Week 2: South East Asia", description: "This week's content adds onto last weeks content. Try to learn the added countries, along with their capitals and general population information." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week2.png"},
-    { name: "Week 3: Oceania", description: "Course content for week 3. This week's content focuses on the Oceania area." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK", image_file: "week3.png"},
-    // { name: "Taiwan", description: "General information about Taiwan." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK"},
-    // { name: "Australia", description: "General information about Australia." , heading: "Course Schedule", boss_desc: "DISCOVERING NEW PLACES EVERY WEEK"},
-    { name: "Main Map", description: "Main Map of the world. It contains content from all the weeks." , heading: "General Maps", boss_desc: "EXPLORING MAPS BELOW", image_file: "week4.jpg"},
 
+    {name: "East Asia", description: "A center of economic power and strategic rivalry, also prone to earthquakes, tsunamis, and volcanic activity.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+    {name: "South-East Asia", description: "A maritime hub of trade and cultural diversity, shaped by monsoons, typhoons, and active volcanoes.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+    {name: "Oceania", description: "Australia, New Zealand, and Pacific islands, facing security challenges, rising seas, cyclones, and seismic risks.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+    {name: "South Asia", description: "Anchored by India and Pakistan, defined by dense populations, monsoon reliance, and Himalayan seismic hazards.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+    {name: "Indian Ocean Rim", description: "A strategic energy and trade corridor, exposed to cyclones, tsunamis, and fragile coastal ecosystems.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+    {name: "Western Pacific Rim", description: "A dynamic arc of coastal states along the “Ring of Fire,” marked by major trade flows and frequent natural disasters.", heading: "Explore By Region", boss_desc: "", image_file: "null.jpg", format: "small_panel"},
+
+    { name: "Week 1: Overview of Indo-Pacific Studies", description: "Broad Indo-Pacific (encompassing Indian, Southern, and Pacific Oceans, South and Southeast Asia, North and Northeast Asia, and west coasts of the Americas)", heading: "Course Schedule", boss_desc: "", image_file: "week1.jpg", format: "expandable"},
+    { name: "Week 2: Defining the Indo-Pacific region and its diversity", description: "Broad Indo-Pacific, with emphasis on cultural diversity across South Asia (India, Pakistan, Sri Lanka, Bangladesh, Bhutan, Nepal), Southeast Asia (mainland vs. island), and small island developing states." , heading: "Course Schedule", boss_desc: "", image_file: "week2.png", format: "expandable"},
+    { name: "Week 3: Geopolitics and the Indian Ocean Region", description: "Indian Ocean (including Australia’s Indian Ocean territories)" , heading: "Course Schedule", boss_desc: "", image_file: "week3.jpg", format: "expandable"},
+    { name: "Week 4: Non-State actors and assessment", description: "Broad Indo-Pacific, with case studies from Southeast and South Asia." , heading: "Course Schedule", boss_desc: "", image_file: "week4.jpg", format: "expandable"},
+    { name: "Week 5: Geopolitics and the Indian Ocean Region", description: "Indian Ocean (including Australia’s Indian Ocean territories)" , heading: "Course Schedule", boss_desc: "", image_file: "week5.jpg", format: "expandable"},
+    { name: "Week 6: Australia's global engagement", description: "Broad Indo-Pacific, with connections to global powers (Europe, US)." , heading: "Course Schedule", boss_desc: "", image_file: "week6.jpg", format: "expandable"},
+    { name: "Week 7: Australia's relations with Northeast Asia", description: "Northeast Asia (focus on Japan)" , heading: "Course Schedule", boss_desc: "", image_file: "week7.jpg", format: "expandable"},
+    { name: "Week 8: Assessment on Indo-Pacific Knowledge", description: "Broad Indo-Pacific" , heading: "Course Schedule", boss_desc: "", image_file: "week8.jpg", format: "expandable"},
+    { name: "Week 9: Australia's relations with Southeast Asia", description: "Southeast Asia (focus on Indonesia and East Timor)" , heading: "Course Schedule", boss_desc: "", image_file: "week9.jpg", format: "expandable"},
+    { name: "Week 10: Australia's Law of the Sea diplomacy", description: "Indian and Pacific Oceans (focus on maritime zones)" , heading: "Course Schedule", boss_desc: "", image_file: "week10.jpg", format: "expandable"},
+    { name: "Week 11: UNCLOS and Antarctica", description: "Indian, Pacific, and Southern Oceans (Antarctica focus)" , heading: "Course Schedule", boss_desc: "", image_file: "week11.jpg", format: "expandable"},
+    { name: "Week 12: Space and Assessment", description: "Broad Indo-Pacific (space as a strategic domain)" , heading: "Course Schedule", boss_desc: "", image_file: "week12.jpg", format: "expandable"},
+    { name: "Week 13: Course synthesis and exam preparation", description: "Broad Indo-Pacific" , heading: "Course Schedule", boss_desc: "", image_file: "week13.jpg", format: "expandable"},
+
+
+    { name: "MULTIPLE BOAT QUIZ", description: "Objective\nTest and reinforce core Indo-Pacific knowledge through timed multiple-choice questions.\n\nHow it works\nSail the boat to the island-- correct answers move it forward; incorrect ones pushit back." , heading: "Study Tools", boss_desc: "", image_file: "null.jpg", format: "quiz_panel"},
+    { name: "MAP MAP QUIZ", description: "Objective\nBuild geographical awareness of the Indo-Pacific by identifying regions and maritime features.\n\nHow it works\nA region is highlighted-- pick the correct name from four choices; no timer, and you can restart anytime." , heading: "Study Tools", boss_desc: "", image_file: "null.jpg", format: "quiz_panel"},
   ];
 
   for (const mod of modules) {
     await runAsync(
-      `INSERT OR IGNORE INTO module (course_id, module_heading, module_heading_description, start_time, module_title, module_description, type, image_file) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      ["1", mod.heading, mod.boss_desc, 0, `${mod.name}`, mod.description, "general", mod.image_file]
+      `INSERT OR IGNORE INTO module (course_id, module_heading, module_heading_description, start_time, module_title, module_description, type, image_file, format) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ["1", mod.heading, mod.boss_desc, 0, `${mod.name}`, mod.description, "general", mod.image_file, mod.format]
     );
     console.log(`✅ Ensured module "${mod.name}"`);
   }
