@@ -30,9 +30,9 @@ Quizzes (script.js): Edit map quiz in questions array:
 
 
 ## Extending
-
 edit the section: 
-''' <section id="new-section"><div class="container"><h2>Title</h2><p>Content</p></div></section> 
+```html
+<section id="new-section"><div class="container"><h2>Title</h2><p>Content</p></div></section>
 
 
 ## Maintenance
