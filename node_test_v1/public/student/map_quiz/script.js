@@ -191,49 +191,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const questions = [
       {
         question: "Which bay is highlighted?",
-        geojson: "json_files/bayofbengal.geojson.json",
+        geojson: "../json_files/bayofbengal.geojson.json",
         options: ["Bay of Bengal", "Bay of Biscay", "Brunei Bay", "Baffin Bay"],
         answer: "Bay of Bengal"
       },
       {
         question: "Which island is highlighted?",
-        geojson: "json_files/sri_lanka.json",
+        geojson: "../json_files/sri_lanka.json",
         options: ["Sri Lanka", "Madagascar", "Sumatra", "Taiwan"],
         answer: "Sri Lanka"
       },
       {
         question: "Which sea is this?",
-        geojson: "json_files/South_China_Sea.json",
+        geojson: "../json_files/South_China_Sea.json",
         options: ["South China Sea", "East China Sea", "Philippine Sea", "Bay of Bengal"],
         answer: "South China Sea"
       },
       {
         question: "What island chain is this?",
-        geojson: "json_files/philippines.json",
+        geojson: "../json_files/philippines.json",
         options: ["Philippines", "Indonesia", "Japan", "Maldives"],
         answer: "Philippines"
       },
       {
         question: "Identify this island",
-        geojson: "json_files/java.json",
+        geojson: "../json_files/java.json",
         options: ["Sumatra", "Borneo", "Java", "Sulawesi"],
         answer: "Java"
       },
       {
         question: "Which island is this?",
-        geojson: "json_files/borneo.json",
+        geojson: "../json_files/borneo.json",
         options: ["Borneo", "Sulawesi", "Papua New Guinea", "Madagascar"],
         answer: "Borneo"
       },
       {
         question: "What sea is highlighted?",
-        geojson: "json_files/Eastern_china_sea.json",
+        geojson: "../json_files/Eastern_china_sea.json",
         options: ["East China Sea", "South China Sea", "Sea of Japan", "Philippine Sea"],
         answer: "East China Sea"
       },
       {
         question: "Which ocean is this?",
-        geojson: "json_files/indian_ocean.json",
+        geojson: "../json_files/indian_ocean.json",
         options: ["Indian Ocean", "Pacific Ocean", "Atlantic Ocean", "Southern Ocean"],
         answer: "Indian Ocean"
       }

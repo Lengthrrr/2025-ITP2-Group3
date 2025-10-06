@@ -4,49 +4,151 @@
   <meta charset="UTF-8">
   <title>Module Viewer</title>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
-  <link rel="stylesheet" href="/style_home.css">
+  <link rel='stylesheet' href='../style.css'>
 </head>
-<body class="font-['Space_Grotesk'] bg-gray-900 text-white overflow-x-hidden">
+<body class="m-0 p-0 font-['Space_Grotesk'] overflow-x-hidden">
+<%
+  // Group modules by heading first (reuse this from your page)
+  const groupedModules = {};
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
+      groupedModules[m.module_heading].push(m);
+    });
+  }
+%>
 
-  <!-- Background Decorative Elements -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute top-20 left-10 w-96 h-96 bg-indigo-900/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-10 right-10 w-80 h-80 bg-purple-900/10 rounded-full blur-3xl"></div>
-    <div class="absolute top-40 right-20 w-64 h-64 bg-cyan-900/10 rounded-full blur-3xl"></div>
-  </div>
 
-  <!-- Navigation Bar -->
-  <nav class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-cyan-500/30 z-50">
-    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
-      <div class="text-xl font-medium bg-gradient-to-r from-indigo-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">The GIST</div>
-      <a href="/home" class="text-cyan-400 hover:text-white transition-colors">Home</a>
+<%
+  // Collect unique section headings dynamically
+  const sectionHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!sectionHeadings.includes(m.module_heading)) {
+        sectionHeadings.push(m.module_heading);
+      }
+    });
+  }
+
+  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
+  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+%>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation and Mobile Button -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center space-x-4">
+          <% sectionHeadings.forEach(h => { %>
+          <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" 
+               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
+               <%= h %>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
     </div>
-  </nav>
 
-  <main class="pt-24 container mx-auto px-6 space-y-12">
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <% sectionHeadings.forEach(h => { %>
+        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
+             <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</nav>
 
-    <!-- Module Header -->
-    <section class="text-center mb-8">
-      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+
+<!-- Module Header -->
+
+<section id="module-header" class="flex flex-col items-center justify-start m-0 p-12 w-full max-w-full">
+  <div class="w-full max-w-full text-center m-0 p-0">
+
+    <!-- Title -->
+    <div>
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent m-0">
         <%= module.module_title %>
       </h1>
-      <p class="text-gray-400 mt-2 max-w-2xl mx-auto">
-        <%= module.module_description %>
-      </p>
-      <div class="mt-4 text-sm text-gray-500">
-        <!-- <span class="mr-4">Type: <%= module.type %></span> -->
-        <!-- <span>Country: <%= module.country %></span> -->
+    </div>
+    <!-- Decorative Line -->
+    <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto my-1"></div>
+    <!-- Description -->
+<p class="text-gray-800 leading-tight text-lg m-0">
+      <%= module.module_description %>
+
+
+  <!-- Geemap Iframe Section -->
+    <iframe id="geemap-frame" src="" class="w-full h-[700px] my-5 py-0 border-0 rounded-xl shadow-lg"></iframe>
+
+  <!-- Back Button Below Main Section -->
+  <div class="mt-3 mb-6 text-center text-sm text-gray-500">
+    <a href="/student/course/<%= courseId %>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+  </div>
+    </p>
+  </div>
+</section>
+
+
+<%
+  // Collect unique headings dynamically for footer
+  const footerHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!footerHeadings.includes(m.module_heading)) {
+        footerHeadings.push(m.module_heading);
+      }
+    });
+  }
+%>
+
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center mb-4 md:mb-0">
+        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
       </div>
-    </section>
 
-    <!-- Geemap Iframe -->
-    <section>
-      <iframe id="geemap-frame" src="" class="w-full h-[600px] border-0 rounded-xl shadow-lg"></iframe>
-    </section>
+      <!-- Dynamic Links -->
+      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+        <% footerHeadings.forEach(h => { %>
+        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
+            <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</footer>
 
-  </main>
 
-  <!-- Scripts -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id') || '<%= module.module_id %>';

@@ -45,7 +45,7 @@
       <!-- Logo -->
       <div class="flex items-center">
         <div class="logo">
-          <span class="font-bold text-4xl text-white"><a href="/">MIP</a></span>
+            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
         </div>
       </div>
 
@@ -96,8 +96,9 @@
         <h1 class="landing-title">MIP, The GIST.</h1>
         <p class="landing-subtitle">Explore the Indo-Pacific and get ready to test your understanding!</p>
         <div class="landing-actions">
-          <button class="landing-btn outline">World Map</button>
-          <a href="IndoPacific.html" class="landing-btn solid">Indo-Pacific Map</a>
+          <button href="/student/module/1/7" class="landing-btn outline">World Map</button>
+          <!-- <a href="/student/module/1/7" class="landing-btn solid">Indo-Pacific Map</a> -->
+          <a class="landing-btn solid">Indo-Pacific Map</a>
         </div>
       </div>
       <div class="scroll-indicator" aria-hidden="true">
@@ -134,7 +135,7 @@
                         <div class="font-medium text-lg text-white"><%= m.module_title %></div>
                       </div>
                       <p class="text-gray-400 mb-4"><%= m.module_description %></p>
-                      <a href="/student/module/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">
+                      <a href="/student/module/<%= courseId %>/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">
                         More 
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -171,7 +172,7 @@
                   <div id="mod-<%= i %>-content" class="week-content-wrapper" aria-hidden="true">
                     <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
                       <p><%= m.module_description %></p>
-                      <a href="/student/module/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">
+                      <a href="/student/module/<%= courseId %>/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">
                         Explore 
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -207,8 +208,8 @@
               // Determine quiz URL based on first word
               const titleWords = m.module_title.split(' ');
               const firstWord = titleWords[0].toUpperCase();
-              let quizUrl = `/student/map_quiz/${m.module_id}`;
-              if (firstWord === 'MULTIPLE') quizUrl = `/student/multiple_quiz/${m.module_id}`;
+              let quizUrl = `/student/map_quiz/${courseId}/${m.module_id}`;
+              if (firstWord === 'MULTIPLE') quizUrl = `/student/multiple_quiz/${courseId}/${m.module_id}`;
               const displayTitle = titleWords.slice(1).join(' ') || m.module_title;
 
               // Extract Objective and How It Works
