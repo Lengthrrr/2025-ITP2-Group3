@@ -120,43 +120,33 @@
       </div>
     </section>
   </main>
-<%
-  // Collect unique headings dynamically for footer
-  const footerHeadings = [];
-  if (modules && modules.length > 0) {
-    modules.forEach(m => {
-      if (!footerHeadings.includes(m.module_heading)) {
-        footerHeadings.push(m.module_heading);
-      }
-    });
-  }
-%>
 
-<footer class="bg-black/60 border-t border-gray-800">
-  <div class="container mx-auto px-12 py-12">
-    <div class="flex flex-col md:flex-row justify-between items-center">
-      <!-- Logo -->
-      <div class="flex items-center mb-4 md:mb-0">
-        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
-        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
-      </div>
-
-      <!-- Dynamic Links -->
-      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
-        <% footerHeadings.forEach(h => { %>
-        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
-             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
-            <%= h %>
-          </a>
-        <% }) %>
+<!-- Footer -->
+  <footer class="background-color:rgba(0, 0, 0, 0.589) border-t border-gray-800">
+    <div class="container mx-auto px-12 py-12">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <!-- Plain MIP logo, no square or gradient -->
+          <div class="font-bold text-3xl mr-2">MIP</div>
+          <div class="text-xl font-medium flex items-center">The GIST</div>
+        </div>
+        <div class="flex justify-center mb-4 md:mb-0">
+          <a href="#home" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
+          <a href="#regional-maps" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a>
+          <a href="#course-schedule" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Course Schedule</a>
+          <a href="#study-tools" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Study Tools</a>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
   <!-- Copyright tag -->
   <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
     © 2025 MIP (Map the Indo Pacific). All rights reserved.
   </div>
+  <script>
+  const boatQuestions = <%- JSON.stringify(boatQuestions) %>;
+</script>
+
   <script src="../script.js" defer></script>
 </body>
 </html>

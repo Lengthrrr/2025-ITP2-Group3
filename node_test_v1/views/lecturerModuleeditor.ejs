@@ -2,139 +2,208 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Module Editor</title>
+  <title>Module Viewer</title>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
-  <link rel="stylesheet" href="/style_home.css">
+  <link rel='stylesheet' href='../../../student/module/style.css'>
 </head>
-<body class="font-['Space_Grotesk'] bg-gray-900 text-white overflow-x-hidden">
+<body class="m-0 p-0 font-['Space_Grotesk'] overflow-x-hidden">
+<%
+  // Group modules by heading first (reuse this from your page)
+  const groupedModules = {};
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
+      groupedModules[m.module_heading].push(m);
+    });
+  }
+%>
 
-  <!-- Background Decorative Elements -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="absolute top-20 left-10 w-96 h-96 bg-indigo-900/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-10 right-10 w-80 h-80 bg-purple-900/10 rounded-full blur-3xl"></div>
-    <div class="absolute top-40 right-20 w-64 h-64 bg-cyan-900/10 rounded-full blur-3xl"></div>
+
+<%
+  // Collect unique section headings dynamically
+  const sectionHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!sectionHeadings.includes(m.module_heading)) {
+        sectionHeadings.push(m.module_heading);
+      }
+    });
+  }
+
+  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
+  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+%>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation and Mobile Button -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center space-x-4">
+          <% sectionHeadings.forEach(h => { %>
+          <a href="/lecturer/course/<%= courseId %>#<%= formatId(h) %>" 
+               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
+               <%= h %>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <% sectionHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
+             <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
   </div>
+</nav>
 
-  <!-- Navigation Bar -->
-  <nav class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-cyan-500/30 z-50">
-    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
-      <div class="text-xl font-medium bg-gradient-to-r from-indigo-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">The GIST</div>
-      <a href="/home" class="text-cyan-400 hover:text-white transition-colors">Home</a>
+
+<!-- Module Header -->
+
+<section id="module-header" class="flex flex-col items-center justify-start m-0 p-12 w-full max-w-full">
+  <div class="w-full max-w-full text-center m-0 p-0">
+
+    <!-- Title -->
+    <div>
+      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent m-0">
+        <%= module.module_title %>
+      </h1>
     </div>
-  </nav>
+    <!-- Decorative Line -->
+    <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto my-1"></div>
+    <!-- Description -->
+<p class="text-gray-800 leading-tight text-lg m-0">
+      <%= module.module_description %>
 
-  <main class="pt-24 container mx-auto px-6 space-y-12">
 
-    <!-- Module Editor Header -->
-    <section class="text-center mb-8">
-      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Module Editor</h1>
-      <p class="text-gray-400 mt-2">Add markers, edit modules, and manage your maps</p>
-    </section>
+<!-- Upload new Geemap HTML -->
+<div class="my-4 p-4 bg-gray-300 rounded-lg border border-gray-300 max-w-xl mx-auto">
+  <h2 class="font-semibold text-gray-700 mb-2">Upload New Geemap</h2>
+  <form id="geemapUploadForm" enctype="multipart/form-data" class="flex flex-col gap-2">
+    <input type="file" name="geemapFile" accept=".html" required
+           class="block w-full text-gray-700 border border-gray-300 p-2 rounded" />
+    <button type="submit"
+            class="px-4 py-2 bg-[#7EA16B] text-white rounded hover:bg-[#617d52] w-32">
+      Upload
+    </button>
+  </form>
+  <div id="uploadMessage" class="text-sm text-gray-600 mt-2"></div>
+</div>
 
-    <!-- Mode Buttons -->
-    <div id="mode-buttons" class="flex gap-4 justify-center">
-      <button id="view-mode" class="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700 transition">View Mode</button>
-      <button id="place-mode" class="px-4 py-2 bg-gray-800 rounded hover:bg-gray-700 transition">Place Mode</button>
-      <button id="save-markers" class="px-4 py-2 bg-cyan-500 rounded hover:bg-cyan-400 transition">Save Markers</button>
+  <!-- Geemap Iframe Section -->
+    <iframe id="geemap-frame" src="" class="w-full h-[700px] my-5 py-0 border-0 rounded-xl shadow-lg"></iframe>
+
+  <!-- Back Button Below Main Section -->
+  <div class="mt-3 mb-6 text-center text-sm text-gray-500">
+    <a href="/lecturer/course/<%= courseId %>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+  </div>
+    </p>
+  </div>
+</section>
+
+
+<%
+  // Collect unique headings dynamically for footer
+  const footerHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!footerHeadings.includes(m.module_heading)) {
+        footerHeadings.push(m.module_heading);
+      }
+    });
+  }
+%>
+
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center mb-4 md:mb-0">
+        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
+      </div>
+
+      <!-- Dynamic Links -->
+      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+        <% footerHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
+            <%= h %>
+          </a>
+        <% }) %>
+      </div>
     </div>
+  </div>
+</footer>
 
-    <!-- Manual Marker Form -->
-    <section class="bg-gray-800/70 backdrop-blur-lg border border-indigo-500/20 p-6 rounded-xl max-w-xl mx-auto">
-      <h3 class="text-xl font-medium mb-4">Add Marker Manually</h3>
-      <form id="marker-form" class="space-y-4">
-        <input type="text" id="country" placeholder="Country" required class="w-full p-2 rounded bg-gray-900/50 border border-gray-700">
-        <input type="text" id="type" placeholder="Type" required class="w-full p-2 rounded bg-gray-900/50 border border-gray-700">
-        <input type="text" id="markerType" placeholder="Marker Type" required class="w-full p-2 rounded bg-gray-900/50 border border-gray-700">
-        <input type="number" id="latitude" step="any" placeholder="Latitude" class="w-full p-2 rounded bg-gray-900/50 border border-gray-700">
-        <input type="number" id="longitude" step="any" placeholder="Longitude" class="w-full p-2 rounded bg-gray-900/50 border border-gray-700">
-        <textarea id="description" rows="4" placeholder="Description" class="w-full p-2 rounded bg-gray-900/50 border border-gray-700" required></textarea>
-        <button type="submit" class="w-full py-2 bg-cyan-500 rounded hover:bg-cyan-400 transition">Send Marker</button>
-      </form>
-    </section>
 
-    <!-- Geemap Iframe -->
-    <section>
-      <iframe id="geemap-frame" src="" class="w-full h-[600px] border-0 rounded-xl shadow-lg"></iframe>
-    </section>
-
-  </main>
-
-  <!-- Scripts -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id') || '1';
+    const id = urlParams.get('id') || '<%= module.module_id %>';
     const iframe = document.getElementById('geemap-frame');
-    iframe.src = `/module/geemaps/geemap_id_${id}.html`;
-
-    let mode = 'view';
-    document.getElementById('view-mode').onclick = () => mode = 'view';
-    document.getElementById('place-mode').onclick = () => mode = 'place';
-
-    iframe.onload = () => {
-      const map = iframe.contentWindow._geemap_map;
-      if (!map) return console.error("Could not access the map object inside iframe.");
-      const markerLayer = L.layerGroup().addTo(map);
-      const markers = [];
-
-      function createEditablePopup(marker) {
-        const container = document.createElement('div');
-        container.className = 'marker-popup';
-        container.innerHTML = `
-          <label>Title: <input type="text" value="Marker"></label>
-          <label>Description: <textarea>Describe here</textarea></label>
-          <label>Type: <input type="text" value="Point"></label>
-          <button class="save-marker">Save</button>
-        `;
-        container.querySelector('.save-marker').onclick = () => {
-          const title = container.querySelector('input').value;
-          const desc = container.querySelector('textarea').value;
-          const type = container.querySelectorAll('input')[1].value || 'Point';
-          const latlng = marker.getLatLng();
-          markers.push({ title, desc, type, lat: latlng.lat, lng: latlng.lng });
-          alert('Marker saved!');
-        };
-        return container;
-      }
-
-      map.on('click', (e) => {
-        if (mode !== 'place') return;
-        const marker = L.marker(e.latlng, { draggable: true }).addTo(markerLayer);
-        marker.bindPopup(createEditablePopup(marker)).openPopup();
-      });
-
-      document.getElementById('save-markers').onclick = () => {
-        fetch('/save-markers', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(markers)
-        }).then(res => res.json())
-          .then(data => alert('Saved: ' + JSON.stringify(data)))
-          .catch(err => console.error(err));
-      };
-    };
-
-    document.getElementById('marker-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const markerData = {
-        moduleId: parseInt(id),
-        country: document.getElementById('country').value,
-        type: document.getElementById('type').value,
-        markerType: document.getElementById('markerType').value,
-        lat: parseFloat(document.getElementById('latitude').value),
-        lng: parseFloat(document.getElementById('longitude').value),
-        description: document.getElementById('description').value
-      };
-      fetch('/manual-marker', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(markerData)
-      })
-      .then(res => res.json())
-      .then(data => alert('Server received: ' + JSON.stringify(data)))
-      .catch(err => console.error(err));
-    });
+    iframe.src = `/module/geemaps/<%= courseId %>/${id}.html`;
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  const uploadForm = document.getElementById('geemapUploadForm');
+  const uploadMessage = document.getElementById('uploadMessage');
+  const moduleId = '<%= module.module_id %>';
+  const courseId = '<%= courseId %>';
+
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    uploadMessage.textContent = 'Uploading...';
+
+    const formData = new FormData(uploadForm);
+    formData.append('moduleId', moduleId);
+
+    try {
+        const res = await fetch('/lecturer/module/upload-geemap/<%= courseId %>/<%= module.module_id %>', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+          console.log(data)
+        uploadMessage.textContent = 'Upload successful! Reloading iframe...';
+          document.getElementById('geemap-frame').src = `/module/geemaps/${courseId}/${moduleId}.html?ts=${Date.now()}`;
+      } else {
+        uploadMessage.textContent = data.error || 'Upload failed';
+      }
+    } catch (err) {
+      console.error(err);
+      uploadMessage.textContent = 'Network error';
+    }
+  });
+</script>
+
 </body>
 </html>
-

@@ -356,25 +356,27 @@ document.addEventListener("DOMContentLoaded", () => {
 // ---------------------------
 // Boat Quiz Game
 // ---------------------------
-const boatQuestions = [
-  {
-    question: "Which ocean borders East Africa?",
-    options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Southern Ocean"],
-    answer: "Indian Ocean"
-  },
-  {
-    question: "Which country is NOT in South Asia?",
-    options: ["Nepal", "Bhutan", "Thailand", "Sri Lanka"],
-    answer: "Thailand"
-  },
-  {
-    question: "What is the capital of Indonesia?",
-    options: ["Bangkok", "Jakarta", "Kuala Lumpur", "Manila"],
-    answer: "Jakarta"
-  }
-];
+// const boatQuestions = [
+//   {
+//     question: "Which ocean borders East Africa?",
+//     options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Southern Ocean"],
+//     answer: "Indian Ocean"
+//   },
+//   {
+//     question: "Which country is NOT in South Asia?",
+//     options: ["Nepal", "Bhutan", "Thailand", "Sri Lanka"],
+//     answer: "Thailand"
+//   },
+//   {
+//     question: "What is the capital of Indonesia?",
+//     options: ["Bangkok", "Jakarta", "Kuala Lumpur", "Manila"],
+//     answer: "Jakarta"
+//   }
+// ];
+//
 
 let qIndex = 0;        // question index
+
 let boatPosition = 0;  // boat progress
 let boatScore = 0;     // correct answers
 let timerInterval;
@@ -425,10 +427,12 @@ function loadBoatQuestion() {
   let q = boatQuestions[qIndex];
   boatQuestionEl.textContent = q.question;
   boatOptionsEl.innerHTML = "";
-  // ensure score display stays in sync
   updateBoatScoreDisplay();
 
-  q.options.forEach(opt => {
+  // Shuffle options before rendering
+  const shuffledOptions = shuffle([...q.options]);
+
+  shuffledOptions.forEach(opt => {
     const btn = document.createElement("button");
     btn.textContent = opt;
     btn.className = "bg-gray-700 text-white px-3 py-2 rounded-lg hover:bg-[#7EA16B] transition";
@@ -440,6 +444,15 @@ function loadBoatQuestion() {
   boatFeedbackEl.style.color = ""; // reset color each question
   boatNextBtn.classList.add("hidden");
   startTimer();
+}
+
+// Add this shuffle helper if it doesn’t already exist
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function updateBoatPosition() {

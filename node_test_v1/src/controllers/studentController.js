@@ -30,26 +30,66 @@ exports.getMapQuiz = (req, res) => {
 exports.getMultipleQuiz = (req, res) => {
   const moduleId = req.params.moduleId; // expecting route: /student/module/:moduleId
   const courseId = req.params.courseId; // expecting route: /student/module/:moduleId
- 
-  // Verify lecturer has access to this course
-      console.log("Selecting all from module");
-      console.log(courseId);
-    // Fetch modules for this course
-    const sql = `SELECT * FROM module WHERE course_id = ?`;
 
-    db.all(sql, [courseId], (err2, modules) => {
-      if (err2) {
-        console.error(err2);
-        // return res.render("lecturerDashboard", {
-        //   modules: [],
-        //   error: "Failed to load modules",
-        // });
+  console.log("Selecting all from module");
+  console.log(courseId);
+
+  // Fetch all modules for this course
+  const sqlModules = `SELECT * FROM module WHERE course_id = ?`;
+
+  db.all(sqlModules, [courseId], (err2, modules) => {
+    if (err2) {
+      console.error("Error fetching modules:", err2);
+      return res.render("studentMultipleQuiz", {
+        courseId,
+        moduleId,
+        modules: [],
+        boatQuestions: [],
+        error: "Failed to load modules",
+      });
+    }
+
+    console.log("Modules:");
+    console.log(modules);
+
+    // Fetch all multiple choice questions for this module
+    const sqlQuestions = `SELECT * FROM multiple_choice_question WHERE module_id = ?`;
+
+    db.all(sqlQuestions, [moduleId], (errQuestions, questions) => {
+      if (errQuestions) {
+        console.error("Error fetching questions:", errQuestions);
+        return res.render("studentMultipleQuiz", {
+          courseId,
+          moduleId,
+          modules,
+          boatQuestions: [],
+          error: "Failed to load questions",
+        });
       }
-        console.log("mods")
-    console.log(modules);   
-    res.render("studentMultipleQuiz", {courseId, moduleId, modules})
+
+      // Transform questions into the same format as your front-end expects
+      const boatQuestions = questions.map((q) => ({
+        question: q.question_text,
+        options: [
+          q.correct_answer,
+          q.incorrect_answer_one,
+          q.incorrect_answer_two,
+          q.incorrect_answer_three,
+        ],
+        answer: q.correct_answer,
+      }));
+
+      // Render template with modules + questions
+      res.render("studentMultipleQuiz", {
+        courseId,
+        moduleId,
+        modules,
+        boatQuestions, // new
+        error: null,
+      });
+    });
   });
-}
+};
 
 exports.getModule = (req, res) => {
   const moduleId = req.params.moduleId; // expecting route: /student/module/:moduleId

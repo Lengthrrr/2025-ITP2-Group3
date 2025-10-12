@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map the Indo-Pacific</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link rel='stylesheet' href='../../../student/multiple_quiz/style.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
+</head>
+
+<body>
+<%
+  // Group modules by heading first (reuse this from your page)
+  const groupedModules = {};
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
+      groupedModules[m.module_heading].push(m);
+    });
+  }
+%>
+
+
+
+
+<%
+  // Collect unique section headings dynamically
+  const sectionHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!sectionHeadings.includes(m.module_heading)) {
+        sectionHeadings.push(m.module_heading);
+      }
+    });
+  }
+
+  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
+  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+%>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+            <span class="font-bold text-4xl text-white"><a href="/lecturer/course/<%= courseId %>">MIP</a></span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation and Mobile Button -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center space-x-4">
+          <% sectionHeadings.forEach(h => { %>
+          <a href="/lecturer/course/<%= courseId %>#<%= formatId(h) %>" 
+               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
+               <%= h %>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <% sectionHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
+             <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section id="edit-quiz-section" class="py-8">
+    <div class="mx-auto px-4 w-full max-w-3xl">
+      <div id="edit-quiz" class="relative bg-gray-900/70 border border-[#1C3144]/30 p-6 rounded-xl shadow-xl">
+        <h1 class="text-2xl font-bold text-white mb-6 text-center">Edit Quiz Questions</h1>
+
+        <form action="/lecturer/course/<%= courseId %>/modules/<%= module.module_id %>/update-questions" method="POST">
+          <% questions.forEach((q, index) => { %>
+<div class="mb-6 bg-gray-800/50 p-4 rounded-lg question-block">
+  <label class="block text-white font-semibold mb-1" for="question-<%= index %>">Question <%= index + 1 %>:</label>
+  <input 
+    type="text" 
+    name="questions[<%= index %>][text]" 
+    id="question-<%= index %>" 
+    value="<%= q.text %>" 
+    class="w-full p-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/50 mb-2"
+  />
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <% q.options.forEach((opt, optIndex) => { %>
+              <div>
+<label class="text-gray-300 text-sm mb-1" for="option-<%= index %>-<%= optIndex %>">
+  <%= optIndex === 0 ? "Correct Answer" : `Incorrect Answer ${optIndex}` %>:
+</label>
+                <input 
+                  type="text" 
+                  name="questions[<%= index %>][options][<%= optIndex %>]" 
+                  id="option-<%= index %>-<%= optIndex %>" 
+                  value="<%= opt %>" 
+                  class="w-full p-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/50"
+                />
+              </div>
+              <% }) %>
+            </div>
+
+            <!-- <label class="block text-gray-300 text-sm mt-2" for="correct-<%= index %>">Correct Answer (option number):</label> -->
+            <!-- <input  -->
+            <!--   type="number"  -->
+            <!--   name="questions[<%= index %>][correct]"  -->
+            <!--   id="correct-<%= index %>"  -->
+            <!--   value="<%= q.correct %>"  -->
+            <!--   min="1"  -->
+            <!--   max="<%= q.options.length %>"  -->
+            <!--   class="w-20 p-2 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/50" -->
+            <!-- /> -->
+          </div>
+          <% }) %>
+  <div class="flex justify-between mt-4">
+    <button type="button" id="add-question-btn" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500">Add New Question</button>
+  </div>
+          <div class="flex justify-center mt-6">
+            <button type="submit" class="bg-[#7EA16B] text-white px-6 py-3 rounded-lg hover:bg-[#617d52] transition font-semibold shadow-md">
+              Save Changes
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-6 flex justify-between text-sm text-gray-500">
+          <a href="/lecturer/course/<%= courseId %>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<%
+  // Collect unique headings dynamically for footer
+  const footerHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!footerHeadings.includes(m.module_heading)) {
+        footerHeadings.push(m.module_heading);
+      }
+    });
+  }
+%>
+
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center mb-4 md:mb-0">
+        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
+      </div>
+
+      <!-- Dynamic Links -->
+      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+        <% footerHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
+            <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</footer>
+  <!-- Copyright tag -->
+  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
+    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+  </div>
+  <script src="../../../student/multiple_quiz/script.js" defer></script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const addQuestionBtn = document.getElementById("add-question-btn");
+  const questionsContainer = document.querySelector("#edit-quiz form");
+
+  addQuestionBtn.addEventListener("click", () => {
+    const questionBlocks = questionsContainer.querySelectorAll(".question-block");
+    const index = questionBlocks.length; // new question index
+
+    // Create a new question div
+    const newQuestionDiv = document.createElement("div");
+    newQuestionDiv.classList.add("mb-6", "bg-gray-800/50", "p-4", "rounded-lg", "question-block");
+    newQuestionDiv.dataset.index = index;
+
+    newQuestionDiv.innerHTML = `
+          <label class="block text-white font-semibold mb-1" for="question-${index}">Question ${index + 1}:</label>
+      <input type="text" name="questions[${index}][text]" id="question-${index}" class="w-full p-2 rounded-md bg-gray-700 text-white mb-2" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="text-gray-300 text-sm mb-1" for="option-${index}-0">Correct Answer:</label>
+          <input type="text" name="questions[${index}][options][0]" id="option-${index}-0" class="w-full p-2 rounded-md bg-gray-700 text-white"/>
+        </div>
+        <div>
+          <label class="text-gray-300 text-sm mb-1" for="option-${index}-1">Incorrect Answer 1:</label>
+          <input type="text" name="questions[${index}][options][1]" id="option-${index}-1" class="w-full p-2 rounded-md bg-gray-700 text-white"/>
+        </div>
+        <div>
+          <label class="text-gray-300 text-sm mb-1" for="option-${index}-2">Incorrect Answer 2:</label>
+          <input type="text" name="questions[${index}][options][2]" id="option-${index}-2" class="w-full p-2 rounded-md bg-gray-700 text-white"/>
+        </div>
+        <div>
+          <label class="text-gray-300 text-sm mb-1" for="option-${index}-3">Incorrect Answer 3:</label>
+          <input type="text" name="questions[${index}][options][3]" id="option-${index}-3" class="w-full p-2 rounded-md bg-gray-700 text-white"/>
+        </div>
+      </div>
+    `;
+
+    // Insert the new question before the buttons container
+    const buttonsContainer = addQuestionBtn.parentElement;
+    questionsContainer.insertBefore(newQuestionDiv, buttonsContainer);
+  });
+});
+
+
+
+  </script>
+</body>
+
+</html>
