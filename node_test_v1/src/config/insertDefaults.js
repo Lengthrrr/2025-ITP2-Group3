@@ -293,6 +293,99 @@ async function insertDefaults() {
         );
         console.log(`✅ Ensured module "${mod.name}"`);
     }
+
+    const defaultMAPQuestions = [
+        {
+            moduleTitle: "MAP MAP QUIZ",
+            questions: [
+                {
+                    question_text: "Which bay is highlighted?",
+                    correct_answer: "Bay of Bengal",
+                    incorrect_answer_one: "Bay of Biscay",
+                    incorrect_answer_two: "Brunei Bay",
+                    incorrect_answer_three: "Baffin Bay",
+                },
+                {
+                    question_text: "Which island is highlighted",
+                    correct_answer: "Sri Lanka",
+                    incorrect_answer_one: "Madagascar",
+                    incorrect_answer_two: "Sumatra",
+                    incorrect_answer_three: "Taiwan",
+                },
+                {
+                    question_text: "Which sea is this?",
+                    correct_answer: "South China Sea",
+                    incorrect_answer_one: "East China Sea",
+                    incorrect_answer_two: "Philippine Sea",
+                    incorrect_answer_three: "Bay of Bengal",
+                },
+                {
+                    question_text: "What island chain is this?",
+                    correct_answer: "Philippines",
+                    incorrect_answer_one: "Indonesia",
+                    incorrect_answer_two: "Japan",
+                    incorrect_answer_three: "Maldives",
+                },
+                {
+                    question_text: "Identify this island",
+                    correct_answer: "Java",
+                    incorrect_answer_one: "Borneo",
+                    incorrect_answer_two: "Sumatra",
+                    incorrect_answer_three: "Sulawesi",
+                },
+                {
+                    question_text: "Which island is this?",
+                    correct_answer: "Borneo",
+                    incorrect_answer_one: "Sulawesi",
+                    incorrect_answer_two: "Papua New Guinea",
+                    incorrect_answer_three: "Madagascar",
+                },
+                {
+                    question_text: "What sea is highlighted?",
+                    correct_answer: "East China Sea",
+                    incorrect_answer_one: "South China Sea",
+                    incorrect_answer_two: "Sea of Japan",
+                    incorrect_answer_three: "Philippine Sea",
+                },
+                {
+                    question_text: "Which ocean is this?",
+                    correct_answer: "Indian Ocean",
+                    incorrect_answer_one: "Pacific Ocean",
+                    incorrect_answer_two: "Atlantic Ocean",
+                    incorrect_answer_three: "Southern Ocean",
+                },
+            ],
+        },
+    ];
+
+    for (const quiz of defaultMAPQuestions) {
+        // Get the module_id from the module table
+        const moduleRow = await getAsync(
+            `SELECT module_id FROM module WHERE module_title = ? AND course_id = ?`,
+            [quiz.moduleTitle, 1],
+        );
+        if (!moduleRow) continue;
+
+        const moduleId = moduleRow.module_id;
+
+        for (const q of quiz.questions) {
+            await runAsync(
+                `INSERT OR IGNORE INTO multiple_choice_question 
+       (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+                [
+                    moduleId,
+                    q.question_text,
+                    q.correct_answer,
+                    q.incorrect_answer_one,
+                    q.incorrect_answer_two,
+                    q.incorrect_answer_three,
+                ],
+            );
+            console.log(`✅ Inserted question for module "${quiz.moduleTitle}"`);
+        }
+    }
+
     const defaultQuestions = [
         {
             moduleTitle: "MULTIPLE BOAT QUIZ",

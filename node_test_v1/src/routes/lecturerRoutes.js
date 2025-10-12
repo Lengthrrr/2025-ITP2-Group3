@@ -72,6 +72,7 @@ router.get(
     requireLecturer,
     lecturerController.getMultipleQuiz,
 );
+router.post('/lecturer/moduleId/:moduleId/courseId/:courseId/save-map-questions', requireLecturer, lecturerController.saveMapQuestions);
 
 
 // --- Module Management API (AJAX from frontend) ---

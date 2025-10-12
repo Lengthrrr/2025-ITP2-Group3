@@ -659,5 +659,12 @@ button:focus {
   background-color: rgba(31,41,55,0.70);
 }
 
+/* Loader circle with spinning animation */
+.loader {
+  border-top-color: #7EA16B; /* Highlight color */
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
 
 

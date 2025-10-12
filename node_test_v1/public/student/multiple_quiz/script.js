@@ -356,24 +356,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ---------------------------
 // Boat Quiz Game
 // ---------------------------
-// const boatQuestions = [
-//   {
-//     question: "Which ocean borders East Africa?",
-//     options: ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Southern Ocean"],
-//     answer: "Indian Ocean"
-//   },
-//   {
-//     question: "Which country is NOT in South Asia?",
-//     options: ["Nepal", "Bhutan", "Thailand", "Sri Lanka"],
-//     answer: "Thailand"
-//   },
-//   {
-//     question: "What is the capital of Indonesia?",
-//     options: ["Bangkok", "Jakarta", "Kuala Lumpur", "Manila"],
-//     answer: "Jakarta"
-//   }
-// ];
-//
 
 let qIndex = 0;        // question index
 

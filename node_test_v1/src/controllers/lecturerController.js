@@ -6,8 +6,96 @@ const { runCreateGeemap } = require("../services/pythonService");
 
 // ---------- RENDER PAGES ----------
 // exports.getModule = (req, res) => res.render("module", { error: null });
-exports.getMapQuiz = (req, res) =>
-    res.render("lecturerMapQuiz", { error: null });
+
+
+exports.getMapQuiz = (req, res) => {
+    const moduleId = req.params.moduleId;
+    const courseId = req.params.courseId;
+
+    // 1️⃣ Fetch the current module
+    const sqlModule = `SELECT * FROM module WHERE module_id = ?`;
+
+    db.get(sqlModule, [moduleId], (err, module) => {
+        if (err) {
+            console.error("Error fetching module:", err);
+            return res.render("lecturerMapQuiz", {
+                module: null,
+                modules: [],
+                moduleId,
+                courseId,
+                questions: [],
+                error: "Failed to load module",
+            });
+        }
+
+        if (!module) {
+            return res.render("lecturerMapQuiz", {
+                module: null,
+                modules: [],
+                moduleId,
+                courseId,
+                questions: [],
+                error: "Module not found",
+            });
+        }
+
+        // 2️⃣ Fetch all modules for this course
+        const sqlAllModules = `SELECT * FROM module WHERE course_id = ?`;
+
+        db.all(sqlAllModules, [courseId], (errModules, allModules) => {
+            if (errModules) {
+                console.error("Error fetching all modules:", errModules);
+                return res.render("lecturerMapQuiz", {
+                    module,
+                    modules: [],
+                    moduleId,
+                    courseId,
+                    questions: [],
+                    error: "Failed to load modules",
+                });
+            }
+
+            // 3️⃣ Fetch all questions for the current module
+            const sqlQuestions = `SELECT * FROM multiple_choice_question WHERE module_id = ?`;
+
+            db.all(sqlQuestions, [moduleId], (errQuestions, questions) => {
+                if (errQuestions) {
+                    console.error("Error fetching questions:", errQuestions);
+                    return res.render("lecturerMapQuiz", {
+                        module,
+                        modules: allModules,
+                        moduleId,
+                        courseId,
+                        questions: [],
+                        error: "Failed to load questions",
+                    });
+                }
+
+                // 4️⃣ Transform questions for the editor
+                const formattedQuestions = questions.map((q) => ({
+                    text: q.question_text,
+                    options: [
+                        q.correct_answer,
+                        q.incorrect_answer_one,
+                        q.incorrect_answer_two,
+                        q.incorrect_answer_three,
+                    ],
+                    correct: 1, // index of correct answer (1-based)
+                }));
+
+                console.log(formattedQuestions)
+                res.render("lecturerMapQuiz", {
+                    module,
+                    modules: allModules, // ✅ send all modules for sidebar/nav
+                    moduleId,
+                    courseId,
+                    questions: formattedQuestions,
+                    error: null,
+                });
+            });
+        });
+    });
+};
 
 exports.updateMultipleChoiceQuestions = async (req, res) => {
     const moduleId = req.params.moduleId;
@@ -23,13 +111,17 @@ exports.updateMultipleChoiceQuestions = async (req, res) => {
         // 1️⃣ Delete existing questions for this module
         console.log(`Deleting existing questions for module ${moduleId}...`);
         await new Promise((resolve, reject) => {
-            db.run(`DELETE FROM multiple_choice_question WHERE module_id = ?`, [moduleId], function(err) {
-                if(err) reject(err);
-                else {
-                    console.log(`✅ Deleted ${this.changes} existing questions.`);
-                    resolve();
-                }
-            });
+            db.run(
+                `DELETE FROM multiple_choice_question WHERE module_id = ?`,
+                [moduleId],
+                function(err) {
+                    if (err) reject(err);
+                    else {
+                        console.log(`✅ Deleted ${this.changes} existing questions.`);
+                        resolve();
+                    }
+                },
+            );
         });
 
         // 2️⃣ Insert all new questions
@@ -51,12 +143,12 @@ exports.updateMultipleChoiceQuestions = async (req, res) => {
                 q.options[0], // correct answer
                 q.options[1],
                 q.options[2],
-                q.options[3]
+                q.options[3],
             ]);
         }
 
-        stmt.finalize(err => {
-            if(err) console.error("Error finalizing insert:", err);
+        stmt.finalize((err) => {
+            if (err) console.error("Error finalizing insert:", err);
             else console.log("✅ All questions inserted successfully.");
         });
 
@@ -68,7 +160,7 @@ exports.updateMultipleChoiceQuestions = async (req, res) => {
 };
 
 exports.getMultipleQuiz = (req, res) => {
-    const moduleId = req.params.moduleId; 
+    const moduleId = req.params.moduleId;
     const courseId = req.params.courseId;
 
     // 1️⃣ Fetch the current module
@@ -131,15 +223,15 @@ exports.getMultipleQuiz = (req, res) => {
                 }
 
                 // 4️⃣ Transform questions for the editor
-                const formattedQuestions = questions.map(q => ({
+                const formattedQuestions = questions.map((q) => ({
                     text: q.question_text,
                     options: [
                         q.correct_answer,
                         q.incorrect_answer_one,
                         q.incorrect_answer_two,
-                        q.incorrect_answer_three
+                        q.incorrect_answer_three,
                     ],
-                    correct: 1 // index of correct answer (1-based)
+                    correct: 1, // index of correct answer (1-based)
                 }));
 
                 res.render("lecturerMultipleQuiz", {
@@ -148,7 +240,7 @@ exports.getMultipleQuiz = (req, res) => {
                     moduleId,
                     courseId,
                     questions: formattedQuestions,
-                    error: null
+                    error: null,
                 });
             });
         });
@@ -587,4 +679,128 @@ exports.createCourse = (req, res) => {
             },
         );
     });
+};
+
+
+// Save map questions controller
+exports.saveMapQuestions = (req, res) => {
+    const { moduleId, courseId } = req.params;
+    const { questions } = req.body;
+
+    console.log("=== saveMapQuestions called ===");
+    console.log("moduleId:", moduleId, "courseId:", courseId);
+    console.log("Received questions:", questions);
+
+    if (!questions || !Array.isArray(questions)) {
+        console.error("Invalid questions data");
+        return res.status(400).json({ error: 'Invalid questions data' });
+    }
+
+    try {
+        // Step 1: Fetch existing questions to preserve titles if needed
+        db.all(`SELECT * FROM multiple_choice_question WHERE module_id = ? ORDER BY question_id ASC`, [moduleId], (err, existingQuestions) => {
+            if (err) {
+                console.error("Error fetching existing questions:", err);
+                return res.status(500).json({ error: "Failed to fetch existing questions" });
+            }
+            console.log("Existing questions fetched:", existingQuestions.length);
+
+            // Step 2: Delete old questions
+            db.run(`DELETE FROM multiple_choice_question WHERE module_id = ?`, [moduleId], function(err) {
+                if (err) {
+                    console.error("Error deleting old questions:", err);
+                    return res.status(500).json({ error: 'Failed to delete old questions' });
+                }
+                console.log(`Deleted ${this.changes} old questions`);
+
+                // Step 3: Insert new questions
+                console.log("Inserting new questions into DB...");
+                const insertStmt = db.prepare(`
+                    INSERT INTO multiple_choice_question
+                    (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                `);
+
+                questions.forEach((q, idx) => {
+                    // Preserve existing title if client sends null
+                    const oldQuestion = existingQuestions[idx] || {};
+                    const title = q.question;
+
+                    const correct = q.options[q.correct];
+                    const incorrect = q.options.filter((_, i) => i !== q.correct);
+
+                    console.log(`Inserting question ${idx}: "${title}"`);
+                    console.log("Correct:", correct, "Incorrect:", incorrect);
+
+                    insertStmt.run(
+                        moduleId,
+                        title,
+                        incorrect[0] || "",
+                        incorrect[1] || "",
+                        incorrect[2] || "",
+                        incorrect[3] || "",
+                        (err) => {
+                            if (err) console.error("Error inserting question:", err);
+                        }
+                    );
+                });
+
+                insertStmt.finalize(() => {
+                    console.log("All questions inserted into DB");
+
+                    // Step 4: Save/append polygons
+                    const geojsonDir = path.join(__dirname, '../../public/', 'student', 'map_quiz', 'geojson', courseId, moduleId);
+                    if (!fs.existsSync(geojsonDir)) {
+                        fs.mkdirSync(geojsonDir, { recursive: true });
+                        console.log("Created geojson directory:", geojsonDir);
+                    }
+
+                    questions.forEach((q, index) => {
+                        if (!q.geojson) {
+                            console.log(`Question ${index} has no polygon, skipping`);
+                            return;
+                        }
+
+                        const geojsonPath = path.join(geojsonDir, `${index}.json`);
+                        console.log(`Processing polygon for question ${index}: ${geojsonPath}`);
+
+                        let existingGeojson = null;
+
+                        if (fs.existsSync(geojsonPath)) {
+                            try {
+                                existingGeojson = JSON.parse(fs.readFileSync(geojsonPath, 'utf8'));
+                                console.log(`Loaded existing GeoJSON for question ${index}`);
+
+                                if (existingGeojson.type === 'FeatureCollection') {
+                                    existingGeojson.features.push(q.geojson);
+                                    console.log("Appended new feature to existing FeatureCollection");
+                                } else {
+                                    existingGeojson = {
+                                        type: 'FeatureCollection',
+                                        features: [existingGeojson, q.geojson]
+                                    };
+                                    console.log("Wrapped existing GeoJSON into FeatureCollection");
+                                }
+                            } catch (e) {
+                                console.warn(`Failed to parse existing GeoJSON for question ${index}, overwriting`, e);
+                                existingGeojson = q.geojson;
+                            }
+                        } else {
+                            console.log(`No existing GeoJSON for question ${index}, creating new`);
+                            existingGeojson = q.geojson;
+                        }
+
+                        fs.writeFileSync(geojsonPath, JSON.stringify(existingGeojson, null, 2), 'utf8');
+                        console.log(`Saved GeoJSON for question ${index}`);
+                    });
+
+                    console.log("=== saveMapQuestions completed successfully ===");
+                    return res.json({ message: 'Questions saved and polygons updated successfully' });
+                });
+            });
+        });
+    } catch (err) {
+        console.error('Unexpected error saving questions:', err);
+        return res.status(500).json({ error: 'Failed to save questions' });
+    }
 };

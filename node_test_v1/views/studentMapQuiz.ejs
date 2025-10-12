@@ -13,7 +13,7 @@
 <script
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 ></script>
-  <link rel='stylesheet' href='../style.css'>
+  <link rel='stylesheet' href='../../../student/map_quiz/style.css'>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
 </head>
 
@@ -53,7 +53,7 @@
       <!-- Logo -->
       <div class="flex items-center">
         <div class="logo">
-            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
+            <span class="font-bold text-4xl text-white"><a href="/lecturer/course/<%= courseId %>">MIP</a></span>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
         <!-- Desktop Nav Links -->
         <div class="hidden md:flex items-center space-x-4">
           <% sectionHeadings.forEach(h => { %>
-          <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" 
+          <a href="/lecturer/course/<%= courseId %>#<%= formatId(h) %>" 
                class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
                <%= h %>
             </a>
@@ -86,7 +86,7 @@
     <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
       <div class="pt-2 pb-4 space-y-1">
         <% sectionHeadings.forEach(h => { %>
-        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
              class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
              <%= h %>
           </a>
@@ -108,7 +108,13 @@
           <div class="md:flex md:items-start md:gap-6">
             <!-- Left: Map Only -->
             <div class="md:flex-1">
-              <div id="quiz-map" class="w-full h-96 rounded-xl mb-2"></div>
+              <div id="quiz-map" class="w-full h-96 rounded-xl mb-2">
+
+                    <div id="map-loading" class="absolute inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="loader border-4 border-t-4 border-white rounded-full w-12 h-12 animate-spin"></div>
+  </div>
+
+              </div>
             </div>
             <!-- Right: Question + Options Panel -->
             <aside class="md:w-80 lg:w-96 border border-[#7EA16B]/15 rounded-xl p-5 bg-gray-900/60 backdrop-blur-sm flex flex-col">
@@ -122,7 +128,7 @@
           </div>
 
           <div class="mt-6 flex justify-between text-sm text-darkgray-500">
-              <a href="/student/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+              <a href="/lecturer/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
           </div>
         </div>
       </div>
@@ -154,7 +160,7 @@
       <!-- Dynamic Links -->
       <div class="flex flex-wrap justify-center mb-4 md:mb-0">
         <% footerHeadings.forEach(h => { %>
-        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
              class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
             <%= h %>
           </a>
@@ -169,6 +175,22 @@
   </div>
   <script src='https://cdn.tailwindcss.com'></script>
   <link rel="stylesheet" href="../style.css">
-  <script src="../script.js"></script>
+
+<script>
+  const rawQuestions = <%- JSON.stringify(questions) %>;
+  const courseId = "<%= courseId %>";
+  const moduleId = "<%= moduleId %>";
+
+  const boatQuestions = rawQuestions.map((q, index) => ({
+    question: q.text,  // copy the question text
+    geojson: `json_files/${courseId}/${moduleId}/${index + 1}.geojson`,  // build geojson path
+    options: q.options,  // same options
+    answer: q.options[0] // first option is always correct
+  }));
+
+  console.log("raw", rawQuestions);
+  console.log("Boat Questions:", boatQuestions);
+</script>
+  <script src="../../../student/map_quiz/script.js"></script>
 </body>
 </html>

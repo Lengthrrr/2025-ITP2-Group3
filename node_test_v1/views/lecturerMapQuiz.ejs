@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map the Indo-Pacific</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+<!-- Leaflet Draw CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+<!-- Leaflet Draw JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+  <link rel='stylesheet' href='../../../student/map_quiz/style.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
+</head>
+
+<body>
+<%
+  // Group modules by heading first (reuse this from your page)
+  const groupedModules = {};
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
+      groupedModules[m.module_heading].push(m);
+    });
+  }
+%>
+
+
+
+
+<%
+  // Collect unique section headings dynamically
+  const sectionHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!sectionHeadings.includes(m.module_heading)) {
+        sectionHeadings.push(m.module_heading);
+      }
+    });
+  }
+
+  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
+  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+%>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="logo">
+            <span class="font-bold text-4xl text-white"><a href="/lecturer/course/<%= courseId %>">MIP</a></span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation and Mobile Button -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center space-x-4">
+          <% sectionHeadings.forEach(h => { %>
+          <a href="/lecturer/course/<%= courseId %>#<%= formatId(h) %>" 
+               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
+               <%= h %>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
+      <div class="pt-2 pb-4 space-y-1">
+        <% sectionHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
+             <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  <!-- Main Content Sections -->
+  <main>
+    <!-- Map Quiz Section (compact) -->
+    <section id="contact" class="py-3">
+      <div class="container mx-auto px-4">
+        <div id="map-quiz" class="max-w-5xl mx-auto bg-gray-900/70 border border-[#7EA16B]/20 p-8 rounded-2xl shadow-2xl">
+          <h1 class="text-2xl font-semibold text-white mb-2" style="text-align: center;">Map Quiz</h1>
+          <p class="text-sm text-gray-400 mb-6" style="text-align: center;">Identify the highlighted Indo-Pacific region.</p>
+
+          <div class="md:flex md:items-start md:gap-6">
+            <!-- Left: Map Only -->
+            <div class="md:flex-1">
+              <div id="quiz-map" class="w-full h-96 rounded-xl mb-2">
+
+                    <div id="map-loading" class="absolute inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="loader border-4 border-t-4 border-white rounded-full w-12 h-12 animate-spin"></div>
+  </div>
+
+              </div>
+            </div>
+            <!-- Right: Question + Options Panel -->
+            <aside class="md:w-80 lg:w-96 border border-[#7EA16B]/15 rounded-xl p-5 bg-gray-900/60 backdrop-blur-sm flex flex-col">
+              <!-- Question moved here above heading -->
+<input type="text" id="quiz-question" 
+       class="text-white mb-4 text-sm font-medium min-h-[2.25rem] w-full bg-gray-800 border border-gray-700 rounded-lg px-2 py-1"
+       value="">
+              <h4 class="text-xs font-semibold tracking-wider text-[#7EA16B] mb-2 uppercase">Choose an Answer</h4>
+              <div id="quiz-options" class="flex flex-col gap-2 mb-3"></div>
+              <p id="quiz-feedback" class="text-white font-semibold text-sm min-h-[1.5rem] mb-4"></p>
+              <button id="delete-btn" class="invisible bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700 mt-2">Delete Question</button>
+<div class="flex justify-between mt-4">
+  <!-- Back button (smaller, grey-green) -->
+  <button id="back-btn" class="invisible bg-gray-700 text-green-400 px-3 py-0 m-0 rounded-lg hover:bg-gray-600 transition text-sm">
+    Go Back
+  </button>
+
+  <!-- Next button (larger, bright green) -->
+  <button id="next-btn" class="bg-[#7EA16B] text-white px-4 py-2 rounded-lg hover:bg-[#617d52] transition text-sm">
+    Next Question
+  </button>
+</div>
+
+            </aside>
+          </div>
+
+          <div class="mt-6 flex justify-between text-sm text-darkgray-500">
+              <a href="/lecturer/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+<!-- Footer -->
+<%
+  // Collect unique headings dynamically for footer
+  const footerHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!footerHeadings.includes(m.module_heading)) {
+        footerHeadings.push(m.module_heading);
+      }
+    });
+  }
+%>
+
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center mb-4 md:mb-0">
+        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
+      </div>
+
+      <!-- Dynamic Links -->
+      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+        <% footerHeadings.forEach(h => { %>
+        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
+            <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</footer>
+  <!-- Copyright tag -->
+  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
+    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+  </div>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link rel="stylesheet" href="../style.css">
+
+<script>
+  const rawQuestions = <%- JSON.stringify(questions) %>;
+  const courseId = "<%= courseId %>";
+  const moduleId = "<%= moduleId %>";
+
+  const boatQuestions = rawQuestions.map((q, index) => ({
+    question: q.text,  // copy the question text
+    geojson: `json_files/${courseId}/${moduleId}/${index + 1}.geojson`,  // build geojson path
+    options: q.options,  // same options
+    answer: q.options[0] // first option is always correct
+  }));
+
+  console.log("raw", rawQuestions);
+  console.log("Boat Questions:", boatQuestions);
+</script>
+<script>
+/**
+ * FutureNav - Main JavaScript
+ * script.js - Interactive functionality for the futuristic navigation experience
+ * March 24, 2025
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    // DOM Elements
+    const navbar = document.getElementById("navbar");
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+    const sections = document.querySelectorAll("section");
+    const bgElements = document.querySelectorAll(".fixed > div");
+
+    // Mobile Menu Toggle
+    mobileMenuButton.addEventListener("click", () => {
+        mobileMenuButton.classList.toggle("active");
+
+        if (mobileMenu.classList.contains("open")) {
+            mobileMenu.style.height = "0";
+            mobileMenu.classList.remove("open");
+        } else {
+            mobileMenu.classList.add("open");
+            mobileMenu.style.height = `${mobileMenu.scrollHeight}px`;
+        }
+    });
+
+    // Close mobile menu when a link is clicked
+    mobileNavLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+            mobileMenuButton.classList.remove("active");
+            mobileMenu.style.height = "0";
+            mobileMenu.classList.remove("open");
+        });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+
+        highlightCurrentSection();
+    });
+
+    // Smooth scroll for nav links
+    navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            const targetId = link.getAttribute("href");
+
+            // Only prevent default and smooth scroll for same-page links (starting with #)
+            if (targetId.startsWith("#")) {
+                e.preventDefault();
+                const targetSection = document.querySelector(targetId);
+
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 70; // Adjust for navbar height
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: "smooth",
+                    });
+
+                    // Highlight the section briefly
+                    targetSection.classList.add("section-highlight");
+                    setTimeout(() => {
+                        targetSection.classList.remove("section-highlight");
+                    }, 1000);
+                }
+            }
+            // For links to other pages (like index.html#section), let the browser handle them naturally
+        });
+    });
+
+    // Highlight active section in navbar
+    function highlightCurrentSection() {
+        let current = "";
+
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.offsetHeight;
+
+            if (
+                window.scrollY >= sectionTop &&
+                window.scrollY < sectionTop + sectionHeight
+            ) {
+                current = section.getAttribute("id");
+            }
+        });
+
+        navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
+            }
+        });
+
+        mobileNavLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
+            }
+        });
+    }
+
+    // Parallax effect for background elements
+    /*
+      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        document.addEventListener('mousemove', (e) => {
+          const x = e.clientX / window.innerWidth;
+          const y = e.clientY / window.innerHeight;
+          
+          bgElements.forEach(element => {
+            const speed = 20; // Adjust for more or less movement
+            const xOffset = (x - 0.5) * speed;
+            const yOffset = (y - 0.5) * speed;
+            
+            element.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+          });
+        });
+      }
+      */
+
+    // Scroll animations for sections
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("section-visible");
+                }
+            });
+        },
+        { threshold: 0.1 },
+    );
+
+    sections.forEach((section) => {
+        section.classList.add("section-hidden");
+        observer.observe(section);
+    });
+
+    // Initialize active section on page load
+    highlightCurrentSection();
+
+    // Make header text visible with animation
+    setTimeout(() => {
+        const headerText = document.querySelector(".text-6xl");
+        if (headerText) {
+            headerText.style.opacity = 1;
+            headerText.style.transform = "translateY(0)";
+        }
+    }, 300);
+
+    // ===============================
+    // QUIZ FUNCTIONALITY
+    // ===============================
+    const quizMapDiv = document.getElementById("quiz-map");
+    if (quizMapDiv) {
+        const quizQuestion = document.getElementById("quiz-question");
+        const quizOptions = document.getElementById("quiz-options");
+        const quizFeedback = document.getElementById("quiz-feedback");
+        const nextBtn = document.getElementById("next-btn");
+        const backBtn = document.getElementById("back-btn");
+        const deleteBtn = document.getElementById("delete-btn");
+
+        quizQuestion.addEventListener("input", (e) => {
+    questions[currentQuestionIndex].question = e.target.value;
+});
+
+
+deleteBtn.addEventListener("click", () => {
+    if (!confirm("Delete this question?")) return;
+
+    questions.splice(currentQuestionIndex, 1); // remove from array
+
+    // Adjust index
+    if (currentQuestionIndex >= questions.length) currentQuestionIndex = questions.length - 1;
+
+    // Load next or previous question
+    if (questions.length > 0) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        quizQuestion.value = "No questions left";
+        quizOptions.innerHTML = "";
+        drawnItems.clearLayers();
+        nextBtn.classList.add("hidden");
+        addQuestionBtn.classList.remove("hidden");
+    }
+
+    updateNavigationButtons();
+});
+
+        // Show/hide buttons based on position
+
+
+
+        // Create Retry + Score UI
+
+// Create Add Question + Score UI
+const addQuestionBtn = document.createElement("button");
+addQuestionBtn.textContent = "➕ Add Question";
+addQuestionBtn.className =
+    "hidden mt-4 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-[#7EA16B] transition";
+
+const scoreDisplay = document.createElement("div");
+scoreDisplay.className = "mt-4 text-lg font-bold text-white";
+
+quizFeedback.insertAdjacentElement("afterend", addQuestionBtn);
+addQuestionBtn.insertAdjacentElement("afterend", scoreDisplay);
+
+
+        // Leaflet Map (no-label basemap)
+        const quizMap = L.map("quiz-map").setView([20, 90], 4);
+        // Draw feature group to store drawn items
+const drawnItems = new L.FeatureGroup();
+quizMap.addLayer(drawnItems);
+
+const drawControl = new L.Control.Draw({
+    draw: {
+        polyline: false,
+        rectangle: false,
+        circle: false,
+        circlemarker: false,
+        marker: false,
+        polygon: {
+            allowIntersection: false,
+            showArea: true,
+            shapeOptions: { color: 'orange', fillOpacity: 0.5 }
+        }
+    },
+    edit: { featureGroup: drawnItems, remove: true }
+});
+quizMap.addControl(drawControl);
+
+quizMap.on(L.Draw.Event.CREATED, function(event) {
+    const layer = event.layer;
+
+    <!-- drawnItems.clearLayers(); // Only allow one polygon per question -->
+    drawnItems.addLayer(layer);
+
+    // SAVE polygon on current question
+    questions[currentQuestionIndex].drawnLayer = layer;
+});
+
+quizMap.on(L.Draw.Event.EDITED, function(event) {
+    event.layers.eachLayer(layer => {
+        questions[currentQuestionIndex - 1].drawnLayer = layer;
+    });
+});
+
+
+quizMap.on(L.Draw.Event.DELETED, function(event) {
+    // Clear the layer group
+    drawnItems.clearLayers();
+
+    // Remove polygon reference from current question
+    questions[currentQuestionIndex].drawnLayer = null;
+
+    console.log("Polygon deleted for question", currentQuestionIndex);
+});
+
+        L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+            {
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://www.carto.com/">CARTO</a>',
+                subdomains: "abcd",
+                maxZoom: 20,
+            },
+        ).addTo(quizMap);
+
+        let currentLayer;
+        let score = 0; // Track score
+
+        // Question bank
+        let questions = boatQuestions;
+// Track the drawn polygon for each question
+questions.forEach(q => q.drawnLayer = null);
+
+        console.log("loaded questions");
+        console.log(questions);
+        // let currentQuestionIndex = 0;
+
+        let currentQuestionIndex = 0;
+
+        // Shuffle helper
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+function updateNavigationButtons() {
+    // Show Add Question button only on the last question
+    if (currentQuestionIndex === questions.length - 1) {
+        addQuestionBtn.classList.remove("hidden");
+        nextBtn.textContent = "💾 Save Changes";
+    } else {
+        addQuestionBtn.classList.add("hidden");
+        nextBtn.textContent = "Next Question";
+    }
+
+    // Back button visibility
+    if (currentQuestionIndex > 0) {
+        backBtn.classList.remove("invisible");
+    } else {
+        backBtn.classList.add("invisible");
+    }
+}
+
+function loadQuestion(index) {
+if (currentQuestionIndex > 0) {
+    backBtn.classList.remove("invisible");
+} else {
+    backBtn.classList.add("invisible");
+}
+updateNavigationButtons();
+nextBtn.style.display = "inline-block";
+  const q = questions[index];
+  const geojsonPath = `/student/map_quiz/geojson/${courseId}/${moduleId}/${index}.json`;
+
+  const loadingEl = document.getElementById("map-loading");
+  loadingEl.classList.remove("hidden");
+
+  if (currentLayer) quizMap.removeLayer(currentLayer);
+    drawnItems.clearLayers();
+    if (q.drawnLayer) {
+        drawnItems.addLayer(q.drawnLayer);
+        quizMap.fitBounds(q.drawnLayer.getBounds());
+    } else {
+        quizMap.setView([20, 90], 4); // default view
+    }
+
+  fetch(geojsonPath)
+    .then(res => res.json())
+    .then(data => {
+      currentLayer = L.geoJSON(data, {
+        style: {
+          color: "yellow",
+          weight: 2,
+          fillColor: "orange",
+          fillOpacity: 0.5,
+        },
+      }).addTo(quizMap);
+      quizMap.fitBounds(currentLayer.getBounds());
+      loadingEl.classList.add("hidden");
+    })
+    .catch(err => {
+      console.error("Failed to load GeoJSON:", err);
+      loadingEl.classList.add("hidden");
+    });
+    // If this question already has a polygon
+    if (q.drawnLayer) {
+        currentLayer = q.drawnLayer;
+        currentLayer.addTo(quizMap);
+        quizMap.fitBounds(currentLayer.getBounds());
+    } else {
+        if (currentLayer) quizMap.removeLayer(currentLayer);
+        currentLayer = null;
+        quizMap.setView([20, 90], 4); // default
+    }
+
+quizQuestion.value = q.question;
+  quizOptions.innerHTML = "";
+  quizFeedback.textContent = "";
+
+  // ✅ No shuffle — we rely on original order
+  const labels = ["Correct Answer", "Incorrect Answer 1", "Incorrect Answer 2", "Incorrect Answer 3"];
+
+
+q.options.forEach((opt, i) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "mb-2";
+
+    const label = document.createElement("label");
+    label.textContent = `Option ${i + 1}`;
+    label.className = "block text-gray-300 text-xs mb-1";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = opt;
+    input.className = "w-full px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700";
+
+    // ✅ Save edits to options array immediately
+    input.addEventListener("input", () => {
+        questions[currentQuestionIndex].options[i] = input.value;
+    });
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    quizOptions.appendChild(wrapper);
+});
+
+
+  // Hide next button until needed
+  nextBtn.classList.remove("hidden");
+}
+
+        function checkAnswer(selected, correct, btn) {
+            // Prevent multiple clicks
+            const allButtons = quizOptions.querySelectorAll("button");
+            allButtons.forEach((b) => {
+                b.disabled = true;
+                b.classList.add("cursor-not-allowed");
+            });
+
+            const isCorrect = selected === correct;
+            if (isCorrect) {
+                quizFeedback.textContent = "Correct!";
+                quizFeedback.style.color = "#7EA16B";
+                btn.style.backgroundColor = "#7EA16B";
+                btn.style.color = "#111827";
+                btn.style.borderColor = "#7EA16B";
+                btn.style.outline = "2px solid #7EA16B";
+                btn.style.outlineOffset = "2px";
+                score += 1;
+            } else {
+                quizFeedback.textContent = "Incorrect";
+                quizFeedback.style.color = "#cc1414";
+                btn.style.backgroundColor = "#cc1414";
+                btn.style.borderColor = "#cc1414";
+                btn.style.outline = "2px solid #cc1414";
+                btn.style.outlineOffset = "2px";
+                score -= 1;
+                // Also highlight the correct answer for learning
+                allButtons.forEach((b) => {
+                    if (b.textContent === correct) {
+                        b.style.backgroundColor = "#166534"; // dark green
+                        b.style.borderColor = "#22c55e";
+                        b.style.outline = "2px solid #22c55e";
+                        b.style.outlineOffset = "2px";
+                    }
+                });
+            }
+            nextBtn.classList.remove("hidden");
+        }
+
+// Next Button
+nextBtn.addEventListener("click", () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion(currentQuestionIndex);
+    } else {
+        // Save Changes
+
+
+const payload = questions.map(q => {
+    return {
+        question: q.question,
+        options: q.options,
+        geojson: q.drawnLayer ? q.drawnLayer.toGeoJSON() : null
+    };
+});
+
+
+
+            console.log("saved questions.", payload);
+        fetch(`/lecturer/moduleId/${moduleId}/courseId/${courseId}/save-map-questions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ questions: payload })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("Questions saved!");
+        })
+        .catch(err => console.error(err));
+    }
+});
+
+// Back Button
+backBtn.addEventListener("click", () => {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion(currentQuestionIndex);
+    }
+});
+
+// Add Question Button
+addQuestionBtn.addEventListener("click", () => {
+    const newQuestion = {
+        question: "New Question",
+        geojson: "", 
+        options: ["Correct Answer", "Incorrect Answer 1", "Incorrect Answer 2", "Incorrect Answer 3"],
+        answer: "Correct Answer"
+    };
+
+    questions.push(newQuestion);
+    currentQuestionIndex = questions.length - 1;
+    loadQuestion(currentQuestionIndex);
+
+    const firstInput = quizOptions.querySelector("input");
+    if (firstInput) firstInput.focus();
+});
+
+
+
+        // Start quiz
+        loadQuestion(currentQuestionIndex);
+    }
+});
+// ---------------------------
+// Boat Quiz Game
+// ---------------------------
+
+let qIndex = 0; // question index
+let boatPosition = 0; // boat progress
+let boatScore = 0; // correct answers
+let timerInterval;
+let timeLeft = 30;
+
+const boatQuestionEl = document.getElementById("boat-question");
+const boatOptionsEl = document.getElementById("boat-options");
+const boatFeedbackEl = document.getElementById("boat-feedback");
+const boatNextBtn = document.getElementById("boat-next-btn");
+const boatScoreEl = document.getElementById("boat-score");
+const boatProgressEl = document.getElementById("boat-progress");
+const boatIcon = document.getElementById("boat-icon");
+const boatRetryBtn = document.getElementById("boat-retry-btn");
+
+// Only initialize boat quiz if required elements exist
+if (
+    boatQuestionEl &&
+    boatOptionsEl &&
+    boatFeedbackEl &&
+    boatNextBtn &&
+    boatScoreEl &&
+    boatProgressEl &&
+    boatIcon &&
+    boatRetryBtn
+) {
+    // Keep score display consistent
+    function updateBoatScoreDisplay() {
+        boatScoreEl.textContent = boatScore;
+    }
+    // Timer element
+    const timerEl = document.createElement("p");
+    timerEl.className = "text-gray-300 mb-3";
+    boatQuestionEl.parentNode.insertBefore(timerEl, boatOptionsEl);
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 30;
+        timerEl.textContent = `⏳ Time left: ${timeLeft}s`;
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerEl.textContent = `⏳ Time left: ${timeLeft}s`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                boatFeedbackEl.textContent = "Time's up! The boat drifts back...";
+                // Treat timeout as incorrect answer with score penalty (min 0)
+                boatScore = Math.max(0, boatScore - 1);
+                updateBoatScoreDisplay();
+                moveBoat(-1);
+                endQuestion();
+            }
+        }, 1000);
+    }
+
+    function loadBoatQuestion() {
+        let q = boatQuestions[qIndex];
+        boatQuestionEl.textContent = q.question;
+        boatOptionsEl.innerHTML = "";
+        // ensure score display stays in sync
+        updateBoatScoreDisplay();
+
+        q.options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.textContent = opt;
+            btn.className =
+                "bg-gray-700 text-white px-3 py-2 rounded-lg hover:bg-[#7EA16B] transition";
+            btn.onclick = () => checkBoatAnswer(btn, opt, q.answer);
+            boatOptionsEl.appendChild(btn);
+        });
+
+        boatFeedbackEl.textContent = "";
+        boatFeedbackEl.style.color = ""; // reset color each question
+        boatNextBtn.classList.add("hidden");
+        startTimer();
+    }
+
+    function updateBoatPosition() {
+        let progress = (boatPosition / boatQuestions.length) * 100;
+        boatProgressEl.style.width = progress + "%";
+        boatIcon.style.left = `calc(${progress}% - 16px)`;
+    }
+
+    function moveBoat(step) {
+        boatPosition = Math.max(
+            0,
+            Math.min(boatQuestions.length, boatPosition + step),
+        );
+        updateBoatPosition();
+    }
+
+    function checkBoatAnswer(button, selected, correct) {
+        clearInterval(timerInterval);
+
+        // disable all options
+        const allButtons = boatOptionsEl.querySelectorAll("button");
+        allButtons.forEach((b) => {
+            b.disabled = true;
+            b.classList.add("cursor-not-allowed");
+        });
+
+        const isCorrect = selected === correct;
+        if (isCorrect) {
+            boatFeedbackEl.textContent = "Correct";
+            boatFeedbackEl.style.color = "#7EA16B"; // green
+            // style the chosen button
+            button.style.backgroundColor = "#7EA16B";
+            button.style.color = "#111827";
+            button.style.border = "1px solid #7EA16B";
+            button.style.outline = "2px solid #7EA16B";
+            button.style.outlineOffset = "2px";
+            boatScore++;
+            updateBoatScoreDisplay();
+            moveBoat(1);
+        } else {
+            boatFeedbackEl.textContent = "Incorrect";
+            boatFeedbackEl.style.color = "#cc1414"; // red
+            // highlight wrong selection
+            button.style.backgroundColor = "#cc1414";
+            button.style.border = "1px solid #cc1414";
+            button.style.outline = "2px solid #cc1414";
+            button.style.outlineOffset = "2px";
+            // Penalize incorrect (min 0)
+            boatScore = Math.max(0, boatScore - 1);
+            updateBoatScoreDisplay();
+            moveBoat(-1);
+            // highlight correct answer
+            allButtons.forEach((b) => {
+                if (b.textContent === correct) {
+                    b.style.backgroundColor = "#166534"; // dark green
+                    b.style.border = "1px solid #22c55e";
+                    b.style.outline = "2px solid #22c55e";
+                    b.style.outlineOffset = "2px";
+                }
+            });
+        }
+
+        endQuestion();
+    }
+
+    function endQuestion() {
+        qIndex++;
+        if (qIndex < boatQuestions.length) {
+            boatNextBtn.classList.remove("hidden");
+        } else {
+            endBoatQuiz();
+        }
+    }
+
+    function endBoatQuiz() {
+        clearInterval(timerInterval);
+        boatOptionsEl.innerHTML = "";
+        timerEl.textContent = "";
+
+        if (boatPosition === boatQuestions.length) {
+            boatQuestionEl.textContent = "You reached the island!";
+            boatFeedbackEl.textContent = `Final Score: ${boatScore}/${boatQuestions.length}`;
+        } else {
+            boatQuestionEl.textContent = "You Lost!";
+            boatFeedbackEl.textContent = `Final Score: ${boatScore}/${boatQuestions.length} — The boat sank before reaching the island.`;
+            boatIcon.classList.add("boat-sink");
+        }
+
+        boatNextBtn.classList.add("hidden");
+        boatRetryBtn.classList.remove("hidden");
+    }
+
+    boatNextBtn.onclick = () => {
+        if (qIndex < boatQuestions.length) {
+            loadBoatQuestion();
+        }
+    };
+
+
+    boatRetryBtn.onclick = () => {
+        qIndex = 0;
+        boatPosition = 0;
+        boatScore = 0;
+        updateBoatScoreDisplay();
+        boatRetryBtn.classList.add("hidden");
+        updateBoatPosition();
+        loadBoatQuestion();
+    };
+    // No overlay: initialize immediately
+    updateBoatPosition();
+    loadBoatQuestion();
+} else {
+    console.warn(
+        "Boat quiz elements not found; skipping boat quiz initialization.",
+    );
+}
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+
+// ---------------------------
+// Week Dropdown (Accordion) Logic
+// ---------------------------
+(function() {
+    const toggles = document.querySelectorAll(".week-toggle");
+    const closeOthers = (currentBtn) => {
+        toggles.forEach((other) => {
+            if (other !== currentBtn) {
+                const otherContent = document.getElementById(
+                    other.getAttribute("aria-controls"),
+                );
+                collapse(otherContent, other);
+            }
+        });
+    };
+
+    function expand(panel, btn) {
+        if (!panel) return;
+        // measure content height (inner wrapper)
+        const inner = panel.querySelector(".week-content-inner");
+        panel.classList.add("open");
+        panel.setAttribute("aria-hidden", "false");
+        btn.setAttribute("aria-expanded", "true");
+
+        // Temporarily make visible to measure
+        panel.style.maxHeight = "none";
+        panel.style.height = "auto";
+        const height = panel.scrollHeight;
+        panel.style.height = "";
+        panel.style.maxHeight = "0px";
+
+        // Force reflow then animate
+        panel.offsetHeight;
+        panel.style.maxHeight = height + "px";
+
+        const arrow = btn.querySelector(".arrow");
+        if (arrow) arrow.style.transform = "rotate(180deg)";
+    }
+
+    function collapse(panel, btn) {
+        if (!panel) return;
+        panel.classList.remove("open");
+        panel.setAttribute("aria-hidden", "true");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        panel.style.maxHeight = "0px";
+        if (btn) {
+            const arrow = btn.querySelector(".arrow");
+            if (arrow) arrow.style.transform = "rotate(0deg)";
+        }
+    }
+
+    // Initialize all panels to 0 height
+    document.querySelectorAll(".week-content-wrapper").forEach((p) => {
+        p.style.overflow = "hidden";
+        p.style.maxHeight = "0px";
+    });
+
+    toggles.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const panel = document.getElementById(btn.getAttribute("aria-controls"));
+            const isOpen = panel.classList.contains("open");
+            closeOthers(btn);
+            if (isOpen) {
+                collapse(panel, btn);
+            } else {
+                expand(panel, btn);
+            }
+        });
+    });
+})();
+
+</script>
+</body>
+</html>
