@@ -2,259 +2,722 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>The GIST by MIP</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
-  <link rel="stylesheet" href="../style.css">
-  <script src="https://kit.fontawesome.com/01f25bfc6e.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Map the Indo-Pacific</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <link rel='stylesheet' href='/student/course/style.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
 </head>
+
 <body>
-<!-- Navigation Bar -->
-<nav id="navbar" role="navigation" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
-  <div class="container mt-2 px-6 py-3">
-    <div class="flex items-center justify-between">
+
+<%
+  // Group modules by heading first (reuse this from your page)
+  const groupedModules = {};
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
+      groupedModules[m.module_heading].push(m);
+    });
+  }
+%>
+
+
+
+
+<%
+  // Collect unique section headings dynamically
+  const sectionHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!sectionHeadings.includes(m.module_heading)) {
+        sectionHeadings.push(m.module_heading);
+      }
+    });
+  }
+
+  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
+  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+%>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
+  <div class="mt-2 pl-6 pr-0 py-3 w-full">
+    <div class="flex items-center">
       <!-- Logo -->
       <div class="flex items-center">
-        <div class="logo" style="margin-left: 40px;">
-          <span class="font-bold text-4xl text-white"><a href="index.html">MIP</a></span>
+        <div class="logo">
+            <span class="font-bold text-4xl text-white"><a href="/lecturer/course/<%= courseId %>">MIP</a></span>
         </div>
       </div>
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-1 pt-3 pr-14">
-        <a href="#home" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
-        <a href="#general" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
-        <a href="#services" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
-        <i class="fa-solid fa-circle-user fa-2x" aria-label="User Profile"></i>
-      </div>
-      <!-- Mobile Navigation Button -->
-      <div class="flex md:hidden">
-        <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
-          <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
-            <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
-            <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
-            <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
-          </div>
-        </button>
+
+      <!-- Desktop Navigation and Mobile Button -->
+      <div class="ml-auto flex items-center space-x-4 pr-6">
+        <!-- Desktop Nav Links -->
+        <div class="hidden md:flex items-center space-x-4">
+          <% sectionHeadings.forEach(h => { %>
+            <a href="#<%= formatId(h) %>" 
+               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
+               <%= h %>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
+            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
+              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
+
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden h-0 overflow-hidden transition-all duration-300 ease-in-out">
+    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
       <div class="pt-2 pb-4 space-y-1">
-        <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a>
-        <a href="#general" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a>
-        <a href="#services" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a>
-      </div>
-    </div>
-  </div>
-</nav>
-<!-- Main Content Sections -->
-<main>
-  <!-- Home Section -->
-  <section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
-    <img src="./Images/LANDING-PAGE-v2.png" alt="Landing Page Image" class="absolute top-0 left-0 w-full h-full object-cover z-0" />
-    <div class="container-btn mt-20 mx-auto px-4 md:px-0 relative z-10">
-      <div class="flex flex-col items-start text-left">
-        <div class="flex flex-col md:flex-row gap-6 mt-10 w-full">
-          <button class="w-full md:w-72 px-6 py-3 text-base md:text-lg border border-white rounded-lg text-white font-medium flex items-center justify-center gap-2">World Map</button>
-          <button class="w-full md:w-72 px-6 py-3 text-base md:text-lg bg-white rounded-lg text-black font-medium flex items-center justify-center gap-2">Indo-Pacific Map</button>
-        </div>
-      </div>
-    </div>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-      <svg class="w-6 h-6 text-[#7EA16B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-      </svg>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services" class="min-h-screen flex items-center relative py-20">
-    <div class="container mx-auto px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <div class="inline-block mb-3">
-            <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Go Deeper</div>
-            <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Explore by Regions</div>
-          </div>
-          <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <!-- Service Card 1 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">East Asia</div>
-                </div>
-                <p class="text-gray-400 mb-4">Curious about East Asia? Learn more here and test your knowledge.</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-          <!-- Service Card 2 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">South East Asia</div>
-                </div>
-                <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-          <!-- Service Card 3 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">Oceania</div>
-                </div>
-                <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-          <!-- Service Card 4 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">South Asia</div>
-                </div>
-                <p class="text-gray-400 mb-4">Improve your knowledge about South Asia and become the expert right here, right now.</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-          <!-- Service Card 5 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">Indian Ocean Rim</div>
-                </div>
-                <p class="text-gray-400 mb-4">Yes the Indian Ocean is connected to the Indo-Pacific. Discover more and learn about its geographic treasures.</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-          <!-- Service Card 6 -->
-          <div class="relative group">
-            <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div>
-            <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300">
-              <div class="flex flex-col h-full">
-                <div class="flex items-center mb-4">
-                  <div class="font-medium text-lg text-[#FFFFFF]">Western Pacific Rim</div>
-                </div>
-                <p class="text-gray-400 mb-4">Improve user knowledge on the Western Pacific Rim now!</p>
-                <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Portfolio Section -->
-
-  <section id="portfolio" class="min-h-screen flex items-center relative py-20">
-  <div class="container mx-auto px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-12">
-        <div class="inline-block mb-3">
-          <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Discovering New Places Every Week</div>
-          <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">
-            Course Schedule
-          </div>
-        </div>
-        <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
-      </div>
-
-      <!-- Add Module Button -->
-      <div class="mb-8 text-right">
-        <button onclick="openForm()" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg hover:bg-[#617d52]">
-          + Add Module
-        </button>
-      </div>
-
-      <!-- Modules -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <% modules.forEach((m, i) => { %>
-          <div class="relative group overflow-hidden rounded-xl border shadow">
-            <img src="<%= m.image ? m.image : '/Images/default.jpg' %>" 
-                 alt="<%= m.module_title %>" 
-                 class="aspect-video object-cover rounded-xl w-full h-full">
-
-            <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition duration-300 z-10 flex items-center justify-center">
-              <div class="text-center p-4">
-                <div class="text-xl font-medium text-white mb-2">
-                  Week <%= i + 1 %>: <%= m.module_title %>
-                </div>
-                <p class="text-gray-200 mb-4"><%= m.module_description %></p>
-              </div>
-            </div>
-
-            <!-- Edit/Delete -->
-            <div class="absolute top-2 right-2 flex gap-2 z-20">
-              <button onclick='editModule(<%- JSON.stringify(m) %>)' 
-                      class="px-2 py-1 bg-blue-500 text-white rounded text-sm">Edit</button>
-              <button onclick="deleteModule(<%= m.module_id %>, '<%= courseId %>')" 
-                      class="px-2 py-1 bg-red-500 text-white rounded text-sm">Delete</button>
-            </div>
-          </div>
+        <% sectionHeadings.forEach(h => { %>
+          <a href="#<%= formatId(h) %>" 
+             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
+             <%= h %>
+          </a>
         <% }) %>
       </div>
     </div>
   </div>
-</section>
+</nav>
 
-<!-- Modal Form -->
-<div id="moduleForm" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg relative">
-    <h2 class="text-xl font-bold mb-4" id="formTitle">Add Module</h2>
-    <form id="crudForm" enctype="multipart/form-data">
-      <input type="hidden" name="module_id" id="module_id" />
-      <input type="hidden" name="courseId" value="<%= courseId %>" />
+  <!-- Main Content Sections -->
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="landing-hero relative">
+      <div class="landing-overlay">
+        <h1 class="landing-title">MIP, The GIST.</h1>
+        <p class="landing-subtitle">Explore the Indo-Pacific and get ready to test your understanding!</p>
+        <div class="landing-actions">
+          <button href="/lecturer/module/1/7" class="landing-btn outline">World Map</button>
+          <!-- <a href="/student/module/1/7" class="landing-btn solid">Indo-Pacific Map</a> -->
+          <a class="landing-btn solid">Indo-Pacific Map</a>
+        </div>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </div>
+    </section>
 
-      <div class="mb-3">
-        <label class="block">Start Time</label>
-        <input type="number" name="start_time" id="start_time" class="w-full border rounded p-2" />
+
+<% if (Object.keys(groupedModules).length > 0) { %>
+  <% Object.entries(groupedModules).forEach(([heading, mods]) => { 
+       const format = mods[0].format || 'small_panel';
+  %>
+
+  <% if (format === 'small_panel') { %>
+    <!-- Small Panel (Explore by Region style) -->
+    <section id="<%= heading.toLowerCase().replace(/\s+/g, '-') %>" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent"><%= heading %></div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <% mods.forEach(m => { %>
+              <div class="relative group bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-xl p-6 shadow transition hover:border-[#7EA16B]/40">
+                <!-- Edit Button -->
+                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <button onclick='editModule(<%- JSON.stringify(m) %>)' class="p-2 bg-blue-500/90 hover:bg-blue-600 text-white rounded-full shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 0l.172.172a2 2 0 010 2.828L12 16H9v-3z" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="flex flex-col h-full">
+                  <div class="font-medium text-lg text-white mb-2"><%= m.module_title %></div>
+                  <p class="text-gray-400 mb-4"><%= m.module_description %></p>
+                  <a href="/lecturer/module/<%= courseId %>/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">
+                    More 
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+
+            <!-- Add New Panel -->
+            
+<div onclick="openForm('<%= format %>', null, '<%= heading %>')" 
+     class="cursor-pointer border-2 border-dashed border-[#7EA16B] rounded-xl flex items-center justify-center hover:bg-[#7EA16B]/10 transition">
+  <div class="text-center p-10">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-[#7EA16B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    <div class="mt-2 text-[#7EA16B] font-medium">Add Module</div>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <% } else if (format === 'expandable') { %>
+    <!-- Expandable Panels (Course Schedule style) -->
+    <section id="<%= heading.toLowerCase().replace(/\s+/g, '-') %>" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent"><%= heading %></div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+
+          <div class="space-y-4 max-w-4xl mx-auto">
+            <% mods.forEach((m, i) => { %>
+              <div class="relative bg-gray-900/70 border border-[#7EA16B]/20 rounded-xl overflow-hidden group">
+                <!-- Edit Button -->
+                
+<div class="absolute top-3 right-12 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+  <button onclick='editModule(<%- JSON.stringify(m) %>)' class="p-2 bg-blue-500/90 hover:bg-blue-600 text-white rounded-full shadow">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 0l.172.172a2 2 0 010 2.828L12 16H9v-3z" />
+    </svg>
+  </button>
+</div>
+
+                <button type="button" class="week-toggle w-full flex items-center justify-between p-4 text-left text-white hover:bg-gray-800/60 transition" aria-expanded="false" aria-controls="mod-<%= i %>-content">
+                  <span class="font-semibold"><%= m.module_title %></span>
+                  <span class="arrow transition-transform duration-300" style="color:#7EA16B">▼</span>
+                </button>
+                <div id="mod-<%= i %>-content" class="week-content-wrapper" aria-hidden="true">
+                  <div class="week-content-inner pt-4 px-4 pb-4 space-y-3 text-gray-300">
+                    <p><%= m.module_description %></p>
+                    <a href="/lecturer/module/<%= courseId %>/<%= m.module_id %>" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center transition-colors">
+                      Explore 
+                      <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </a>
+                    <% if (m.image_file) { %>
+                    <img src="/student/course/Images/<%= courseId%>/<%= m.module_id %>.jpg" alt="<%= m.module_title %>" class="w-full h-48 object-cover rounded-lg"/>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+
+            <!-- Add New Panel -->
+            <div onclick="openForm()" class="cursor-pointer border-2 border-dashed border-[#7EA16B] rounded-xl flex items-center justify-center hover:bg-[#7EA16B]/10 transition h-20">
+              <div class="text-center p-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-[#7EA16B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                <div class="mt-2 text-[#7EA16B] font-medium">Add Module</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <% } else if (format === 'quiz_panel') { %>
+    <!-- Quiz Panels (Study Tools style) -->
+    <section id="<%= heading.toLowerCase().replace(/\s+/g, '-') %>" class="min-h-screen flex items-center relative py-20">
+      <div class="container mx-auto px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-block mb-3">
+              <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent"><%= heading %></div>
+            </div>
+            <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <% mods.forEach(m => { 
+              const titleWords = m.module_title.split(' ');
+              const firstWord = titleWords[0].toUpperCase();
+              let quizUrl = `/lecturer/map_quiz/${courseId}/${m.module_id}`;
+              if (firstWord === 'MULTIPLE') quizUrl = `/lecturer/multiple_quiz/${courseId}/${m.module_id}`;
+              const displayTitle = titleWords.slice(1).join(' ') || m.module_title;
+
+              let desc = m.module_description || "";
+              let objective = "";
+              let howItWorks = "";
+              const objMatch = desc.match(/Objective\s*([\s\S]*?)(?=\n\s*How it works|$)/i);
+              const howMatch = desc.match(/How it works\s*([\s\S]*)/i);
+              if (objMatch) objective = objMatch[1].trim();
+              if (howMatch) howItWorks = howMatch[1].trim();
+            %>
+              <div class="relative bg-gray-900/70 backdrop-blur-lg border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl flex flex-col h-full group">
+                <!-- Edit Button -->
+                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <button onclick='editModule(<%- JSON.stringify(m) %>)' class="p-2 bg-blue-500/90 hover:bg-blue-600 text-white rounded-full shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 0l.172.172a2 2 0 010 2.828L12 16H9v-3z" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="text-xl font-medium mb-4 text-white"><%= displayTitle %></div>
+                <div class="space-y-5 flex-1">
+                  <% if (objective) { %>
+                    <div>
+                      <div class="text-lg uppercase tracking-widest text-[#7EA16B] font-semibold mb-1">Objective</div>
+                      <div class="text-gray-200 leading-relaxed"><%= objective %></div>
+                    </div>
+                  <% } %>
+
+                  <% if (howItWorks) { %>
+                    <div>
+                      <div class="text-lg uppercase tracking-widest text-[#7EA16B] font-semibold mb-1">How It Works</div>
+                      <div class="text-gray-200 leading-relaxed"><%= howItWorks %></div>
+                    </div>
+                  <% } %>
+
+                  <% if (!objective && !howItWorks) { %>
+                    <p class="text-gray-300"><%= desc %></p>
+                  <% } %>
+
+                  <a href="<%= quizUrl %>" class="mt-auto inline-flex items-center gap-2 bg-[#1C3144] hover:bg-[#111d29] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    PLAY
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+
+            <!-- Add New Panel -->
+            <div onclick="openForm()" class="cursor-pointer border-2 border-dashed border-[#7EA16B] rounded-xl flex items-center justify-center hover:bg-[#7EA16B]/10 transition">
+              <div class="text-center p-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mx-auto text-[#7EA16B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                <div class="mt-2 text-[#7EA16B] font-medium">Add Module</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <% }) %>
+<% } else { %>
+  <p class="text-gray-400 text-center">No modules available.</p>
+<% } %>
+  </main>
+  
+  <!-- Footer -->
+  
+<%
+  // Collect unique headings dynamically for footer
+  const footerHeadings = [];
+  if (modules && modules.length > 0) {
+    modules.forEach(m => {
+      if (!footerHeadings.includes(m.module_heading)) {
+        footerHeadings.push(m.module_heading);
+      }
+    });
+  }
+%>
+
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center mb-4 md:mb-0">
+        <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+        <div class="text-xl font-medium flex items-center text-gray-300">The GIST</div>
       </div>
 
-      <div class="mb-3">
-        <label class="block">Title</label>
-        <input type="text" name="module_title" id="module_title" class="w-full border rounded p-2" />
+      <!-- Dynamic Links -->
+      <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+        <% footerHeadings.forEach(h => { %>
+          <a href="#<%= formatId(h) %>" 
+             class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
+            <%= h %>
+          </a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</footer>
+  <!-- Copyright tag -->
+  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
+    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+  </div>
+
+<!-- Module Form Modal -->
+<div id="moduleModal"
+     class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50">
+  <div class="bg-gray-900 rounded-2xl p-6 w-full max-w-lg shadow-xl border border-[#7EA16B]/40">
+    <div class="flex justify-between items-center mb-4">
+      <h2 id="modalTitle" class="text-2xl font-semibold text-white">Add Module</h2>
+      <button onclick="closeForm()" class="text-gray-400 hover:text-white">&times;</button>
+    </div>
+
+    <form id="moduleForm" class="space-y-4" enctype="multipart/form-data">
+      <input type="hidden" id="module_id" name="module_id" />
+      <input type="hidden" id="format" name="format" />
+
+      <div>
+        <label class="block text-gray-300 mb-1">Title</label>
+        <input type="text" id="module_title" name="module_title"
+               class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:border-[#7EA16B]" required>
       </div>
 
-      <div class="mb-3">
-        <label class="block">Description</label>
-        <textarea name="module_description" id="module_description" class="w-full border rounded p-2"></textarea>
+      <div>
+        <label class="block text-gray-300 mb-1">Description</label>
+        <textarea id="module_description" name="module_description" rows="4"
+                  class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:border-[#7EA16B]" required></textarea>
       </div>
 
-      <div class="mb-3">
-        <label class="block">Type</label>
-        <input type="text" name="type" id="type" class="w-full border rounded p-2" />
+      <div id="imageUploadSection" class="hidden">
+        <label class="block text-gray-300 mb-1">Upload Image (optional)</label>
+        <input type="file" id="module_image" name="module_image"
+               class="block w-full text-gray-200 border border-gray-600 p-2 rounded cursor-pointer bg-gray-800" accept="image/*">
+        <img id="imagePreview" src="" class="hidden mt-2 w-full h-40 object-cover rounded-lg border border-gray-700" />
       </div>
 
-      <div class="mb-3">
-        <label class="block">Image</label>
-        <input type="file" name="image" id="image" />
-      </div>
-
-      <div class="flex justify-end gap-2">
-        <button type="button" onclick="closeForm()" class="px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
-        <button type="submit" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg">Save</button>
+      <div class="flex justify-between items-center">
+        <button type="button" id="deleteBtn" onclick="confirmDelete()" class="hidden text-red-400 hover:text-red-500">Delete</button>
+        <div class="space-x-3">
+          <button type="button" onclick="closeForm()" class="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-[#7EA16B] text-white rounded hover:bg-[#617d52]">Save</button>
+        </div>
       </div>
     </form>
   </div>
 </div>
-<!-- <section id="portfolio" class="min-h-screen flex items-center relative py-20"> -->
+
+
+<script>
+  let currentFormat = '';
+  let currentCourseId = '<%= courseId %>';
+  let editMode = false;
+  let currentHeading = ''; // heading of the section user clicked
+
+  // --- OPEN FORM ---
+  function openForm(format, moduleData = null, heading = '') {
+    currentFormat = format;
+    editMode = !!moduleData;
+    currentHeading = heading || moduleData?.module_heading || '';
+
+    const modal = document.getElementById('moduleModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    document.getElementById('format').value = format;
+    document.getElementById('modalTitle').textContent = moduleData ? 'Edit Module' : 'Add Module';
+    document.getElementById('deleteBtn').classList.toggle('hidden', !moduleData);
+
+    // Show image upload only for expandables
+    const imgSection = document.getElementById('imageUploadSection');
+    imgSection.classList.toggle('hidden', format !== 'expandable');
+
+    // Prefill fields
+    document.getElementById('module_id').value = moduleData ? moduleData.module_id : '';
+    document.getElementById('module_title').value = moduleData ? moduleData.module_title : '';
+    document.getElementById('module_description').value = moduleData ? moduleData.module_description : '';
+    document.getElementById('module_heading').value = currentHeading;
+
+    const preview = document.getElementById('imagePreview');
+    if (moduleData && moduleData.image_file && format === 'expandable') {
+      preview.src = `/student/course/Images/${moduleData.image_file}`;
+      preview.classList.remove('hidden');
+    } else {
+      preview.src = '';
+      preview.classList.add('hidden');
+    }
+  }
+
+  function closeForm() {
+    const modal = document.getElementById('moduleModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.getElementById('moduleForm').reset();
+    document.getElementById('imagePreview').classList.add('hidden');
+  }
+
+  // --- HANDLE IMAGE PREVIEW ---
+  document.getElementById('module_image')?.addEventListener('change', e => {
+    const file = e.target.files[0];
+    const preview = document.getElementById('imagePreview');
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove('hidden');
+    } else {
+      preview.classList.add('hidden');
+    }
+  });
+
+  // --- SUBMIT FORM ---
+  document.getElementById('moduleForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const id = formData.get('module_id');
+    const url = id 
+      ? `/lecturer/course/${currentCourseId}/modules/${id}/edit`
+      : `/lecturer/course/${currentCourseId}/modules/add`;
+
+    // Show local “pending” card
+    showPendingModule(formData);
+
+    try {
+      const res = await fetch(url, { method: 'POST', body: formData });
+      if (res.ok) {
+        location.reload();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Error saving module');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Network or server error');
+    }
+  });
+
+  // --- DELETE MODULE ---
+  async function confirmDelete() {
+    if (!confirm('Are you sure you want to delete this module?')) return;
+    const id = document.getElementById('module_id').value;
+    if (!id) return;
+
+    try {
+      const res = await fetch(`/lecturer/course/${currentCourseId}/modules/${id}/delete`, { method: 'DELETE' });
+      if (res.ok) location.reload();
+      else alert('Error deleting module');
+    } catch (err) {
+      console.error(err);
+      alert('Network or server error');
+    }
+  }
+
+  // --- LOCAL PREVIEW (while uploading) ---
+  function showPendingModule(formData) {
+    const title = formData.get('module_title');
+    const desc = formData.get('module_description');
+    const format = formData.get('format');
+
+    // Use heading container if available
+    const container = document.querySelector(`#${format}s-container`) || document.body;
+    const div = document.createElement('div');
+    div.className = 'border-2 border-dashed border-[#7EA16B]/60 bg-gray-800/50 p-4 rounded-xl text-center text-gray-300';
+    div.innerHTML = `
+      <div class="animate-pulse">
+        <div class="text-[#7EA16B] font-semibold">${title}</div>
+        <div class="text-gray-400 text-sm">${desc}</div>
+        <div class="text-xs text-gray-500 mt-2">Uploading...</div>
+      </div>
+    `;
+    container.prepend(div);
+  }
+
+  // --- EDIT WRAPPER (from button) ---
+  function editModule(data) {
+    openForm(data.format, data, data.module_heading);
+  }
+
+  // --- DELETE WRAPPER (from button) ---
+  async function deleteModule(id, courseId) {
+    if (!confirm('Delete this module?')) return;
+    try {
+      const res = await fetch(`/lecturer/course/${courseId}/modules/${id}/delete`, { method: 'DELETE' });
+      if (res.ok) location.reload();
+      else alert('Error deleting module');
+    } catch (err) {
+      console.error(err);
+      alert('Network or server error');
+    }
+  }
+</script>
+
+
+
+
+
+  <script src="/student/course/script.js" defer></script>
+</body>
+</html>
+
+
+<!---->
+<!---->
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+<!--   <meta charset="UTF-8"> -->
+<!--   <title>The GIST by MIP</title> -->
+<!--   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"> -->
+<!--   <link rel="stylesheet" href="../style.css"> -->
+<!--   <script src="https://kit.fontawesome.com/01f25bfc6e.js" crossorigin="anonymous"></script> -->
+<!--   <script src="https://cdn.tailwindcss.com"></script> -->
+<!-- </head> -->
+<!-- <body> -->
+<!-- <!-- Navigation Bar --> -->
+<!-- <nav id="navbar" role="navigation" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300"> -->
+<!--   <div class="container mt-2 px-6 py-3"> -->
+<!--     <div class="flex items-center justify-between"> -->
+<!--       <!-- Logo --> -->
+<!--       <div class="flex items-center"> -->
+<!--         <div class="logo" style="margin-left: 40px;"> -->
+<!--           <span class="font-bold text-4xl text-white"><a href="index.html">MIP</a></span> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--       <!-- Desktop Navigation --> -->
+<!--       <div class="hidden md:flex items-center space-x-1 pt-3 pr-14"> -->
+<!--         <a href="#home" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a> -->
+<!--         <a href="#general" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a> -->
+<!--         <a href="#services" class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a> -->
+<!--         <i class="fa-solid fa-circle-user fa-2x" aria-label="User Profile"></i> -->
+<!--       </div> -->
+<!--       <!-- Mobile Navigation Button --> -->
+<!--       <div class="flex md:hidden"> -->
+<!--         <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu"> -->
+<!--           <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"> -->
+<!--             <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span> -->
+<!--             <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span> -->
+<!--             <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span> -->
+<!--           </div> -->
+<!--         </button> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--     <!-- Mobile Menu --> -->
+<!--     <div id="mobile-menu" class="md:hidden h-0 overflow-hidden transition-all duration-300 ease-in-out"> -->
+<!--       <div class="pt-2 pb-4 space-y-1"> -->
+<!--         <a href="#home" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Region Maps</a> -->
+<!--         <a href="#general" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Course Schedule</a> -->
+<!--         <a href="#services" class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">Quizzes</a> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </nav> -->
+<!-- <!-- Main Content Sections --> -->
+<!-- <main> -->
+<!--   <!-- Home Section --> -->
+<!--   <section id="home" class="min-h-screen flex items-center justify-center relative pt-20"> -->
+<!--     <img src="./Images/LANDING-PAGE-v2.png" alt="Landing Page Image" class="absolute top-0 left-0 w-full h-full object-cover z-0" /> -->
+<!--     <div class="container-btn mt-20 mx-auto px-4 md:px-0 relative z-10"> -->
+<!--       <div class="flex flex-col items-start text-left"> -->
+<!--         <div class="flex flex-col md:flex-row gap-6 mt-10 w-full"> -->
+<!--           <button class="w-full md:w-72 px-6 py-3 text-base md:text-lg border border-white rounded-lg text-white font-medium flex items-center justify-center gap-2">World Map</button> -->
+<!--           <button class="w-full md:w-72 px-6 py-3 text-base md:text-lg bg-white rounded-lg text-black font-medium flex items-center justify-center gap-2">Indo-Pacific Map</button> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--     <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce"> -->
+<!--       <svg class="w-6 h-6 text-[#7EA16B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"> -->
+<!--         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path> -->
+<!--       </svg> -->
+<!--     </div> -->
+<!--   </section> -->
+<!---->
+<!--   <!-- Services Section --> -->
+<!--   <section id="services" class="min-h-screen flex items-center relative py-20"> -->
+<!--     <div class="container mx-auto px-6"> -->
+<!--       <div class="max-w-5xl mx-auto"> -->
+<!--         <div class="text-center mb-12"> -->
+<!--           <div class="inline-block mb-3"> -->
+<!--             <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Go Deeper</div> -->
+<!--             <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent">Explore by Regions</div> -->
+<!--           </div> -->
+<!--           <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div> -->
+<!--         </div> -->
+<!--         <div class="grid md:grid-cols-3 gap-6"> -->
+<!--           <!-- Service Card 1 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">East Asia</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Curious about East Asia? Learn more here and test your knowledge.</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <!-- Service Card 2 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">South East Asia</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <!-- Service Card 3 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">Oceania</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Oceania is more than a pretty name. Find out why and learn more.</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <!-- Service Card 4 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">South Asia</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Improve your knowledge about South Asia and become the expert right here, right now.</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <!-- Service Card 5 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#7EA16B]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#7EA16B]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#7EA16B]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">Indian Ocean Rim</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Yes the Indian Ocean is connected to the Indo-Pacific. Discover more and learn about its geographic treasures.</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--           <!-- Service Card 6 --> -->
+<!--           <div class="relative group"> -->
+<!--             <div class="absolute inset-0 bg-[#1C3144]/5 rounded-lg opacity-0 group-hover:opacity-100 blur-sm transition-opacity"></div> -->
+<!--             <div class="bg-gradient-to-br from-gray-900 to-gray-950 border border-[#1C3144]/20 rounded-lg p-6 relative z-10 h-full group-hover:border-[#1C3144]/40 transition-all duration-300"> -->
+<!--               <div class="flex flex-col h-full"> -->
+<!--                 <div class="flex items-center mb-4"> -->
+<!--                   <div class="font-medium text-lg text-[#FFFFFF]">Western Pacific Rim</div> -->
+<!--                 </div> -->
+<!--                 <p class="text-gray-400 mb-4">Improve user knowledge on the Western Pacific Rim now!</p> -->
+<!--                 <a href="#" class="mt-auto text-[#7EA16B] hover:text-[#617d52] inline-flex items-center group-hover:text-[#617d52] transition-colors">More <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </section> -->
+<!--   <!-- Portfolio Section --> -->
+<!---->
+<!--   <section id="portfolio" class="min-h-screen flex items-center relative py-20"> -->
 <!--   <div class="container mx-auto px-6"> -->
 <!--     <div class="max-w-5xl mx-auto"> -->
 <!--       <div class="text-center mb-12"> -->
@@ -267,138 +730,229 @@
 <!--         <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div> -->
 <!--       </div> -->
 <!---->
-<!--       <!-- Dynamic modules loop --> -->
-<!--       <div id="modules" class="grid md:grid-cols-2 gap-6"> -->
+<!--       <!-- Add Module Button --> -->
+<!--       <div class="mb-8 text-right"> -->
+<!--         <button onclick="openForm()" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg hover:bg-[#617d52]"> -->
+<!--           + Add Module -->
+<!--         </button> -->
+<!--       </div> -->
+<!---->
+<!--       <!-- Modules --> -->
+<!--       <div class="grid md:grid-cols-2 gap-6"> -->
 <!--         <% modules.forEach((m, i) => { %> -->
-<!--           <div class="relative group overflow-hidden rounded-xl"> -->
-<!--             <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center"> -->
-<!--               <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300"> -->
+<!--           <div class="relative group overflow-hidden rounded-xl border shadow"> -->
+<!--             <img src="<%= m.image ? m.image : '/Images/default.jpg' %>"  -->
+<!--                  alt="<%= m.module_title %>"  -->
+<!--                  class="aspect-video object-cover rounded-xl w-full h-full"> -->
+<!---->
+<!--             <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition duration-300 z-10 flex items-center justify-center"> -->
+<!--               <div class="text-center p-4"> -->
 <!--                 <div class="text-xl font-medium text-white mb-2"> -->
 <!--                   Week <%= i + 1 %>: <%= m.module_title %> -->
 <!--                 </div> -->
 <!--                 <p class="text-gray-200 mb-4"><%= m.module_description %></p> -->
-<!--                 <a href="/lecturer/module_editor?id=<%= m.module_id %>"  -->
-<!--                    class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300"> -->
-<!--                   View Details -->
-<!--                 </a> -->
 <!--               </div> -->
 <!--             </div> -->
-<!--             <img src="Images/week<%= i + 1 %>.jpg" alt="<%= m.module_title %>"  -->
-<!--                  class="aspect-video object-cover rounded-xl w-full h-full"> -->
+<!---->
+<!--             <!-- Edit/Delete --> -->
+<!--             <div class="absolute top-2 right-2 flex gap-2 z-20"> -->
+<!--               <button onclick='editModule(<%- JSON.stringify(m) %>)'  -->
+<!--                       class="px-2 py-1 bg-blue-500 text-white rounded text-sm">Edit</button> -->
+<!--               <button onclick="deleteModule(<%= m.module_id %>, '<%= courseId %>')"  -->
+<!--                       class="px-2 py-1 bg-red-500 text-white rounded text-sm">Delete</button> -->
+<!--             </div> -->
 <!--           </div> -->
 <!--         <% }) %> -->
 <!--       </div> -->
 <!--     </div> -->
 <!--   </div> -->
 <!-- </section> -->
-  <section id="contact" class="min-h-screen flex items-center relative py-20">
-    <div class="container mx-auto px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <div class="inline-block mb-3">
-            <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">You've Got This</div>
-            <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#7EA16B] to-[#1C3144] bg-clip-text text-transparent">Quizzes Here</div>
-          </div>
-          <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div>
-        </div>
-        <div class="grid md:grid-cols-5 gap-8">
-          <div class="md:col-span-2">
-            <div class="bg-gray-900/70 backdrop-blur-lg border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl">
-              <div class="text-xl font-medium bg-gradient-to-r from-[#7EA16B] to-[#1C3144] bg-clip-text text-transparent mb-4">What to Expect</div>
-              <div class="space-y-4">
-                <div class="flex items-start">
-                  <div>
-                    <div class="text-s text-[#7EA16B] tracking-widest">Multiple Choice</div>
-                    <div class="text-white">Choose The correct answer</div>
-                    <div class="text-white">(ONLY ONE)</div>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div>
-                    <div class="text-s text-[#7EA16B] tracking-widest">Timer</div>
-                    <div class="text-white">The boat progresses as you answer questions correctly - Don't let the boat go backwards</div>
-                  </div>
-                </div>
-                <div class="flex items-start">
-                  <div>
-                    <div class="text-s text-[#7EA16B] tracking-widest">Better Luck Next Time</div>
-                    <div class="text-white">Play again to improve your time and better your knowledge!</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  </main>
-
-<!-- Footer -->
-<footer class="border-t border-gray-800" style="background-color: rgba(0, 0, 0, 0.589);">
-  <div class="container mx-auto px-6 py-8">
-    <div class="flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center mb-4 md:mb-0">
-        <div class="font-bold text-lg mr-2">MIP</div>
-        <div class="text-lg font-medium flex items-center">The GIST</div>
-      </div>
-      <div class="flex justify-center mb-4 md:mb-0">
-        <a href="#general" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
-        <a href="#services" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a>
-        <a href="#portfolio" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Schedule</a>
-        <a href="#contact" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Quizzes</a>
-      </div>
-    </div>
-    <div class="text-center text-gray-500 text-sm mt-8">© 2025 MIP (Map of the Indo Pacific). All rights reserved.</div>
-  </div>
-</footer>
-<script src="../script.js"></script>
-</body>
-</html>
-
-<!-- partial -->
-<script src='https://cdn.tailwindcss.com'></script>
-<script>
-function openForm(module = null) {
-  document.getElementById("moduleForm").classList.remove("hidden");
-  if (module) {
-    document.getElementById("formTitle").innerText = "Edit Module";
-    document.getElementById("module_id").value = module.module_id;
-    document.getElementById("start_time").value = module.start_time;
-    document.getElementById("module_title").value = module.module_title;
-    document.getElementById("module_description").value = module.module_description;
-    document.getElementById("type").value = module.type;
-  } else {
-    document.getElementById("crudForm").reset();
-    document.getElementById("formTitle").innerText = "Add Module";
-  }
-}
-function closeForm() {
-  document.getElementById("moduleForm").classList.add("hidden");
-}
-
-document.getElementById("crudForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const id = formData.get("module_id");
-
-  const method = id ? "PUT" : "POST";
-  const url = id ? `/api/module/${id}` : "/api/module";
-
-  await fetch(url, { method, body: formData });
-  location.reload();
-});
-
-function editModule(module) {
-  openForm(module);
-}
-
-async function deleteModule(id, courseId) {
-  if (confirm("Delete this module?")) {
-    await fetch(`/api/module/${id}`, { method: "DELETE" });
-    location.reload();
-  }
-}
-</script>
-
-
+<!---->
+<!-- <!-- Modal Form --> -->
+<!-- <div id="moduleForm" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50"> -->
+<!--   <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg relative"> -->
+<!--     <h2 class="text-xl font-bold mb-4" id="formTitle">Add Module</h2> -->
+<!--     <form id="crudForm" enctype="multipart/form-data"> -->
+<!--       <input type="hidden" name="module_id" id="module_id" /> -->
+<!--       <input type="hidden" name="courseId" value="<%= courseId %>" /> -->
+<!---->
+<!--       <div class="mb-3"> -->
+<!--         <label class="block">Start Time</label> -->
+<!--         <input type="number" name="start_time" id="start_time" class="w-full border rounded p-2" /> -->
+<!--       </div> -->
+<!---->
+<!--       <div class="mb-3"> -->
+<!--         <label class="block">Title</label> -->
+<!--         <input type="text" name="module_title" id="module_title" class="w-full border rounded p-2" /> -->
+<!--       </div> -->
+<!---->
+<!--       <div class="mb-3"> -->
+<!--         <label class="block">Description</label> -->
+<!--         <textarea name="module_description" id="module_description" class="w-full border rounded p-2"></textarea> -->
+<!--       </div> -->
+<!---->
+<!--       <div class="mb-3"> -->
+<!--         <label class="block">Type</label> -->
+<!--         <input type="text" name="type" id="type" class="w-full border rounded p-2" /> -->
+<!--       </div> -->
+<!---->
+<!--       <div class="mb-3"> -->
+<!--         <label class="block">Image</label> -->
+<!--         <input type="file" name="image" id="image" /> -->
+<!--       </div> -->
+<!---->
+<!--       <div class="flex justify-end gap-2"> -->
+<!--         <button type="button" onclick="closeForm()" class="px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button> -->
+<!--         <button type="submit" class="px-4 py-2 bg-[#7EA16B] text-white rounded-lg">Save</button> -->
+<!--       </div> -->
+<!--     </form> -->
+<!--   </div> -->
+<!-- </div> -->
+<!-- <!-- <section id="portfolio" class="min-h-screen flex items-center relative py-20"> --> -->
+<!-- <!--   <div class="container mx-auto px-6"> --> -->
+<!-- <!--     <div class="max-w-5xl mx-auto"> --> -->
+<!-- <!--       <div class="text-center mb-12"> --> -->
+<!-- <!--         <div class="inline-block mb-3"> --> -->
+<!-- <!--           <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">Discovering New Places Every Week</div> --> -->
+<!-- <!--           <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#334d1a] to-[#1e365c] bg-clip-text text-transparent"> --> -->
+<!-- <!--             Course Schedule --> -->
+<!-- <!--           </div> --> -->
+<!-- <!--         </div> --> -->
+<!-- <!--         <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div> --> -->
+<!-- <!--       </div> --> -->
+<!-- <!----> -->
+<!-- <!--       <!-- Dynamic modules loop --> --> -->
+<!-- <!--       <div id="modules" class="grid md:grid-cols-2 gap-6"> --> -->
+<!-- <!--         <% modules.forEach((m, i) => { %> --> -->
+<!-- <!--           <div class="relative group overflow-hidden rounded-xl"> --> -->
+<!-- <!--             <div class="absolute inset-0 bg-gradient-to-br from-[#7EA16B]/80 to-[#1C3144]/80 opacity-0 group-hover:opacity-90 transition-all duration-300 z-10 flex items-center justify-center"> --> -->
+<!-- <!--               <div class="text-center p-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300"> --> -->
+<!-- <!--                 <div class="text-xl font-medium text-white mb-2"> --> -->
+<!-- <!--                   Week <%= i + 1 %>: <%= m.module_title %> --> -->
+<!-- <!--                 </div> --> -->
+<!-- <!--                 <p class="text-gray-200 mb-4"><%= m.module_description %></p> --> -->
+<!-- <!--                 <a href="/lecturer/module_editor?id=<%= m.module_id %>"  --> -->
+<!-- <!--                    class="px-4 py-2 bg-[#1C3144]/20 backdrop-blur-sm rounded text-white hover:bg-[#1C3144]/30 transition-colors duration-300"> --> -->
+<!-- <!--                   View Details --> -->
+<!-- <!--                 </a> --> -->
+<!-- <!--               </div> --> -->
+<!-- <!--             </div> --> -->
+<!-- <!--             <img src="Images/week<%= i + 1 %>.jpg" alt="<%= m.module_title %>"  --> -->
+<!-- <!--                  class="aspect-video object-cover rounded-xl w-full h-full"> --> -->
+<!-- <!--           </div> --> -->
+<!-- <!--         <% }) %> --> -->
+<!-- <!--       </div> --> -->
+<!-- <!--     </div> --> -->
+<!-- <!--   </div> --> -->
+<!-- <!-- </section> --> -->
+<!--   <section id="contact" class="min-h-screen flex items-center relative py-20"> -->
+<!--     <div class="container mx-auto px-6"> -->
+<!--       <div class="max-w-5xl mx-auto"> -->
+<!--         <div class="text-center mb-12"> -->
+<!--           <div class="inline-block mb-3"> -->
+<!--             <div class="text-xs text-[#7EA16B] tracking-widest uppercase mb-1">You've Got This</div> -->
+<!--             <div class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#7EA16B] to-[#1C3144] bg-clip-text text-transparent">Quizzes Here</div> -->
+<!--           </div> -->
+<!--           <div class="w-20 h-1 bg-gradient-to-r from-[#7EA16B] to-[#1C3144] mx-auto"></div> -->
+<!--         </div> -->
+<!--         <div class="grid md:grid-cols-5 gap-8"> -->
+<!--           <div class="md:col-span-2"> -->
+<!--             <div class="bg-gray-900/70 backdrop-blur-lg border border-[#7EA16B]/20 p-6 rounded-xl shadow-xl"> -->
+<!--               <div class="text-xl font-medium bg-gradient-to-r from-[#7EA16B] to-[#1C3144] bg-clip-text text-transparent mb-4">What to Expect</div> -->
+<!--               <div class="space-y-4"> -->
+<!--                 <div class="flex items-start"> -->
+<!--                   <div> -->
+<!--                     <div class="text-s text-[#7EA16B] tracking-widest">Multiple Choice</div> -->
+<!--                     <div class="text-white">Choose The correct answer</div> -->
+<!--                     <div class="text-white">(ONLY ONE)</div> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--                 <div class="flex items-start"> -->
+<!--                   <div> -->
+<!--                     <div class="text-s text-[#7EA16B] tracking-widest">Timer</div> -->
+<!--                     <div class="text-white">The boat progresses as you answer questions correctly - Don't let the boat go backwards</div> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--                 <div class="flex items-start"> -->
+<!--                   <div> -->
+<!--                     <div class="text-s text-[#7EA16B] tracking-widest">Better Luck Next Time</div> -->
+<!--                     <div class="text-white">Play again to improve your time and better your knowledge!</div> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </section> -->
+<!--   </main> -->
+<!---->
+<!-- <!-- Footer --> -->
+<!-- <footer class="border-t border-gray-800" style="background-color: rgba(0, 0, 0, 0.589);"> -->
+<!--   <div class="container mx-auto px-6 py-8"> -->
+<!--     <div class="flex flex-col md:flex-row justify-between items-center"> -->
+<!--       <div class="flex items-center mb-4 md:mb-0"> -->
+<!--         <div class="font-bold text-lg mr-2">MIP</div> -->
+<!--         <div class="text-lg font-medium flex items-center">The GIST</div> -->
+<!--       </div> -->
+<!--       <div class="flex justify-center mb-4 md:mb-0"> -->
+<!--         <a href="#general" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a> -->
+<!--         <a href="#services" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a> -->
+<!--         <a href="#portfolio" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Schedule</a> -->
+<!--         <a href="#contact" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Quizzes</a> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--     <div class="text-center text-gray-500 text-sm mt-8">© 2025 MIP (Map of the Indo Pacific). All rights reserved.</div> -->
+<!--   </div> -->
+<!-- </footer> -->
+<!-- <script src="../script.js"></script> -->
+<!-- </body> -->
+<!-- </html> -->
+<!---->
+<!-- <!-- partial --> -->
+<!-- <script src='https://cdn.tailwindcss.com'></script> -->
+<!-- <script> -->
+<!-- function openForm(module = null) { -->
+<!--   document.getElementById("moduleForm").classList.remove("hidden"); -->
+<!--   if (module) { -->
+<!--     document.getElementById("formTitle").innerText = "Edit Module"; -->
+<!--     document.getElementById("module_id").value = module.module_id; -->
+<!--     document.getElementById("start_time").value = module.start_time; -->
+<!--     document.getElementById("module_title").value = module.module_title; -->
+<!--     document.getElementById("module_description").value = module.module_description; -->
+<!--     document.getElementById("type").value = module.type; -->
+<!--   } else { -->
+<!--     document.getElementById("crudForm").reset(); -->
+<!--     document.getElementById("formTitle").innerText = "Add Module"; -->
+<!--   } -->
+<!-- } -->
+<!-- function closeForm() { -->
+<!--   document.getElementById("moduleForm").classList.add("hidden"); -->
+<!-- } -->
+<!---->
+<!-- document.getElementById("crudForm").addEventListener("submit", async (e) => { -->
+<!--   e.preventDefault(); -->
+<!--   const formData = new FormData(e.target); -->
+<!--   const id = formData.get("module_id"); -->
+<!---->
+<!--   const method = id ? "PUT" : "POST"; -->
+<!--   const url = id ? `/api/module/${id}` : "/api/module"; -->
+<!---->
+<!--   await fetch(url, { method, body: formData }); -->
+<!--   location.reload(); -->
+<!-- }); -->
+<!---->
+<!-- function editModule(module) { -->
+<!--   openForm(module); -->
+<!-- } -->
+<!---->
+<!-- async function deleteModule(id, courseId) { -->
+<!--   if (confirm("Delete this module?")) { -->
+<!--     await fetch(`/api/module/${id}`, { method: "DELETE" }); -->
+<!--     location.reload(); -->
+<!--   } -->
+<!-- } -->
+<!-- </script> -->
+<!---->
+<!---->
