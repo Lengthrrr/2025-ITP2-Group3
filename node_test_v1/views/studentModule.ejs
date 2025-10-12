@@ -152,8 +152,9 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id') || '<%= module.module_id %>';
+    const courseId = '<%= courseId %>';
     const iframe = document.getElementById('geemap-frame');
-    iframe.src = `/module/geemaps/geemap_id_${id}.html`;
+    iframe.src = `/module/geemaps/${courseId}/${id}.html`;
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
 </body>
