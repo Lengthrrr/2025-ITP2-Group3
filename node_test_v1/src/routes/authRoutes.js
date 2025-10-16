@@ -3,7 +3,10 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 
 // Home page
-router.get("/", authController.redirectLogin);
+// router.get("/", authController.redirectLogin);
+router.get("/", (req, res) => {
+  res.redirect("/student/course/1");
+});
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);
 router.get("/home", authController.getHome);

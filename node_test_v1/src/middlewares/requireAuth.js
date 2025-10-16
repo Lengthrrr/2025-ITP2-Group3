@@ -13,10 +13,11 @@ function requireLecturer(req, res, next) {
 }
 
 function requireCourse(req, res, next) {
-  if (!req.session.user || req.session.user.role !== "course") {
-    return res.status(403).send("Access denied. Logged in students only.");
-  }
-  return next();
+    return next();
+  // if (!req.session.user || req.session.user.role !== "course") {
+  //   return res.status(403).send("Access denied. Logged in students only.");
+  // }
+  // return next();
 }
 
 module.exports = { requireSystemAdmin, requireLecturer, requireCourse };

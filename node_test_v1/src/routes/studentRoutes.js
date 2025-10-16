@@ -3,7 +3,7 @@ const router = express.Router();
 const { requireCourse } = require("../middlewares/requireAuth");
 const studentController = require("../controllers/studentController");
 
-
+// router.get("/", authController.redirectLogin);
 router.get("/student/course/:courseId", requireCourse, studentController.getCourse);
 router.get("/student/module/:courseId/:moduleId", requireCourse, studentController.getModule);
 router.get("/student/map_quiz/:courseId/:moduleId", requireCourse, studentController.getMapQuiz);
