@@ -2,151 +2,156 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Map the Indo-Pacific</title>
+  <title>Geo-Clue Fact Hunt - <%= courseId %></title>
   <script src='https://cdn.tailwindcss.com'></script>
-  <link rel='stylesheet' href='../style.css'>
+  <link rel='stylesheet' href='../../../student/map_quiz/style.css'>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'>
 </head>
-
-<body>
-<%
-  // Group modules by heading first (reuse this from your page)
-  const groupedModules = {};
-  if (modules && modules.length > 0) {
-    modules.forEach(m => {
-      if (!groupedModules[m.module_heading]) groupedModules[m.module_heading] = [];
-      groupedModules[m.module_heading].push(m);
-    });
-  }
-%>
-
-
-
+<body class="bg-darker-bg text-text-primary font-space-grotesk">
 
 <%
-  // Collect unique section headings dynamically
   const sectionHeadings = [];
-  if (modules && modules.length > 0) {
+  const footerHeadings = [];
+  if(modules && modules.length > 0){
     modules.forEach(m => {
-      if (!sectionHeadings.includes(m.module_heading)) {
-        sectionHeadings.push(m.module_heading);
-      }
+      if(!sectionHeadings.includes(m.module_heading)) sectionHeadings.push(m.module_heading);
+      if(!footerHeadings.includes(m.module_heading)) footerHeadings.push(m.module_heading);
     });
   }
-
-  // Helper: format heading into a usable #id (e.g., "Course Schedule" -> "course-schedule")
-  const formatId = str => str.toLowerCase().replace(/\s+/g, '-');
+  const formatId = str => str.toLowerCase().replace(/\s+/g,'-');
 %>
 
+<!-- Navbar -->
 <nav id="navbar" class="fixed top-0 left-0 right-0 bg-gray-900/70 backdrop-blur-lg border-b border-[#FFFFFF]/30 z-50 transition-all duration-300">
-  <div class="mt-2 pl-6 pr-0 py-3 w-full">
-    <div class="flex items-center">
-      <!-- Logo -->
-      <div class="flex items-center">
-        <div class="logo">
-            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
-        </div>
-      </div>
-
-      <!-- Desktop Navigation and Mobile Button -->
-      <div class="ml-auto flex items-center space-x-4 pr-6">
-        <!-- Desktop Nav Links -->
-        <div class="hidden md:flex items-center space-x-4">
-          <% sectionHeadings.forEach(h => { %>
-          <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" 
-               class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
-               <%= h %>
-            </a>
-          <% }) %>
-        </div>
-
-        <!-- Mobile Navigation Button -->
-        <div class="flex md:hidden">
-          <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none group" aria-label="Toggle menu">
-            <div class="absolute w-5 transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
-              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line1"></span>
-              <span class="block h-0.5 w-5 bg-[#7EA16B] mb-1 transform transition duration-300 ease-in-out" id="line2"></span>
-              <span class="block h-0.5 w-5 bg-[#7EA16B] transform transition duration-300 ease-in-out" id="line3"></span>
-            </div>
-          </button>
-        </div>
-      </div>
+  <div class="container flex items-center justify-between px-6 py-3">
+    <div class="logo text-4xl font-bold text-white"><a href="/student/course/<%= courseId %>">MIP</a></div>
+    <div class="hidden md:flex space-x-4">
+      <% sectionHeadings.forEach(h => { %>
+        <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" class="nav-link text-white hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200"><%= h %></a>
+      <% }) %>
     </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
-      <div class="pt-2 pb-4 space-y-1">
-        <% sectionHeadings.forEach(h => { %>
-        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
-             class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
-             <%= h %>
-          </a>
-        <% }) %>
-      </div>
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="relative w-10 h-10 focus:outline-none">
+        <span id="line1" class="block w-5 h-0.5 bg-[#7EA16B] mb-1 transition-transform duration-300"></span>
+        <span id="line2" class="block w-5 h-0.5 bg-[#7EA16B] mb-1 transition-opacity duration-300"></span>
+        <span id="line3" class="block w-5 h-0.5 bg-[#7EA16B] transition-transform duration-300"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-300 px-6">
+    <div class="flex flex-col pt-2 pb-4 space-y-1">
+      <% sectionHeadings.forEach(h => { %>
+        <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" class="mobile-nav-link block text-white hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200"><%= h %></a>
+      <% }) %>
     </div>
   </div>
 </nav>
 
-  <main>
-    <section id="boat-quiz-section" class="py-8">
-    <div class="mx-auto px-4 w-full max-w-3xl">
-        <div id="boat-quiz" class="relative bg-gray-900/70 border border-[#1C3144]/30 p-4 rounded-xl shadow-xl">
-          <h1 class="text-xl font-bold text-white mb-4 text-center">Boat Adventure Quiz</h1>
-          <!-- Progress Bar -->
-          <div class="w-full bg-gray-800 rounded-lg h-7 mb-3 relative overflow-hidden">
-            <div id="boat-progress" class="absolute top-0 left-0 h-7 bg-[#7EA16B] rounded-lg transition-all duration-500" style="width:0%"></div>
-            <span id="boat-icon" class="absolute -top-1 left-0 text-2xl">⛵</span>
-            <span class="absolute -top-1 right-0 text-2xl">🏝️</span>
-          </div>
-          <!-- Question -->
-          <p id="boat-question" class="text-white font-medium mb-3 min-h-[1.75rem] text-sm"></p>
-          <!-- Options -->
-          <div id="boat-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
-          <!-- Feedback -->
-          <p id="boat-feedback" class="text-white font-semibold mt-2 min-h-[1.1rem] text-sm"></p>
-          <!-- Controls -->
-          <div class="flex items-center gap-3 mt-3 justify-center flex-wrap">
-            <button id="boat-next-btn" class="hidden bg-[#1C3144] text-white px-6 py-2.5 rounded-lg hover:bg-[#2c4569] transition text-sm font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/60 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center gap-2">
-              <span>Next</span>
-            </button>
-            <button id="boat-retry-btn" class="hidden bg-[#7EA16B] text-white px-5 py-2 rounded-lg hover:bg-[#617d52] transition text-sm font-medium shadow focus:outline-none focus:ring-2 focus:ring-[#7EA16B]/60 focus:ring-offset-2 focus:ring-offset-gray-900">Retry</button>
-          </div>
-          <!-- Score -->
-          <p class="text-[#7EA16B]-500 text-[14px] mt-4 text-center">Score: <span id="boat-score" class="font-semibold text-white">0</span></p>
+<!-- Main Quiz Section -->
+<main class="pt-24">
+  <section class="py-6">
+    <div class="container mx-auto px-4">
+      <div id="map-quiz" class="max-w-5xl mx-auto bg-gray-900/70 border border-[#7EA16B]/20 p-8 rounded-2xl shadow-2xl text-center">
+        <h2 class="text-2xl font-semibold text-[#7EA16B] mb-2">Clue Quiz</h2>
+        <p id="map-quiz-clue" class="text-white mb-4">Click “Start Quiz” to begin!</p>
+        <input id="map-quiz-guess" type="text" placeholder="Your guess here…" class="form-input mb-4 w-full p-3 rounded-lg border border-[#7EA16B] bg-gray-800 text-white">
+        <div class="mb-4 flex justify-center gap-2">
+<button id="map-quiz-start" class="bg-[#7EA16B] text-white px-4 py-2 rounded-lg hover:bg-[#617d52] transition-colors">Start Quiz</button>
+          <button id="map-quiz-submit" class="btn btn-outline" style="display:none;">Submit Guess</button>
         </div>
-        <div class="mt-6 flex justify-between text-sm text-gray-500">
-            <a href="/student/course/<%= courseId %>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
-        </div>
+        <p id="map-quiz-result" class="text-white mb-2"></p>
+        <p id="map-quiz-score" class="text-[#7EA16B] font-semibold mb-1">Score: 20</p>
+        <p id="map-quiz-tries" class="text-gray-400">Attempts left: —</p>
+                  <div class="mt-6 flex justify-between text-sm text-darkgray-500">
+              <a href="/student/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+          </div>
+
       </div>
-    </section>
-  </main>
+    <iframe id="geemap-frame" src="../../../module/7.html" class="w-full h-[700px] my-5 py-0 border-0 rounded-xl shadow-lg"></iframe>
+    </div>
+  </section>
+</main>
 
 <!-- Footer -->
-  <footer class="background-color:rgba(0, 0, 0, 0.589) border-t border-gray-800">
-    <div class="container mx-auto px-12 py-12">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="flex items-center mb-4 md:mb-0">
-          <!-- Plain MIP logo, no square or gradient -->
-          <div class="font-bold text-3xl mr-2">MIP</div>
-          <div class="text-xl font-medium flex items-center">The GIST</div>
-        </div>
-        <div class="flex justify-center mb-4 md:mb-0">
-          <a href="#home" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">General Maps</a>
-          <a href="#regional-maps" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Regional Maps</a>
-          <a href="#course-schedule" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Course Schedule</a>
-          <a href="#study-tools" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors">Study Tools</a>
-        </div>
-      </div>
+<footer class="bg-black/60 border-t border-gray-800">
+  <div class="container mx-auto px-12 py-12 flex flex-col md:flex-row justify-between items-center">
+    <div class="flex items-center mb-4 md:mb-0">
+      <div class="font-bold text-3xl mr-2 text-white">MIP</div>
+      <div class="text-xl font-medium text-gray-300">The GIST</div>
     </div>
-  </footer>
-  <!-- Copyright tag -->
-  <div class="text-center text-gray-500 text-sm py-4" style="background-color: rgba(0, 0, 0, 0.589);">
-    © 2025 MIP (Map the Indo Pacific). All rights reserved.
+    <div class="flex flex-wrap justify-center mb-4 md:mb-0">
+      <% footerHeadings.forEach(h => { %>
+        <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200"><%= h %></a>
+      <% }) %>
+    </div>
   </div>
-  <script>
+</footer>
+<div class="text-center text-gray-500 text-sm py-4 bg-black/60">
+  © 2025 MIP (Geo-Clue Fact Hunt). All rights reserved.
+</div>
+
+<script>
   const boatQuestions = <%- JSON.stringify(boatQuestions) %>;
+
+  let currentIndex = 0;
+  let currentClueIndex = 0;
+  let attempts = 3;
+  let roundPoints = 20;
+  let totalScore = 0;
+  let locked = false;
+
+  const clueEl = document.getElementById("map-quiz-clue");
+  const guessEl = document.getElementById("map-quiz-guess");
+  const resultEl = document.getElementById("map-quiz-result");
+  const scoreEl = document.getElementById("map-quiz-score");
+  const triesEl = document.getElementById("map-quiz-tries");
+  const startBtn = document.getElementById("map-quiz-start");
+  const submitBtn = document.getElementById("map-quiz-submit");
+
+  function shuffle(arr) { for (let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr; }
+  function startQuiz(){ shuffle(boatQuestions); currentIndex=0; totalScore=0; startQuestion(); startBtn.style.display="none"; submitBtn.style.display="inline-block"; }
+  function startQuestion(){ 
+    if(currentIndex>=boatQuestions.length)return endQuiz(); 
+    locked=false; currentClueIndex=0; attempts=3; roundPoints=20; 
+    const q=boatQuestions[currentIndex]; 
+    clueEl.innerText=`Clue 1: ${q.clues[currentClueIndex]||""}`; 
+    resultEl.innerText=""; guessEl.value=""; guessEl.disabled=false; submitBtn.disabled=false; 
+    scoreEl.innerText=`Score: ${roundPoints}`; triesEl.innerText=`Attempts left: ${attempts}`;
+  }
+  function submitGuess(){
+    if(locked)return;
+    const q=boatQuestions[currentIndex];
+    const guess=guessEl.value.trim().toLowerCase();
+    if(!guess)return;
+    if(guess===q.answer.toLowerCase()){
+      totalScore+=roundPoints; resultEl.innerText=`✅ Correct! It was ${q.answer}. (+${roundPoints} pts)`; 
+      scoreEl.innerText=`Total Score: ${totalScore}`; lockInput(); nextQuestion();
+    } else {
+      attempts--; 
+      if(attempts>0){ resultEl.innerText=`❌ Incorrect. Try again! (${attempts} left)`; triesEl.innerText=`Attempts left: ${attempts}`; }
+      else{ currentClueIndex++; if(currentClueIndex<q.clues.length){ roundPoints=Math.max(0,roundPoints-5); attempts=3;
+        clueEl.innerText=`Clue ${currentClueIndex+1}: ${q.clues[currentClueIndex]}`;
+        resultEl.innerText=`💡 Another clue! (-5 points)`; scoreEl.innerText=`Score: ${roundPoints}`; triesEl.innerText=`Attempts left: ${attempts}`;
+        if(roundPoints<=0) revealAnswer(q);
+      } else revealAnswer(q); }
+    }
+  }
+  function revealAnswer(q){ roundPoints=0; scoreEl.innerText=`Score: ${roundPoints}`; resultEl.innerText=`📘 Out of points! The correct answer was ${q.answer}.`; lockInput(); nextQuestion(); }
+  function lockInput(){ locked=true; guessEl.disabled=true; submitBtn.disabled=true; }
+  function nextQuestion(){ setTimeout(()=>{ currentIndex++; if(currentIndex<boatQuestions.length) startQuestion(); else endQuiz(); },2000); }
+  function endQuiz(){ clueEl.innerText=`🎉 Quiz complete! Your final score: ${totalScore} points.`; submitBtn.style.display="none"; startBtn.style.display="inline-block"; startBtn.innerText="Restart Quiz"; triesEl.innerText=`Attempts left: —`; guessEl.disabled=true; }
+
+  startBtn.addEventListener("click", startQuiz);
+  submitBtn.addEventListener("click", submitGuess);
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  menuBtn.addEventListener("click", ()=>{
+    menuBtn.classList.toggle("active");
+    mobileMenu.classList.toggle("open");
+  });
 </script>
 
-  <script src="../script.js" defer></script>
 </body>
 </html>

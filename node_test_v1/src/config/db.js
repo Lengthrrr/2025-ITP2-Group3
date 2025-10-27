@@ -64,6 +64,7 @@ db.serialize(() => {
       incorrect_answer_one TEXT,
       incorrect_answer_two TEXT,
       incorrect_answer_three TEXT,
+        incorrect_answer_four TEXT,
       FOREIGN KEY (module_id) REFERENCES module(module_id)
     );
   `);

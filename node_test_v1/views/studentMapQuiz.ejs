@@ -53,7 +53,7 @@
       <!-- Logo -->
       <div class="flex items-center">
         <div class="logo">
-            <span class="font-bold text-4xl text-white"><a href="/lecturer/course/<%= courseId %>">MIP</a></span>
+            <span class="font-bold text-4xl text-white"><a href="/student/course/<%= courseId %>">MIP</a></span>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
         <!-- Desktop Nav Links -->
         <div class="hidden md:flex items-center space-x-4">
           <% sectionHeadings.forEach(h => { %>
-          <a href="/lecturer/course/<%= courseId %>#<%= formatId(h) %>" 
+          <a href="/student/course/<%= courseId %>#<%= formatId(h) %>" 
                class="nav-link text-white-300 hover:text-[#7EA16B] px-4 py-2 rounded-md transition-colors duration-200">
                <%= h %>
             </a>
@@ -86,7 +86,7 @@
     <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out px-6" style="height: 0;">
       <div class="pt-2 pb-4 space-y-1">
         <% sectionHeadings.forEach(h => { %>
-        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
              class="mobile-nav-link block text-gray-300 hover:text-[#7EA16B] hover:bg-gray-800/50 px-4 py-2 rounded-md transition-colors duration-200">
              <%= h %>
           </a>
@@ -128,7 +128,7 @@
           </div>
 
           <div class="mt-6 flex justify-between text-sm text-darkgray-500">
-              <a href="/lecturer/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
+              <a href="/student/course/<%= courseId%>" class="hover:text-[#7EA16B] transition-colors">← Go back</a>
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
       <!-- Dynamic Links -->
       <div class="flex flex-wrap justify-center mb-4 md:mb-0">
         <% footerHeadings.forEach(h => { %>
-        <a href="/lecturer/course/<%= courseId%>#<%= formatId(h) %>" 
+        <a href="/student/course/<%= courseId%>#<%= formatId(h) %>" 
              class="text-gray-400 hover:text-[#7EA16B] mx-2 transition-colors duration-200">
             <%= h %>
           </a>

@@ -93,18 +93,16 @@ exports.getMapQuiz = (req, res) => {
 };
 
 exports.getMultipleQuiz = (req, res) => {
-  const moduleId = req.params.moduleId; // expecting route: /student/module/:moduleId
-  const courseId = req.params.courseId; // expecting route: /student/module/:moduleId
+  const moduleId = req.params.moduleId; // route: /student/module/:moduleId
+  const courseId = req.params.courseId;
 
-  console.log("Selecting all from module");
-  console.log(courseId);
+  console.log("Fetching modules for course:", courseId);
 
   // Fetch all modules for this course
   const sqlModules = `SELECT * FROM module WHERE course_id = ?`;
-
-  db.all(sqlModules, [courseId], (err2, modules) => {
-    if (err2) {
-      console.error("Error fetching modules:", err2);
+  db.all(sqlModules, [courseId], (errModules, modules) => {
+    if (errModules) {
+      console.error("Error fetching modules:", errModules);
       return res.render("studentMultipleQuiz", {
         courseId,
         moduleId,
@@ -114,12 +112,10 @@ exports.getMultipleQuiz = (req, res) => {
       });
     }
 
-    console.log("Modules:");
-    console.log(modules);
+    console.log("Modules:", modules);
 
     // Fetch all multiple choice questions for this module
     const sqlQuestions = `SELECT * FROM multiple_choice_question WHERE module_id = ?`;
-
     db.all(sqlQuestions, [moduleId], (errQuestions, questions) => {
       if (errQuestions) {
         console.error("Error fetching questions:", errQuestions);
@@ -132,14 +128,14 @@ exports.getMultipleQuiz = (req, res) => {
         });
       }
 
-      // Transform questions into the same format as your front-end expects
+      // Transform questions for boat quiz: incorrect answers become clues
       const boatQuestions = questions.map((q) => ({
         question: q.question_text,
-        options: [
-          q.correct_answer,
+        clues: [
           q.incorrect_answer_one,
           q.incorrect_answer_two,
           q.incorrect_answer_three,
+          q.incorrect_answer_four,
         ],
         answer: q.correct_answer,
       }));
@@ -149,7 +145,7 @@ exports.getMultipleQuiz = (req, res) => {
         courseId,
         moduleId,
         modules,
-        boatQuestions, // new
+        boatQuestions,
         error: null,
       });
     });

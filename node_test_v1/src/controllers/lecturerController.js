@@ -127,8 +127,8 @@ exports.updateMultipleChoiceQuestions = async (req, res) => {
         // 2️⃣ Insert all new questions
         const stmt = db.prepare(`
             INSERT INTO multiple_choice_question 
-            (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
-            VALUES (?, ?, ?, ?, ?, ?)
+            (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three, incorrect_answer_four)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `);
 
         for (const [i, q] of questions.entries()) {
@@ -144,6 +144,7 @@ exports.updateMultipleChoiceQuestions = async (req, res) => {
                 q.options[1],
                 q.options[2],
                 q.options[3],
+                q.options[4],
             ]);
         }
 
@@ -230,6 +231,7 @@ exports.getMultipleQuiz = (req, res) => {
                         q.incorrect_answer_one,
                         q.incorrect_answer_two,
                         q.incorrect_answer_three,
+                        q.incorrect_answer_four,
                     ],
                     correct: 1, // index of correct answer (1-based)
                 }));
@@ -717,8 +719,8 @@ exports.saveMapQuestions = (req, res) => {
                 console.log("Inserting new questions into DB...");
                 const insertStmt = db.prepare(`
                     INSERT INTO multiple_choice_question
-                    (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three, incorrect_answer_four)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 `);
 
                 questions.forEach((q, idx) => {
@@ -739,6 +741,7 @@ exports.saveMapQuestions = (req, res) => {
                         incorrect[1] || "",
                         incorrect[2] || "",
                         incorrect[3] || "",
+                        "",
                         (err) => {
                             if (err) console.error("Error inserting question:", err);
                         }

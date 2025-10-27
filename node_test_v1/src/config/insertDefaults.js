@@ -303,6 +303,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Bay of Biscay",
                     incorrect_answer_two: "Brunei Bay",
                     incorrect_answer_three: "Baffin Bay",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Which island is highlighted",
@@ -310,6 +311,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Madagascar",
                     incorrect_answer_two: "Sumatra",
                     incorrect_answer_three: "Taiwan",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Which sea is this?",
@@ -317,6 +319,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "East China Sea",
                     incorrect_answer_two: "Philippine Sea",
                     incorrect_answer_three: "Bay of Bengal",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "What island chain is this?",
@@ -324,6 +327,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Indonesia",
                     incorrect_answer_two: "Japan",
                     incorrect_answer_three: "Maldives",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Identify this island",
@@ -331,6 +335,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Borneo",
                     incorrect_answer_two: "Sumatra",
                     incorrect_answer_three: "Sulawesi",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Which island is this?",
@@ -338,6 +343,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Sulawesi",
                     incorrect_answer_two: "Papua New Guinea",
                     incorrect_answer_three: "Madagascar",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "What sea is highlighted?",
@@ -345,6 +351,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "South China Sea",
                     incorrect_answer_two: "Sea of Japan",
                     incorrect_answer_three: "Philippine Sea",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Which ocean is this?",
@@ -352,6 +359,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Pacific Ocean",
                     incorrect_answer_two: "Atlantic Ocean",
                     incorrect_answer_three: "Southern Ocean",
+                    incorrect_answer_four: "tt",
                 },
             ],
         },
@@ -370,8 +378,8 @@ async function insertDefaults() {
         for (const q of quiz.questions) {
             await runAsync(
                 `INSERT OR IGNORE INTO multiple_choice_question 
-       (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+       (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three, incorrect_answer_four)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [
                     moduleId,
                     q.question_text,
@@ -379,6 +387,7 @@ async function insertDefaults() {
                     q.incorrect_answer_one,
                     q.incorrect_answer_two,
                     q.incorrect_answer_three,
+                    q.incorrect_answer_four,
                 ],
             );
             console.log(`✅ Inserted question for module "${quiz.moduleTitle}"`);
@@ -395,6 +404,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Atlantic Ocean",
                     incorrect_answer_two: "Pacific Ocean",
                     incorrect_answer_three: "Southern Ocean",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "Which country is NOT in South Asia?",
@@ -402,6 +412,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Nepal",
                     incorrect_answer_two: "Bhutan",
                     incorrect_answer_three: "Sri Lanka",
+                    incorrect_answer_four: "tt",
                 },
                 {
                     question_text: "What is the capital of Indonesia?",
@@ -409,6 +420,7 @@ async function insertDefaults() {
                     incorrect_answer_one: "Bangkok",
                     incorrect_answer_two: "Kuala Lumpur",
                     incorrect_answer_three: "Manila",
+                    incorrect_answer_four: "tt",
                 },
             ],
         },
@@ -427,8 +439,8 @@ async function insertDefaults() {
         for (const q of quiz.questions) {
             await runAsync(
                 `INSERT OR IGNORE INTO multiple_choice_question 
-       (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+       (module_id, question_text, correct_answer, incorrect_answer_one, incorrect_answer_two, incorrect_answer_three, incorrect_answer_four)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [
                     moduleId,
                     q.question_text,
@@ -436,6 +448,7 @@ async function insertDefaults() {
                     q.incorrect_answer_one,
                     q.incorrect_answer_two,
                     q.incorrect_answer_three,
+                    q.incorrect_answer_four,
                 ],
             );
             console.log(`✅ Inserted question for module "${quiz.moduleTitle}"`);
