@@ -1,4 +1,3 @@
-// insertDefaults.js
 const bcrypt = require("bcrypt");
 const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
@@ -30,21 +29,21 @@ async function insertDefaults() {
         {
             table: "course",
             field: "course_code",
-            value: "User Testing",
-            password: "User Testing",
+            value: "Indo Pacific",
+            password: "Indo Pacific",
         },
         {
             table: "user",
             field: "username",
-            value: "lecturer",
-            password: "lecturer",
+            value: "Indo Pacific",
+            password: "ILoveIndoPacific",
             role: "lecturer",
         },
         {
             table: "user",
             field: "username",
             value: "admin",
-            password: "admin",
+            password: "admin123321",
             role: "admin",
         },
     ];
@@ -70,11 +69,11 @@ async function insertDefaults() {
     // Link default lecturer to default course
     const course = await getAsync(
         `SELECT course_id FROM course WHERE course_code = ?`,
-        ["User Testing"],
+        ["Indo Pacific"],
     );
     const lecturer = await getAsync(
         `SELECT user_id FROM user WHERE username = ? AND role = 'lecturer'`,
-        ["lecturer"],
+        ["Indo Pacific"],
     );
 
     if (course && lecturer) {
