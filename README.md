@@ -1,5 +1,14 @@
 # 2025-ITP2-Group3
 
+Username and Password for Students
+
+"Indo Pacific" and "Indo Pacific"
+
+Username and Password for Lecturers
+
+"Indo Pacific" and "ILoveIndoPacific"
+
+
 ## Info
 
 `Example_Data_From_Client/` is data given to us by the client
