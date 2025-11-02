@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_951cd4dbfb455b827fcc841dc833d4cf {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+</head>
+<body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    
+<style>
+  #help-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: white;
+    border: 2px solid #888;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    z-index: 10000;
+    display: none;
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    resize: both;
+    min-width: 400px;
+    min-height: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  
+  #help-popup .header {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    color: white;
+    padding: 12px 16px;
+    border-bottom: 1px solid #005a9e;
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    cursor: move;
+    user-select: none;
+  }
+  
+  #help-popup .main-container {
+    display: flex;
+    height: calc(100% - 49px);
+  }
+  
+  #help-popup .sidebar {
+    width: 180px;
+    background: #f8f9fa;
+    border-right: 2px solid #dee2e6;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  
+  #help-popup .sidebar ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+  }
+  
+  #help-popup .sidebar li {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  #help-popup .sidebar li:hover {
+    background: #e3f2fd;
+    color: #0078d4;
+    padding-left: 24px;
+  }
+  
+  #help-popup .sidebar li.active {
+    background: #0078d4;
+    color: white;
+    font-weight: 600;
+    border-left: 4px solid #005a9e;
+  }
+  
+  #help-popup .sidebar li.active:hover {
+    padding-left: 20px;
+  }
+  
+  #help-popup .content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: white;
+  }
+  
+  #help-popup .section {
+    display: none;
+  }
+  
+  #help-popup .section.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  #help-popup .section h2 {
+    color: #0078d4;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 24px;
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 8px;
+  }
+  
+  #help-popup .section h3 {
+    color: #0078d4;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  #help-popup .section p {
+    line-height: 1.6;
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  
+  #help-popup .section ul {
+    line-height: 1.6;
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  
+  #help-popup .section li {
+    margin-bottom: 8px;
+  }
+  
+  #help-popup .citation {
+    background: #f8f9fa;
+    border-left: 4px solid #0078d4;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 4px;
+  }
+  
+  #help-popup .citation strong {
+    color: #0078d4;
+    display: block;
+    margin-bottom: 6px;
+  }
+  
+  #help-popup .team-member {
+    background: #e3f2fd;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  #help-popup .video-placeholder {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+  }
+  
+  #help-popup .section video {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    margin-top: 16px;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  #close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    line-height: 1;
+  }
+  
+  #close-btn:hover {
+    background: rgba(255, 0, 0, 0.6);
+    transform: scale(1.05);
+  }
+  
+  #help-button {
+    position: fixed;
+    bottom: 280px;
+    left: 20px;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    z-index: 9999;
+    font-size: 32px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+  }
+  
+  #help-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 120, 212, 0.6);
+    background: linear-gradient(135deg, #005a9e 0%, #003d6b 100%);
+  }
+  
+  #help-button:active {
+    transform: scale(0.95);
+  }
+  
+  #help-button::before {
+    content: '?';
+    display: block;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    }
+    50% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4), 0 0 0 10px rgba(0, 120, 212, 0.1);
+    }
+    100% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    }
+  }
+  
+  #help-button.pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  #help-popup .content::-webkit-scrollbar,
+  #help-popup .sidebar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-track,
+  #help-popup .sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-thumb,
+  #help-popup .sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-thumb:hover,
+  #help-popup .sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+</style>
+
+<div id="help-popup">
+  <div class="header">
+    The GIST Map - Help Guide and Tutorial
+    <button id="close-btn" title="Close">×</button>
+  </div>
+  <div class="main-container">
+    <div class="sidebar">
+      <ul>
+        <li data-section="draw-tools" class="active">Draw Tools</li>
+        <li data-section="map-layers">Map Layers</li>
+        <li data-section="map-type">Map Type</li>
+        <li data-section="search">Search</li>
+        <li data-section="legend">Legend</li>
+        <li data-section="data-sources">Data Sources</li>
+        <li data-section="attribution">Attribution</li>
+  
+      </ul>
+    </div>
+    <div class="content">
+      <div id="draw-tools" class="section active">
+        <h2>Draw Tools</h2>
+        <p>Use the draw tools in the top-left corner of the map to add custom shapes and markers:</p>
+        <ul>
+          <li><strong>Polylines:</strong> Draw connected line segments to mark routes or boundaries</li>
+          <li><strong>Polygons:</strong> Create closed shapes to define areas of interest</li>
+          <li><strong>Rectangles:</strong> Quick way to define rectangular regions</li>
+          <li><strong>Markers:</strong> Place point markers at specific locations</li>
+        </ul>
+        <p>Click on any drawn shape to see detailed information including coordinates, area, and bounds. You can edit or remove shapes using the edit tools in the drawing toolbar.</p>
+        <p><strong>Note:</strong> Drawn shapes are temporary and will disappear when you refresh the page.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Draw_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="map-layers" class="section">
+        <h2>Map Layers</h2>
+        <p>Toggle various data overlays using the layer control in the top-right corner. Available layers for the Indo-Pacific region include:</p>
+        <ul>
+          <li><strong>Indo-Pacific (fill):</strong> Yellow fill showing Indo-Pacific countries</li>
+          <li><strong>Indo-Pacific (outline):</strong> White outline around the Indo-Pacific region</li>
+          <li><strong>Country markers:</strong> Diamond icons at country centroids with detailed country profiles</li>
+          <li><strong>Volcanoes:</strong> Holocene volcano locations, colour-coded by type (stratovolcano, shield volcano, caldera, etc.)</li>
+          <li><strong>Tectonic Plates:</strong> Major plate boundaries showing collision zones, subduction zones, spreading centres, and transform faults</li>
+          <li><strong>Cyclones:</strong> Historical tropical cyclone tracks since 2000, colour-coded by category</li>
+          <li><strong>Earthquakes:</strong> Significant earthquakes (M4+) since 2000, colour-coded by magnitude</li>
+          <li><strong>Rivers:</strong> Major rivers in the Indo-Pacific (Indus, Ganges, Brahmaputra, Mekong, Yangtze, Yellow River, etc.)</li>
+          <li><strong>Population Density:</strong> LandScan 2022 population distribution as a coloured raster layer</li>
+        </ul>
+        <p>Tick or untick layers to show or hide them on the map. Multiple layers can be active simultaneously for comparative analysis.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Overlays_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="map-type" class="section">
+        <h2>Map Type</h2>
+        <p>Switch between different basemap styles to suit your needs. Only one basemap can be active at a time:</p>
+        <ul>
+          <li><strong>Simple Map (CartoDB Positron):</strong> Clean, minimalist light basemap - perfect for seeing land-based boundaries and country-level subdivisions. This map presents all geographical names in English.</li>
+          <li><strong>Satellite Map (Esri WorldImagery):</strong> High-resolution satellite imagery - ideal for viewing terrain, land use, and physical features</li>
+          <li><strong>Street Map (OpenStreetMap):</strong> Standard street map showing roads, cities, maritime borders, and human infrastructure. This map presents geographical names in the languages native to each location.</li>
+        </ul>
+        <p>Use the radio buttons in the layer control panel (top-right) to switch between map types. The Satellite Map is set as the default view.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Map_Type_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="search" class="section">
+        <h2>Search</h2>
+        <p>Use the search bar at the top of the map to quickly find and navigate to locations.</p>
+        <p>When you search for a location within the Indo-Pacific region, the map will:</p>
+        <ul>
+          <li>Centre on the location and zoom appropriately</li>
+          <li>Place a pulsing blue marker at the coordinates</li>
+          <li>Display country information if the location is within an Indo-Pacific country</li>
+          <li>Show relevant data including capital city, ruling party, opposition, and major religions</li>
+          <li>Automatically remove the search marker after 10 seconds</li>
+        </ul>
+        <p>The search functionality uses the Turf.js library to determine which country contains your searched location and retrieves the corresponding profile data.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Search_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="legend" class="section">
+        <h2>Legend</h2>
+        <p>The dynamic legend appears at the bottom-right of the map and explains all symbols and colours used for currently visible layers.</p>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+          <li>Updates automatically based on which layers are active - keeping it relevant and uncluttered</li>
+          <li>Shows colour coding for different feature types (e.g., volcano types, tectonic boundaries)</li>
+          <li>Explains symbol meanings (triangles for volcanoes, circles for cyclones and earthquakes, etc.)</li>
+          <li>Provides intensity scales (cyclone categories 1-5, earthquake magnitudes M4-7+)</li>
+          <li>Displays gradient scales for continuous data (e.g., population density)</li>
+        </ul>
+        <p>The legend only displays information for layers that are currently turned on, so it remains clean and easy to read. Toggle layers off to simplify the legend view.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Legend_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+
+      <div id="data-sources" class="section">
+        <h2>Data Sources & Citations</h2>
+        <p>This map integrates data from multiple authoritative sources. Please cite the appropriate references when using this tool in your research.</p>
+        
+        <div class="citation">
+          <strong>Base Maps (Tile Layers)</strong>
+          <div><strong>Simple Map:</strong> © CartoDB – OpenStreetMap Contributors</div>
+          <div><strong>Street Map:</strong> © OpenStreetMap – OpenStreetMap Contributors</div>
+          <div><strong>Satellite Map:</strong> © Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community</div>
+        </div>
+        
+        <div class="citation">
+          <strong>Cyclones – IBTrACS</strong>
+          Knapp, K. R., M. C. Kruk, D. H. Levinson, H. J. Diamond, and C. J. Neumann, 2010: The International Best Track Archive for Climate Stewardship (IBTrACS): Unifying tropical cyclone best track data. <em>Bulletin of the American Meteorological Society</em>, 91, 363-376. doi:10.1175/2009BAMS2755.1
+          <br><br>
+          Gahtan, J., K. R. Knapp, C. J. Schreck, H. J. Diamond, J. P. Kossin, M. C. Kruk, 2024: International Best Track Archive for Climate Stewardship (IBTrACS) Project, Version 4r01. NOAA National Centers for Environmental Information. doi:10.25921/82ty-9e16
+          <br><br>
+          <a href="https://www.ncei.noaa.gov/products/international-best-track-archive" target="_blank" style="color: #0078d4;">https://www.ncei.noaa.gov/products/international-best-track-archive</a>
+        </div>
+        
+        <div class="citation">
+          <strong>Volcanoes – Global Volcanism Program</strong>
+          Global Volcanism Program, 2025. [Database] Volcanoes of the World (v. 5.3.1; 6 Aug 2025). Distributed by Smithsonian Institution, compiled by Venzke, E. https://doi.org/10.5479/si.GVP.VOTW5-2025.5.3
+          <br><br>
+          <a href="https://volcano.si.edu/volcanolist_holocene.cfm" target="_blank" style="color: #0078d4;">https://volcano.si.edu/volcanolist_holocene.cfm</a>
+        </div>
+        
+        <div class="citation">
+          <strong>Earthquakes – ISC-GEM Catalogue</strong>
+          International Seismological Centre (20XX), ISC-GEM Earthquake Catalogue, https://doi.org/10.31905/d808b825
+          <br><br>
+          Storchak, D.A., D. Di Giacomo, I. Bondár, E.R. Engdahl, J. Harris, W.H.K. Lee, A. Villaseñor and P. Bormann (2013). Public Release of the ISC-GEM Global Instrumental Earthquake Catalogue (1900-2009). <em>Seism. Res. Lett.</em>, 84, 5, 810-815, doi: 10.1785/0220130034.
+          <br><br>
+          Di Giacomo, D., E.R. Engdahl and D.A. Storchak (2018). The ISC-GEM Earthquake Catalogue (1904–2014): status after the Extension Project, <em>Earth Syst. Sci. Data</em>, 10, 1877-1899, doi: 10.5194/essd-10-1877-2018.
+        </div>
+        
+        <div class="citation">
+          <strong>Population Density – LandScan 2022</strong>
+          Dobson, J. E., Bright, E. A., Coleman, P. R., Durfee, R. C., and Worley, B. A. (2000). LandScan: A global population database for estimating populations at risk, <em>Photogramm. Eng. Rem. S.</em>, Vol 66, No 7, 849-857.
+          <br><br>
+          Raster hosted on AWS S3: itp2-population-data.s3.ap-southeast-2.amazonaws.com/landscan-indo-pacific-40res-cog.tif
+        </div>
+        
+        <div class="citation">
+          <strong>Tectonic Plates</strong>
+          Hasterok, D., Halpin, J. A., Collins, A. S., Hand, M., Kreemer, C., Gard, M. G., and Glorie, S. (2022). New maps of global geological provinces and tectonic plates, <em>Earth Sci. Rev.</em>, Vol 231, 104069, doi: 10.1016/j.earscirev.2022.104069.
+          <br><br>
+          Bird, P. (2003). An updated digital model of plate boundaries, <em>Geochem. Geophy. Geosy.</em>, Vol 4, No 3, 1027, doi:10.1029/2001GC000252.
+        </div>
+
+        <div class="citation">
+          <strong>Rivers</strong>
+          World Bank Group (2018). <em>Major Rivers of the World</em> [Shapefile]. World Bank Data Catalog.
+          <a href="https://datacatalog.worldbank.org/search/dataset/0042032/major-rivers-of-the-world" target="_blank" style="color:#0078d4;">
+            https://datacatalog.worldbank.org/search/dataset/0042032/major-rivers-of-the-world
+          </a>
+          <br><br>
+          License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+          <br>
+          Metadata last updated: January 19, 2023. Dataset last updated: July 21, 2018.
+        </div>
+      </div>
+
+
+      <div id="attribution" class="section">
+        <h2>Attribution</h2>
+        <p>This interactive map was developed by the <strong>MIP (Map of the Indo-Pacific)</strong> team as part of the GIST project.</p>
+        
+        <div style="margin: 20px 0;">
+          <h3>Development Team</h3>
+          <div class="team-member">Kurtis Chen – MIP Team Member</div>
+          <div class="team-member">Danesha Varman – MIP Team Member</div>
+          <div class="team-member">Marija Kolundzija – MIP Team Member</div>
+          <div class="team-member">Patrick Cunningham – MIP Team Member</div>
+          <div class="team-member">Lucia Pelle – MIP Team Member</div>
+        </div>
+        
+        <div style="margin: 20px 0;">
+          <h3>Project Coordination</h3>
+          <div class="team-member">Dr Clinton Fernandes – GIST Project Coordinator</div>
+          <div class="team-member">Dr Fiona Allen – GIST Project Coordinator</div>
+        </div>
+        
+        <p style="margin-top: 20px; font-style: italic; color: #666;">The GIST (Geospatial Information System Tool) project aims to provide comprehensive, interactive mapping resources for understanding the Indo-Pacific region's geopolitical, environmental, and demographic characteristics.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div id="help-button" class="pulse" title="Need Help? Click here!"></div>
+
+<script>
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHelpPopup);
+  } else {
+    initHelpPopup();
+  }
+
+  function initHelpPopup() {
+    const popup = document.getElementById('help-popup');
+    const button = document.getElementById('help-button');
+    const closeBtn = document.getElementById('close-btn');
+    const navItems = document.querySelectorAll('#help-popup .sidebar li');
+    const header = document.querySelector('#help-popup .header');
+
+    popup.style.display = 'block';
+
+    // Dragging variables
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let popupStartX = 0;
+    let popupStartY = 0;
+
+    header.addEventListener('mousedown', function(e) {
+      // Don't drag if clicking the close button
+      if (e.target.id === 'close-btn' || e.target === closeBtn) {
+        return;
+      }
+
+      isDragging = true;
+      
+      // Get current popup position
+      const rect = popup.getBoundingClientRect();
+      popupStartX = rect.left + rect.width / 2; // center X
+      popupStartY = rect.top + rect.height / 2; // center Y
+      
+      // Store initial mouse position
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      
+      e.preventDefault();
+      
+      // Calculate how far the mouse has moved
+      const deltaX = e.clientX - dragStartX;
+      const deltaY = e.clientY - dragStartY;
+      
+      // Calculate new center position
+      const newCenterX = popupStartX + deltaX;
+      const newCenterY = popupStartY + deltaY;
+      
+      // Set position using left/top instead of transform
+      popup.style.left = newCenterX + 'px';
+      popup.style.top = newCenterY + 'px';
+      popup.style.transform = 'translate(-50%, -50%)';
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+      button.style.display = 'flex';
+      button.classList.add('pulse');
+      setTimeout(() => {
+        button.classList.remove('pulse');
+      }, 6000);
+    });
+
+    button.addEventListener('click', () => {
+      popup.style.display = 'block';
+      button.style.display = 'none';
+      button.classList.remove('pulse');
+    });
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        const sectionId = item.dataset.section;
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+  }
+})();
+</script>
+    
+<div id="map-legend" style="
+  position: fixed; bottom: 20px; right: 20px;
+  width: 240px; max-height: 420px; overflow-y: auto;
+  background: #fff; border: 2px solid #888; border-radius: 8px;
+  z-index: 9999; font-size: 12px; padding: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,.3); line-height: 1.4;">
+  <h4 style="margin:0 0 8px 0; text-align:center;">Legend</h4>
+
+  <div class="legend-item" data-layer="Indo-Pacific (fill)" style="display:none">
+    <span style="display:inline-block;width:18px;height:12px;background:#ffcc00;border:1px solid #999;margin-right:6px;"></span>
+    Indo-Pacific country
+  </div>
+
+  <div class="legend-item" data-layer="Indo-Pacific (outline)" style="display:none">
+    <span style="background:#000;width:20px;height:2px;display:inline-block;margin-right:6px;"></span>
+    Indo-Pacific outline
+  </div>
+
+  <div class="legend-item" data-layer="Country markers" style="display:none">
+    <span style="display:inline-block;width:14px;height:14px;background:#ffcc00;border:2px solid #fff;transform:rotate(45deg);margin-right:6px;"></span>
+    Country centroid
+  </div>
+
+  <div class="legend-item" data-layer="Population Density" style="display:none">
+    <b>Population Density</b><br>
+    <div style="height: 12px; width: 120px; 
+      background: linear-gradient(to right, #ffffcc, #ffeda0, #feb24c, #f03b20, #bd0026); 
+      border:1px solid #999; margin-bottom:4px;"></div>
+    <span style="font-size:11px;">Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;High</span>
+  </div>
+</div>
+
+<script>
+// Sync legend purely from LayerControl
+(function() {
+  function wireLegend() {
+    var rows = document.querySelectorAll('.leaflet-control-layers-overlays label');
+    if (!rows.length) { setTimeout(wireLegend, 200); return; }
+    rows.forEach(function(labelEl) {
+      var input = labelEl.querySelector('input[type=checkbox]');
+      var name = (labelEl.querySelector('span')?.textContent || labelEl.textContent).trim();
+      var legendItem = document.querySelector('.legend-item[data-layer="' + name + '"]');
+      if (!legendItem) return;
+      legendItem.style.display = input.checked ? 'block' : 'none';
+      input.addEventListener('change', function() {
+        legendItem.style.display = this.checked ? 'block' : 'none';
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireLegend);
+  else wireLegend();
+})();
+</script>
+    
+<script>
+(function() {
+  function addLayerTooltips() {
+    const tooltips = {
+      "Simple Map": "Clean light basemap (CartoDB Positron) / Perfect for seeing land-based boundaries and country level sub-divisions.",
+      "Satellite Map": "High-resolution Satellite imagery from Esri.",
+      "Street Map": "Standard OpenStreetMap basemap. / Perfect for seeing roads, cities, maritime borders and human infrastructure.",
+
+      "Indo-Pacific (fill)": "Yellow fill for Indo-Pacific countries.",
+      "Indo-Pacific (outline)": "White outline around Indo-Pacific region.",
+      "Country markers": "Diamond icons at country centroids with popups.",
+      "Volcanoes": "Holocene volcano locations, coloured by type.",
+      "Tectonic Plates": "Major plate boundaries (collision, spreading, etc.).",
+      "Cyclones": "Tracks of tropical cyclones since 2000.",
+      "Earthquakes": "Significant earthquakes (M4+) since 2000.",
+      "Rivers": "Major rivers in the Indo-Pacific region.",
+      "Population Density": "LandScan 2022 population distribution (coloured raster)."
+    };
+
+    // Attach tooltip to each label in the LayerControl
+    document.querySelectorAll('.leaflet-control-layers label').forEach(function(label) {
+      const span = label.querySelector('span');
+      if (!span) return;
+      const name = span.textContent.trim();
+      if (tooltips[name]) {
+        label.title = tooltips[name];  // native browser tooltip
+      }
+    });
+  }
+
+  setTimeout(addLayerTooltips, 800); // delay to ensure LayerControl renders
+})();
+</script>
+    
+<script>
+(function() {
+  function addMapTypeLabel() {
+    var baseContainer = document.querySelector('.leaflet-control-layers-base');
+    if (baseContainer && !document.getElementById('map-type-label')) {
+      var label = document.createElement('div');
+      label.id = 'map-type-label';
+      label.innerHTML = '<b style="font-size:12px;">Map Type</b>';
+      label.style.marginBottom = '4px';
+      baseContainer.prepend(label);
+    }
+  }
+  setTimeout(addMapTypeLabel, 500);
+})();
+</script>
+    
+<script>
+(function() {
+  function addOverlayLabel() {
+    var overlayContainer = document.querySelector('.leaflet-control-layers-overlays');
+    if (overlayContainer && !document.getElementById('overlays-label')) {
+      var label = document.createElement('div');
+      label.id = 'overlays-label';
+      label.innerHTML = '<b style="font-size:12px;">Overlays</b>';
+      label.style.margin = '6px 0 4px 0';
+      overlayContainer.prepend(label);
+    }
+  }
+  setTimeout(addOverlayLabel, 500);
+})();
+</script>
+    
+    <div style="
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 6px 12px;
+        border-radius: 8px;
+        box-shadow: 0 0 6px rgba(0,0,0,0.3);
+        font-family: system-ui, sans-serif;
+    ">
+      GIST : IndoPacific Geopolitics Map
+    </div>
+    
+    
+    <script>
+    (function waitForDrawReady() {
+        const map = window["map_951cd4dbfb455b827fcc841dc833d4cf"];
+        if (!map) {
+            setTimeout(waitForDrawReady, 1000);
+            return;
+        }
+        if (typeof L === 'undefined' || !L.Draw || !map.on) {
+            setTimeout(waitForDrawReady, 1000);
+            return;
+        }
+        console.log("Draw popup formatter loaded for IndoPacific (map_951cd4dbfb455b827fcc841dc833d4cf)");
+
+        const originalAlert = window.alert;
+        window.alert = (msg) => {
+            if (typeof msg === 'string' && msg.includes('"coordinates"')) return;
+            originalAlert(msg);
+        };
+
+        // ---- Popup formatter ----
+        function shapePopup(layer) {
+            const gj = layer.toGeoJSON();
+            const geom = gj.geometry;
+            let html = '<div style="font-family:system-ui;min-width:220px;">';
+            html += `<b>${geom?.type || 'Shape'}</b><br>`;
+
+            // ---- Circles: radius only ----
+            if (layer.getLatLng && layer.getRadius) {
+                try {
+                    const radius = layer.getRadius();
+                    if (radius < 1000) {
+                        html += `<b>Radius:</b> ${radius.toFixed(0)} m`;
+                    } else {
+                        html += `<b>Radius:</b> ${(radius / 1000).toFixed(2)} km`;
+                    }
+                } catch (e) {
+                    console.warn("Circle info unavailable:", e);
+                }
+            }
+            // ---- Point ----
+            else if (geom && geom.type === "Point") {
+                const [lng, lat] = geom.coordinates;
+                html += `Lat: ${lat.toFixed(4)}°<br>Lng: ${lng.toFixed(4)}°`;
+            }
+            // ---- Polygon or Rectangle ----
+            else if (geom && (geom.type === "Polygon" || geom.type === "Rectangle")) {
+                const coords = geom.coordinates[0];
+                const lats = coords.map(c => c[1]);
+                const lngs = coords.map(c => c[0]);
+                const n = Math.max(...lats).toFixed(4);
+                const s = Math.min(...lats).toFixed(4);
+                const e = Math.max(...lngs).toFixed(4);
+                const w = Math.min(...lngs).toFixed(4);
+                html += `N: ${n}°<br>S: ${s}°<br>E: ${e}°<br>W: ${w}°`;
+
+                try {
+                    const area_m2 = turf.area(gj);
+                    const area_km2 = area_m2 / 1e6;
+                    const perimeter_km = turf.length(gj, { units: 'kilometers' });
+                    html += `<br><b>Area:</b> ${area_km2.toLocaleString(undefined, { maximumFractionDigits: 2 })} km²<br>`;
+                    html += `<b>Perimeter:</b> ${perimeter_km.toLocaleString(undefined, { maximumFractionDigits: 2 })} km`;
+                } catch (e) {
+                    console.warn("Area/perimeter calculation failed:", e);
+                }
+            }
+            // ---- LineString ----
+            else if (geom && geom.type === "LineString") {
+                try {
+                    const length_km = turf.length(gj, { units: 'kilometers' });
+                    html += `<b>Length:</b> ${length_km.toLocaleString(undefined, { maximumFractionDigits: 2 })} km<br>`;
+                } catch (e) {
+                    console.warn("Line length calculation failed:", e);
+                }
+                html += `Points: ${geom.coordinates.length}`;
+            }
+
+            html += `<hr style="margin:6px 0;"><small>${new Date().toLocaleString()}</small></div>`;
+            return html;
+        }
+
+        // ---- Bind popup when a shape is created ----
+        map.on('draw:created', (e) => {
+            const layer = e.layer;
+            const html = shapePopup(layer);
+            layer.bindPopup(html).addTo(map);
+            layer.openPopup();
+        });
+    })();
+    </script>
+    
+    
+            <div class="folium-map" id="map_951cd4dbfb455b827fcc841dc833d4cf" ></div>
+        
+    
+            
+        
+</body>
+<script>
+    
+    
+            var map_951cd4dbfb455b827fcc841dc833d4cf = L.map(
+                "map_951cd4dbfb455b827fcc841dc833d4cf",
+                {
+                    center: [-10.0, 140.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+  "eeInitialize": true,
+  "addGoogleMap": false,
+  "pluginLatlngpopup": false,
+  "pluginFullscreen": true,
+  "pluginDraw": true,
+  "DrawExport": false,
+  "pluginMinimap": false,
+  "locateControl": false,
+  "searchControl": true,
+  "layersControl": true,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_951cd4dbfb455b827fcc841dc833d4cf);
+        
+    
+            var options = {
+              position: "topleft",
+              draw: {},
+              edit: {},
+            }
+                // FeatureGroup is to store editable layers.
+                var drawnItems_draw_control_1b6c8af05ea73beea14e00082dbb77fb =
+                    new L.featureGroup().addTo(
+                        map_951cd4dbfb455b827fcc841dc833d4cf
+                    );
+
+            options.edit.featureGroup = drawnItems_draw_control_1b6c8af05ea73beea14e00082dbb77fb;
+            var draw_control_1b6c8af05ea73beea14e00082dbb77fb = new L.Control.Draw(
+                options
+            ).addTo( map_951cd4dbfb455b827fcc841dc833d4cf );
+            map_951cd4dbfb455b827fcc841dc833d4cf.on(L.Draw.Event.CREATED, function(e) {
+                var layer = e.layer,
+                    type = e.layerType;
+                var coords = JSON.stringify(layer.toGeoJSON());
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                });
+                drawnItems_draw_control_1b6c8af05ea73beea14e00082dbb77fb.addLayer(layer);
+            });
+            map_951cd4dbfb455b827fcc841dc833d4cf.on('draw:created', function(e) {
+                drawnItems_draw_control_1b6c8af05ea73beea14e00082dbb77fb.addLayer(e.layer);
+            });
+
+            
+        
+    
+
+            var geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e = {
+  "collapsed": true,
+  "position": "topleft",
+  "defaultMarkGeocode": true,
+  "zoom": 11,
+  "provider": "nominatim",
+  "providerOptions": {
+},
+};
+
+            // note: geocoder name should start with lowercase
+            var geocoderName_geocoder_d9340f158c292d31130c20041a25110e = geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e["provider"];
+
+            var customGeocoder_geocoder_d9340f158c292d31130c20041a25110e = L.Control.Geocoder[ geocoderName_geocoder_d9340f158c292d31130c20041a25110e ](
+                geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e['providerOptions']
+            );
+            geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e["geocoder"] = customGeocoder_geocoder_d9340f158c292d31130c20041a25110e;
+
+            L.Control.geocoder(
+                geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e
+            ).on('markgeocode', function(e) {
+                var zoom = geocoderOpts_geocoder_d9340f158c292d31130c20041a25110e['zoom'] || map_951cd4dbfb455b827fcc841dc833d4cf.getZoom();
+                map_951cd4dbfb455b827fcc841dc833d4cf.setView(e.geocode.center, zoom);
+            }).addTo(map_951cd4dbfb455b827fcc841dc833d4cf);
+
+        
+    
+            map_951cd4dbfb455b827fcc841dc833d4cf.fitBounds(
+                [[-10, 140], [-10, 140]],
+                {"maxZoom": 4}
+            );
+        
+    
+            var tile_layer_0f9d774ea86fa0411016b21c82219ca3 = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/4ff82a5ec23719bc572748f6bff707ba-8383af681b44761a2fb2f079e81e29a8/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.9,
+}
+
+            );
+        
+    
+            var tile_layer_3ae582ce172b2eaeabdf59f4c28d9c43 = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/32cd771fe950ee928c9c3df7a2e5ddf0-1d70edd9ce4e335e83f5f9694e60980f/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1.0,
+}
+
+            );
+        
+    
+            tile_layer_3ae582ce172b2eaeabdf59f4c28d9c43.addTo(map_951cd4dbfb455b827fcc841dc833d4cf);
+        
+    
+            var tile_layer_fd9e03d52fce3e5d2348eb9f48189b57 = L.tileLayer(
+                "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https://itp2-population-data.s3.ap-southeast-2.amazonaws.com/landscan-indo-pacific-40res-cog.tif\u0026bidx=1\u0026rescale=42,255\u0026colormap_name=ylorrd",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "LandScan 2022 \u00a9 Oak Ridge National Laboratory, via TiTiler",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.9,
+}
+
+            );
+        
+    
+            var tile_layer_6c6ad21d380238f050bf6bb692f6a04d = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var tile_layer_8321851740915c01fe854a8f05677c0b = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8321851740915c01fe854a8f05677c0b.addTo(map_951cd4dbfb455b827fcc841dc833d4cf);
+        
+    
+            var tile_layer_77ce0fbaf6929077e23888c94cfb36b0 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var feature_group_4aee08b4d9a76d83347479c361281f71 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_9353b850ac94fe51cfb7e5009012934f = L.marker(
+                [22.387790674364442, 114.12901279055357],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_86520160f434fd50a77119c01b169c74 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_9cd72287de9722d54e6c88cc7f21b4c4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3caaa7d63fc88df3d5f971a6a9b1b79e = $(`<div id="html_3caaa7d63fc88df3d5f971a6a9b1b79e" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Hong Kong</div>           <div><b>Capital:</b> Hong Kong (Special Administrative Region)</div>           <div><b>Ruling:</b> Chief Executive & Pro-Beijing parties</div>           <div><b>Opposition:</b> Pro-democracy movement (limited)</div>           <div><b>Religions:</b> Unaffiliated (56%), Buddhism/Taoism (28%)</div>         </div>         </div>`)[0];
+                popup_9cd72287de9722d54e6c88cc7f21b4c4.setContent(html_3caaa7d63fc88df3d5f971a6a9b1b79e);
+            
+        
+
+        marker_9353b850ac94fe51cfb7e5009012934f.bindPopup(popup_9cd72287de9722d54e6c88cc7f21b4c4)
+        ;
+
+        
+    
+    
+                marker_9353b850ac94fe51cfb7e5009012934f.setIcon(div_icon_86520160f434fd50a77119c01b169c74);
+            
+    
+            var marker_a5de81bfe3d86598f781422ff7b9aaf1 = L.marker(
+                [22.199232536860933, 113.54534170302755],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_15e1305d56130b3e912b2c25fbc4da28 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_124bc5af6b9068e12698704c383a0737 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3e53478817877a2e6cf07aff258a2a15 = $(`<div id="html_3e53478817877a2e6cf07aff258a2a15" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Macau</div>           <div><b>Capital:</b> Macau (SAR)</div>           <div><b>Ruling:</b> Chief Executive (pro-Beijing)</div>           <div><b>Opposition:</b> None significant</div>           <div><b>Religions:</b> Chinese Folk Religion (58%), Buddhism (17%)</div>         </div>         </div>`)[0];
+                popup_124bc5af6b9068e12698704c383a0737.setContent(html_3e53478817877a2e6cf07aff258a2a15);
+            
+        
+
+        marker_a5de81bfe3d86598f781422ff7b9aaf1.bindPopup(popup_124bc5af6b9068e12698704c383a0737)
+        ;
+
+        
+    
+    
+                marker_a5de81bfe3d86598f781422ff7b9aaf1.setIcon(div_icon_15e1305d56130b3e912b2c25fbc4da28);
+            
+    
+            var marker_e77713648487cae712a63a5141f2d523 = L.marker(
+                [23.747734992932095, 120.95456393909166],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_e1ff7e061370f84d50069659d3d1f232 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_3372ffad070c8fed0e0a568251d5c163 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ad9a41e1026d4252f7b09629d0554207 = $(`<div id="html_ad9a41e1026d4252f7b09629d0554207" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Taiwan</div>           <div><b>Capital:</b> Taipei</div>           <div><b>Ruling:</b> Democratic Progressive Party (DPP)</div>           <div><b>Opposition:</b> Kuomintang (KMT)</div>           <div><b>Religions:</b> Buddhism (35%), Taoism (33%)</div>         </div>         </div>`)[0];
+                popup_3372ffad070c8fed0e0a568251d5c163.setContent(html_ad9a41e1026d4252f7b09629d0554207);
+            
+        
+
+        marker_e77713648487cae712a63a5141f2d523.bindPopup(popup_3372ffad070c8fed0e0a568251d5c163)
+        ;
+
+        
+    
+    
+                marker_e77713648487cae712a63a5141f2d523.setIcon(div_icon_e1ff7e061370f84d50069659d3d1f232);
+            
+    
+            var marker_216e39ae861f2ce4114aa12d274cdf11 = L.marker(
+                [37.522233130614474, 137.7154425680189],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_c9b6e6256f60d320bd50893539453c89 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_be84cf5725580a91b1111800327440ac = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_17ded3b6ab1027851e84ca15800bde42 = $(`<div id="html_17ded3b6ab1027851e84ca15800bde42" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Japan</div>           <div><b>Capital:</b> Tokyo</div>           <div><b>Ruling:</b> LDP–Komeito coalition</div>           <div><b>Opposition:</b> CDP</div>           <div><b>Religions:</b> Shinto (48.6%), Buddhism (46.4%)</div>         </div>         </div>`)[0];
+                popup_be84cf5725580a91b1111800327440ac.setContent(html_17ded3b6ab1027851e84ca15800bde42);
+            
+        
+
+        marker_216e39ae861f2ce4114aa12d274cdf11.bindPopup(popup_be84cf5725580a91b1111800327440ac)
+        ;
+
+        
+    
+    
+                marker_216e39ae861f2ce4114aa12d274cdf11.setIcon(div_icon_c9b6e6256f60d320bd50893539453c89);
+            
+    
+            var marker_d4e1a8a1e08cb6557c5a7b648da36cb6 = L.marker(
+                [36.365151960272854, 127.80691118128888],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_dcbd6d913b1ff09414c6659c36c2be9b = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_4857ce6f4d3163304502f93574f58672 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2381ab691f7ba81ebcb1e764e8a48482 = $(`<div id="html_2381ab691f7ba81ebcb1e764e8a48482" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Korea, South</div>           <div><b>Capital:</b> Seoul</div>           <div><b>Ruling:</b> People Power Party (PPP)</div>           <div><b>Opposition:</b> Democratic Party (DP)</div>           <div><b>Religions:</b> Unaffiliated (46.5%), Christian (29%)</div>         </div>         </div>`)[0];
+                popup_4857ce6f4d3163304502f93574f58672.setContent(html_2381ab691f7ba81ebcb1e764e8a48482);
+            
+        
+
+        marker_d4e1a8a1e08cb6557c5a7b648da36cb6.bindPopup(popup_4857ce6f4d3163304502f93574f58672)
+        ;
+
+        
+    
+    
+                marker_d4e1a8a1e08cb6557c5a7b648da36cb6.setIcon(div_icon_dcbd6d913b1ff09414c6659c36c2be9b);
+            
+    
+            var marker_01717837c4608c21f3f029760327e395 = L.marker(
+                [40.13263055559148, 127.14447566638405],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_b985912e4b599d21c68f3af8753ed07a = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_5ff91275471a0ebbc15d9f39ab1746d7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c967ce5e429ccd9a90ce4763686279d4 = $(`<div id="html_c967ce5e429ccd9a90ce4763686279d4" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Korea, North</div>           <div><b>Capital:</b> Pyongyang</div>           <div><b>Ruling:</b> Workers’ Party of Korea</div>           <div><b>Opposition:</b> None (authoritarian state)</div>           <div><b>Religions:</b> Atheism/State ideology (70%), Traditional belief/Christianity (limited)</div>         </div>         </div>`)[0];
+                popup_5ff91275471a0ebbc15d9f39ab1746d7.setContent(html_c967ce5e429ccd9a90ce4763686279d4);
+            
+        
+
+        marker_01717837c4608c21f3f029760327e395.bindPopup(popup_5ff91275471a0ebbc15d9f39ab1746d7)
+        ;
+
+        
+    
+    
+                marker_01717837c4608c21f3f029760327e395.setIcon(div_icon_b985912e4b599d21c68f3af8753ed07a);
+            
+    
+            var marker_1d4af7faa14927625ebcdd45eb3e84ad = L.marker(
+                [43.05070544671613, 118.31375432757322],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_6a8804e4f1dba710b77a095f3935cbd4 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e3da0588d523858a078500a7f8207109 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ae95ccc38a49fc45d9ec867878184a1d = $(`<div id="html_ae95ccc38a49fc45d9ec867878184a1d" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">China</div>           <div><b>Capital:</b> Beijing</div>           <div><b>Ruling:</b> Chinese Communist Party (CCP)</div>           <div><b>Opposition:</b> None (one-party state)</div>           <div><b>Religions:</b> Unaffiliated (52.1%), Chinese Folk Religion (21.9%)</div>         </div>         </div>`)[0];
+                popup_e3da0588d523858a078500a7f8207109.setContent(html_ae95ccc38a49fc45d9ec867878184a1d);
+            
+        
+
+        marker_1d4af7faa14927625ebcdd45eb3e84ad.bindPopup(popup_e3da0588d523858a078500a7f8207109)
+        ;
+
+        
+    
+    
+                marker_1d4af7faa14927625ebcdd45eb3e84ad.setIcon(div_icon_6a8804e4f1dba710b77a095f3935cbd4);
+            
+    
+            var marker_b3ca6d46f4413e80e19ba0cce476e1a6 = L.marker(
+                [46.965771697940795, 103.14085456837161],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_d8c39db1dc9646236fbdf04c8ef8e9f5 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_45a2292312ddd5792a6698352e308ba2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_828b660c0952c7e883f689a8e02d52bb = $(`<div id="html_828b660c0952c7e883f689a8e02d52bb" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Mongolia</div>           <div><b>Capital:</b> Ulaanbaatar</div>           <div><b>Ruling:</b> Mongolian People’s Party (MPP)</div>           <div><b>Opposition:</b> Democratic Party (DP)</div>           <div><b>Religions:</b> Buddhism (51.7%), Unaffiliated (40.6%)</div>         </div>         </div>`)[0];
+                popup_45a2292312ddd5792a6698352e308ba2.setContent(html_828b660c0952c7e883f689a8e02d52bb);
+            
+        
+
+        marker_b3ca6d46f4413e80e19ba0cce476e1a6.bindPopup(popup_45a2292312ddd5792a6698352e308ba2)
+        ;
+
+        
+    
+    
+                marker_b3ca6d46f4413e80e19ba0cce476e1a6.setIcon(div_icon_d8c39db1dc9646236fbdf04c8ef8e9f5);
+            
+    
+            var marker_aac0509a9049d2a60f19e41e09b69e27 = L.marker(
+                [3.755839717044864, 73.22005440131291],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_280d2bdbc72ca9a5726e79b41c44b45e = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_04344011f7c9f7a141325c5635b83530 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f7a1edd90971c2a6d161294b51b11ee9 = $(`<div id="html_f7a1edd90971c2a6d161294b51b11ee9" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Maldives</div>           <div><b>Capital:</b> Malé</div>           <div><b>Ruling:</b> People’s National Congress (PNC)</div>           <div><b>Opposition:</b> Maldivian Democratic Party (MDP)</div>           <div><b>Religions:</b> Islam (100%), —</div>         </div>         </div>`)[0];
+                popup_04344011f7c9f7a141325c5635b83530.setContent(html_f7a1edd90971c2a6d161294b51b11ee9);
+            
+        
+
+        marker_aac0509a9049d2a60f19e41e09b69e27.bindPopup(popup_04344011f7c9f7a141325c5635b83530)
+        ;
+
+        
+    
+    
+                marker_aac0509a9049d2a60f19e41e09b69e27.setIcon(div_icon_280d2bdbc72ca9a5726e79b41c44b45e);
+            
+    
+            var marker_58f7d9dfb74a3746cea9f18ea6bf2059 = L.marker(
+                [27.39589337705387, 90.43193237656575],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_4337ab3c999187593859641941635449 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6a539bd8c1880ac3dde1f8696c628133 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f1aaed2e38d3b02421168590e13f4d58 = $(`<div id="html_f1aaed2e38d3b02421168590e13f4d58" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Bhutan</div>           <div><b>Capital:</b> Thimphu</div>           <div><b>Ruling:</b> Druk Nyamrup Tshogpa (DNT)</div>           <div><b>Opposition:</b> Druk Phuensum Tshogpa (DPT)</div>           <div><b>Religions:</b> Buddhism (74%), Hinduism (22%)</div>         </div>         </div>`)[0];
+                popup_6a539bd8c1880ac3dde1f8696c628133.setContent(html_f1aaed2e38d3b02421168590e13f4d58);
+            
+        
+
+        marker_58f7d9dfb74a3746cea9f18ea6bf2059.bindPopup(popup_6a539bd8c1880ac3dde1f8696c628133)
+        ;
+
+        
+    
+    
+                marker_58f7d9dfb74a3746cea9f18ea6bf2059.setIcon(div_icon_4337ab3c999187593859641941635449);
+            
+    
+            var marker_de5714e6d64b1ff7a56fd259c96b8e28 = L.marker(
+                [33.814940000597346, 65.94778510434948],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_795d40529e2fe36332585d77a0169a41 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_3dfc5b6220fccf5c9795a7c18c13d122 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_adbf808657fc78186524fde854aa2178 = $(`<div id="html_adbf808657fc78186524fde854aa2178" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Afghanistan</div>           <div><b>Capital:</b> Kabul</div>           <div><b>Ruling:</b> Taliban</div>           <div><b>Opposition:</b> National Resistance Front</div>           <div><b>Religions:</b> Islam (99.7%), Other (0.3%)</div>         </div>         </div>`)[0];
+                popup_3dfc5b6220fccf5c9795a7c18c13d122.setContent(html_adbf808657fc78186524fde854aa2178);
+            
+        
+
+        marker_de5714e6d64b1ff7a56fd259c96b8e28.bindPopup(popup_3dfc5b6220fccf5c9795a7c18c13d122)
+        ;
+
+        
+    
+    
+                marker_de5714e6d64b1ff7a56fd259c96b8e28.setIcon(div_icon_795d40529e2fe36332585d77a0169a41);
+            
+    
+            var marker_2a32b4b1bdeb76ebd04ac3d3ecd27fc2 = L.marker(
+                [29.88406293231801, 69.19999765510346],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_2971c0063fdc00f35e538bd931b24073 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_7d7daac0d48f004b7999ebd1f199efbc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_430b557042771210d3c44f498873e55f = $(`<div id="html_430b557042771210d3c44f498873e55f" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Pakistan</div>           <div><b>Capital:</b> Islamabad</div>           <div><b>Ruling:</b> Pakistan Muslim League (PML-N)</div>           <div><b>Opposition:</b> Pakistan Tehreek-e-Insaf (PTI)</div>           <div><b>Religions:</b> Islam (96.5%), Hinduism (2.1%)</div>         </div>         </div>`)[0];
+                popup_7d7daac0d48f004b7999ebd1f199efbc.setContent(html_430b557042771210d3c44f498873e55f);
+            
+        
+
+        marker_2a32b4b1bdeb76ebd04ac3d3ecd27fc2.bindPopup(popup_7d7daac0d48f004b7999ebd1f199efbc)
+        ;
+
+        
+    
+    
+                marker_2a32b4b1bdeb76ebd04ac3d3ecd27fc2.setIcon(div_icon_2971c0063fdc00f35e538bd931b24073);
+            
+    
+            var marker_0470b8ec5e0a0fa52cc48a6a5c8dad59 = L.marker(
+                [28.267652586988536, 83.9761416224727],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_cacd9b7cd5ab70e4d5f694fed4bf933e = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_a8adc9177c5082710866a4ff6dcbe19c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_543acb28085c7f63dab426da43adca9a = $(`<div id="html_543acb28085c7f63dab426da43adca9a" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Nepal</div>           <div><b>Capital:</b> Kathmandu</div>           <div><b>Ruling:</b> CPN (Maoist Centre)</div>           <div><b>Opposition:</b> Nepali Congress</div>           <div><b>Religions:</b> Hinduism (81.3%), Buddhism (9%)</div>         </div>         </div>`)[0];
+                popup_a8adc9177c5082710866a4ff6dcbe19c.setContent(html_543acb28085c7f63dab426da43adca9a);
+            
+        
+
+        marker_0470b8ec5e0a0fa52cc48a6a5c8dad59.bindPopup(popup_a8adc9177c5082710866a4ff6dcbe19c)
+        ;
+
+        
+    
+    
+                marker_0470b8ec5e0a0fa52cc48a6a5c8dad59.setIcon(div_icon_cacd9b7cd5ab70e4d5f694fed4bf933e);
+            
+    
+            var marker_bc71263b90392a8b49b4b2d3ff33401a = L.marker(
+                [7.612632691554339, 80.70289259697314],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_9a09c878e5bbe436315e93b3583d729f = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_0a8d674c0173649ecf787ced3c97b33e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8877ec7a85dca0f0db18422d29ef6050 = $(`<div id="html_8877ec7a85dca0f0db18422d29ef6050" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Sri Lanka</div>           <div><b>Capital:</b> Sri Jayawardenepura Kotte (administrative), Colombo (commercial)</div>           <div><b>Ruling:</b> Sri Lanka Podujana Peramuna (SLPP) coalition</div>           <div><b>Opposition:</b> Samagi Jana Balawegaya (SJB)</div>           <div><b>Religions:</b> Buddhism (70.2%), Hinduism (12.6%)</div>         </div>         </div>`)[0];
+                popup_0a8d674c0173649ecf787ced3c97b33e.setContent(html_8877ec7a85dca0f0db18422d29ef6050);
+            
+        
+
+        marker_bc71263b90392a8b49b4b2d3ff33401a.bindPopup(popup_0a8d674c0173649ecf787ced3c97b33e)
+        ;
+
+        
+    
+    
+                marker_bc71263b90392a8b49b4b2d3ff33401a.setIcon(div_icon_9a09c878e5bbe436315e93b3583d729f);
+            
+    
+            var marker_53b363f7388c14c5495a5eef4492384f = L.marker(
+                [22.76232877465652, 79.57964433730989],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_41a74bb0fad629f3fa1132f034854997 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_59a1d50db9048685d60e5f5f9a68b819 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_589fd6404eeb11632b1eebd6caac4dbb = $(`<div id="html_589fd6404eeb11632b1eebd6caac4dbb" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">India</div>           <div><b>Capital:</b> New Delhi</div>           <div><b>Ruling:</b> BJP-led coalition</div>           <div><b>Opposition:</b> INDIA bloc</div>           <div><b>Religions:</b> Hinduism (79.8%), Islam (14.2%)</div>         </div>         </div>`)[0];
+                popup_59a1d50db9048685d60e5f5f9a68b819.setContent(html_589fd6404eeb11632b1eebd6caac4dbb);
+            
+        
+
+        marker_53b363f7388c14c5495a5eef4492384f.bindPopup(popup_59a1d50db9048685d60e5f5f9a68b819)
+        ;
+
+        
+    
+    
+                marker_53b363f7388c14c5495a5eef4492384f.setIcon(div_icon_41a74bb0fad629f3fa1132f034854997);
+            
+    
+            var marker_996cd9a2010b5e2947c8faad0500bd4d = L.marker(
+                [23.84574043942299, 90.28182335177792],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_832f39e7006116cc0a0c8cb3c286c351 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_5b6d05ee109141cda7f99493bab67811 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_72ef7479b57ffac066766e74c6ce9fed = $(`<div id="html_72ef7479b57ffac066766e74c6ce9fed" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Bangladesh</div>           <div><b>Capital:</b> Dhaka</div>           <div><b>Ruling:</b> Awami League</div>           <div><b>Opposition:</b> Bangladesh Nationalist Party</div>           <div><b>Religions:</b> Islam (90.4%), Hinduism (8.5%)</div>         </div>         </div>`)[0];
+                popup_5b6d05ee109141cda7f99493bab67811.setContent(html_72ef7479b57ffac066766e74c6ce9fed);
+            
+        
+
+        marker_996cd9a2010b5e2947c8faad0500bd4d.bindPopup(popup_5b6d05ee109141cda7f99493bab67811)
+        ;
+
+        
+    
+    
+                marker_996cd9a2010b5e2947c8faad0500bd4d.setIcon(div_icon_832f39e7006116cc0a0c8cb3c286c351);
+            
+    
+            var marker_551ba9e84648f7d66888967ff185278c = L.marker(
+                [7.421739697577492, 134.51196114704882],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_d8a0c9ee3c63d51964cf8051d363b4f2 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_4b9a759a9a5a4c5194d64903cebe8377 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_49dd26a13aa1d81965961de918d8ebe8 = $(`<div id="html_49dd26a13aa1d81965961de918d8ebe8" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Palau</div>           <div><b>Capital:</b> Ngerulmud</div>           <div><b>Ruling:</b> Independent (presidential republic)</div>           <div><b>Opposition:</b> —</div>           <div><b>Religions:</b> Christianity (96%), Modekngei (3%)</div>         </div>         </div>`)[0];
+                popup_4b9a759a9a5a4c5194d64903cebe8377.setContent(html_49dd26a13aa1d81965961de918d8ebe8);
+            
+        
+
+        marker_551ba9e84648f7d66888967ff185278c.bindPopup(popup_4b9a759a9a5a4c5194d64903cebe8377)
+        ;
+
+        
+    
+    
+                marker_551ba9e84648f7d66888967ff185278c.setIcon(div_icon_d8a0c9ee3c63d51964cf8051d363b4f2);
+            
+    
+            var marker_f474f0a0457be2127e361f83ae7da8ce = L.marker(
+                [-0.5196902693703978, 166.9300085424907],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_a8c7e162a4fef0851747409703803c89 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_e79066ebac2ebd129ac7dd87f8199e6b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e9aa8e0e1c8aaae84d58b3cdd4a3c5a9 = $(`<div id="html_e9aa8e0e1c8aaae84d58b3cdd4a3c5a9" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Nauru</div>           <div><b>Capital:</b> Yaren District (de facto)</div>           <div><b>Ruling:</b> Nauru First Party</div>           <div><b>Opposition:</b> Democratic Party of Nauru</div>           <div><b>Religions:</b> Christianity (95%), Other (5%)</div>         </div>         </div>`)[0];
+                popup_e79066ebac2ebd129ac7dd87f8199e6b.setContent(html_e9aa8e0e1c8aaae84d58b3cdd4a3c5a9);
+            
+        
+
+        marker_f474f0a0457be2127e361f83ae7da8ce.bindPopup(popup_e79066ebac2ebd129ac7dd87f8199e6b)
+        ;
+
+        
+    
+    
+                marker_f474f0a0457be2127e361f83ae7da8ce.setIcon(div_icon_a8c7e162a4fef0851747409703803c89);
+            
+    
+            var marker_9ae14f079ba340f6bf42ba77f2d88a17 = L.marker(
+                [-7.364418118863148, 178.033549136044],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_cde38eb4afbfedc91f2533c18679bb8a = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_3be1e860da44c46850a22cb1e23027ff = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_83d72ca694043de10eec1cc1479239b3 = $(`<div id="html_83d72ca694043de10eec1cc1479239b3" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Tuvalu</div>           <div><b>Capital:</b> Funafuti</div>           <div><b>Ruling:</b> Independent MPs (no parties)</div>           <div><b>Opposition:</b> —</div>           <div><b>Religions:</b> Christianity (98%), Other (2%)</div>         </div>         </div>`)[0];
+                popup_3be1e860da44c46850a22cb1e23027ff.setContent(html_83d72ca694043de10eec1cc1479239b3);
+            
+        
+
+        marker_9ae14f079ba340f6bf42ba77f2d88a17.bindPopup(popup_3be1e860da44c46850a22cb1e23027ff)
+        ;
+
+        
+    
+    
+                marker_9ae14f079ba340f6bf42ba77f2d88a17.setIcon(div_icon_cde38eb4afbfedc91f2533c18679bb8a);
+            
+    
+            var marker_26da60b6b0465423e820f4062116106b = L.marker(
+                [-20.0175946147572, -174.9119489914185],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_1f103bf652f59d3fca9793f093373762 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_2a6c1e90e02bef46623e48ab1fde6718 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_55a731ec236b38e6d5fc8d1de188152c = $(`<div id="html_55a731ec236b38e6d5fc8d1de188152c" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Tonga</div>           <div><b>Capital:</b> Nukuʻalofa</div>           <div><b>Ruling:</b> Nobles + Democratic Party coalition</div>           <div><b>Opposition:</b> Democratic Party of the Friendly Islands</div>           <div><b>Religions:</b> Christianity (97%), Other (3%)</div>         </div>         </div>`)[0];
+                popup_2a6c1e90e02bef46623e48ab1fde6718.setContent(html_55a731ec236b38e6d5fc8d1de188152c);
+            
+        
+
+        marker_26da60b6b0465423e820f4062116106b.bindPopup(popup_2a6c1e90e02bef46623e48ab1fde6718)
+        ;
+
+        
+    
+    
+                marker_26da60b6b0465423e820f4062116106b.setIcon(div_icon_1f103bf652f59d3fca9793f093373762);
+            
+    
+            var marker_7645d00faafbf619ff85353b1477954b = L.marker(
+                [-13.743920554728245, -172.19234596875376],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_85867222cdff9067f55dcbc526bb1462 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_7b67b3c5fa06fc74a19ad2be65b6896a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_173ad0130b34419d542cc320342754a9 = $(`<div id="html_173ad0130b34419d542cc320342754a9" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Samoa</div>           <div><b>Capital:</b> Apia</div>           <div><b>Ruling:</b> Fa’atuatua i le Atua Samoa ua Tasi (FAST)</div>           <div><b>Opposition:</b> Human Rights Protection Party (HRPP)</div>           <div><b>Religions:</b> Christianity (98%), Other (2%)</div>         </div>         </div>`)[0];
+                popup_7b67b3c5fa06fc74a19ad2be65b6896a.setContent(html_173ad0130b34419d542cc320342754a9);
+            
+        
+
+        marker_7645d00faafbf619ff85353b1477954b.bindPopup(popup_7b67b3c5fa06fc74a19ad2be65b6896a)
+        ;
+
+        
+    
+    
+                marker_7645d00faafbf619ff85353b1477954b.setIcon(div_icon_85867222cdff9067f55dcbc526bb1462);
+            
+    
+            var marker_a16f14671cc7c940e987f080aecf85c7 = L.marker(
+                [0.7857998577077607, -165.7333994623135],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_d0012269b33a13550e1d0c069fbfbdf9 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6ae64fe6e165e2fe8766910134975a35 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_54fba61b2a397613c7dc9d043cd4fa86 = $(`<div id="html_54fba61b2a397613c7dc9d043cd4fa86" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Kiribati</div>           <div><b>Capital:</b> Tarawa</div>           <div><b>Ruling:</b> Tobwaan Kiribati Party</div>           <div><b>Opposition:</b> Boutokaan Kiribati Moa Party</div>           <div><b>Religions:</b> Christianity (96%), Other (4%)</div>         </div>         </div>`)[0];
+                popup_6ae64fe6e165e2fe8766910134975a35.setContent(html_54fba61b2a397613c7dc9d043cd4fa86);
+            
+        
+
+        marker_a16f14671cc7c940e987f080aecf85c7.bindPopup(popup_6ae64fe6e165e2fe8766910134975a35)
+        ;
+
+        
+    
+    
+                marker_a16f14671cc7c940e987f080aecf85c7.setIcon(div_icon_d0012269b33a13550e1d0c069fbfbdf9);
+            
+    
+            var marker_0eef2968510d8cc3d2b78b0f3ed38d20 = L.marker(
+                [-6.4805081712950665, 145.2374284821042],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_b5b58ea691ec20968174a424c4bb6592 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_732ba6d2d1f3be60828e80e822dc09bf = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_59402583ce26fd51038ba1b3e3b84d29 = $(`<div id="html_59402583ce26fd51038ba1b3e3b84d29" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Papua New Guinea</div>           <div><b>Capital:</b> Port Moresby</div>           <div><b>Ruling:</b> Pangu Party</div>           <div><b>Opposition:</b> PNC</div>           <div><b>Religions:</b> Christianity (96%), Indigenous beliefs (3%)</div>         </div>         </div>`)[0];
+                popup_732ba6d2d1f3be60828e80e822dc09bf.setContent(html_59402583ce26fd51038ba1b3e3b84d29);
+            
+        
+
+        marker_0eef2968510d8cc3d2b78b0f3ed38d20.bindPopup(popup_732ba6d2d1f3be60828e80e822dc09bf)
+        ;
+
+        
+    
+    
+                marker_0eef2968510d8cc3d2b78b0f3ed38d20.setIcon(div_icon_b5b58ea691ec20968174a424c4bb6592);
+            
+    
+            var marker_933d0e4119ab028a9cd398fcd88dc438 = L.marker(
+                [-41.718561426167454, 172.8800286782241],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_0b9f4cd911d408ea4f80028d7d288fde = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_a13053c3f93f59eb46d639d25fa998f1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_db712ec9f02617b2c089c0d16de0266c = $(`<div id="html_db712ec9f02617b2c089c0d16de0266c" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">New Zealand</div>           <div><b>Capital:</b> Wellington</div>           <div><b>Ruling:</b> National-led coalition</div>           <div><b>Opposition:</b> Labour</div>           <div><b>Religions:</b> No Religion (51.6%), Christianity (32.3%)</div>         </div>         </div>`)[0];
+                popup_a13053c3f93f59eb46d639d25fa998f1.setContent(html_db712ec9f02617b2c089c0d16de0266c);
+            
+        
+
+        marker_933d0e4119ab028a9cd398fcd88dc438.bindPopup(popup_a13053c3f93f59eb46d639d25fa998f1)
+        ;
+
+        
+    
+    
+                marker_933d0e4119ab028a9cd398fcd88dc438.setIcon(div_icon_0b9f4cd911d408ea4f80028d7d288fde);
+            
+    
+            var marker_3670493bd9ed35fac753e80079a13786 = L.marker(
+                [-17.447280901915903, 178.5252826795865],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_105434b016620ac19b81044240557e01 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_06e7e5a0c461ab6ebe8844abf4a465e0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b3417d4142eaf43c6d570b2c4b0fc46c = $(`<div id="html_b3417d4142eaf43c6d570b2c4b0fc46c" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Fiji</div>           <div><b>Capital:</b> Suva</div>           <div><b>Ruling:</b> People’s Alliance Party (PAP) coalition</div>           <div><b>Opposition:</b> FijiFirst</div>           <div><b>Religions:</b> Christianity (64.4%), Hinduism (27.9%)</div>         </div>         </div>`)[0];
+                popup_06e7e5a0c461ab6ebe8844abf4a465e0.setContent(html_b3417d4142eaf43c6d570b2c4b0fc46c);
+            
+        
+
+        marker_3670493bd9ed35fac753e80079a13786.bindPopup(popup_06e7e5a0c461ab6ebe8844abf4a465e0)
+        ;
+
+        
+    
+    
+                marker_3670493bd9ed35fac753e80079a13786.setIcon(div_icon_105434b016620ac19b81044240557e01);
+            
+    
+            var marker_4278b0cf00e38e775e369e2b8e9c06c0 = L.marker(
+                [-16.189696735491363, 167.6841762105141],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_a1e4567704e974a7a273c6219a01bcfa = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_48c26805db3cfc6580932b2b14c6696f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e11359c0a20ffff8571f930dbb0373b4 = $(`<div id="html_e11359c0a20ffff8571f930dbb0373b4" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Vanuatu</div>           <div><b>Capital:</b> Port Vila</div>           <div><b>Ruling:</b> Vanua’aku Party coalition</div>           <div><b>Opposition:</b> Union of Moderate Parties (UMP)</div>           <div><b>Religions:</b> Christianity (83%), Other/Indigenous (17%)</div>         </div>         </div>`)[0];
+                popup_48c26805db3cfc6580932b2b14c6696f.setContent(html_e11359c0a20ffff8571f930dbb0373b4);
+            
+        
+
+        marker_4278b0cf00e38e775e369e2b8e9c06c0.bindPopup(popup_48c26805db3cfc6580932b2b14c6696f)
+        ;
+
+        
+    
+    
+                marker_4278b0cf00e38e775e369e2b8e9c06c0.setIcon(div_icon_a1e4567704e974a7a273c6219a01bcfa);
+            
+    
+            var marker_90c9e22d07e8a2ea573991469526317f = L.marker(
+                [-2.272295717746994, 117.20707912628488],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_0d466c444f66bdd580f74eb272be5e49 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6e7c4580dba3eef40633ca6e2a42ce92 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a066ce11d2f30979789aec95c67868b7 = $(`<div id="html_a066ce11d2f30979789aec95c67868b7" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Indonesia</div>           <div><b>Capital:</b> Nusantara (transitional)</div>           <div><b>Ruling:</b> Gerindra (President)</div>           <div><b>Opposition:</b> PDI-P (role in flux)</div>           <div><b>Religions:</b> Muslim (87.2%), Protestant (7%)</div>         </div>         </div>`)[0];
+                popup_6e7c4580dba3eef40633ca6e2a42ce92.setContent(html_a066ce11d2f30979789aec95c67868b7);
+            
+        
+
+        marker_90c9e22d07e8a2ea573991469526317f.bindPopup(popup_6e7c4580dba3eef40633ca6e2a42ce92)
+        ;
+
+        
+    
+    
+                marker_90c9e22d07e8a2ea573991469526317f.setIcon(div_icon_0d466c444f66bdd580f74eb272be5e49);
+            
+    
+            var marker_be903b5992671ad73d32393e98bbc778 = L.marker(
+                [1.3570675569067032, 103.8184748218595],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_9a655b9f83328b767c587709b444eccf = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6de72b70bb20896f8a6ffe3a4cb44e35 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a94a53a633d130dfc7e221fe8bab1a10 = $(`<div id="html_a94a53a633d130dfc7e221fe8bab1a10" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Singapore</div>           <div><b>Capital:</b> Singapore</div>           <div><b>Ruling:</b> People’s Action Party (PAP)</div>           <div><b>Opposition:</b> Workers’ Party (WP)</div>           <div><b>Religions:</b> Buddhism (31.1%), Christianity (18.9%)</div>         </div>         </div>`)[0];
+                popup_6de72b70bb20896f8a6ffe3a4cb44e35.setContent(html_a94a53a633d130dfc7e221fe8bab1a10);
+            
+        
+
+        marker_be903b5992671ad73d32393e98bbc778.bindPopup(popup_6de72b70bb20896f8a6ffe3a4cb44e35)
+        ;
+
+        
+    
+    
+                marker_be903b5992671ad73d32393e98bbc778.setIcon(div_icon_9a655b9f83328b767c587709b444eccf);
+            
+    
+            var marker_811efe6888cc1711f9b58fac3c17d7c3 = L.marker(
+                [4.52140660887556, 114.74898511561206],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_bb4bb39f3927f72ac6d6ee39d961db19 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_871568d58525a2dac8a869c6bf7aeb54 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0439965ec1f834d08033e1126f6c8dcc = $(`<div id="html_0439965ec1f834d08033e1126f6c8dcc" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Brunei</div>           <div><b>Capital:</b> Bandar Seri Begawan</div>           <div><b>Ruling:</b> Absolute Monarchy (Sultan Hassanal Bolkiah)</div>           <div><b>Opposition:</b> nan</div>           <div><b>Religions:</b> Islam (82%), Christianity (9%)</div>         </div>         </div>`)[0];
+                popup_871568d58525a2dac8a869c6bf7aeb54.setContent(html_0439965ec1f834d08033e1126f6c8dcc);
+            
+        
+
+        marker_811efe6888cc1711f9b58fac3c17d7c3.bindPopup(popup_871568d58525a2dac8a869c6bf7aeb54)
+        ;
+
+        
+    
+    
+                marker_811efe6888cc1711f9b58fac3c17d7c3.setIcon(div_icon_bb4bb39f3927f72ac6d6ee39d961db19);
+            
+    
+            var marker_afa3ab5f738b6be9e8bf26b4a9ba8baf = L.marker(
+                [11.715520965690407, 122.91816679938358],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_53f4e230ccee364b713e99d2ba175e35 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_42ba21155ca3c3ebb6f21733c3e8ce9a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_998b94b284bcc961e0b8e91988d543d5 = $(`<div id="html_998b94b284bcc961e0b8e91988d543d5" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Philippines</div>           <div><b>Capital:</b> Manila</div>           <div><b>Ruling:</b> Alyansa para sa Bagong Pilipinas</div>           <div><b>Opposition:</b> DuterTen coalition</div>           <div><b>Religions:</b> Roman Catholic (78.8%), Islam (6.4%)</div>         </div>         </div>`)[0];
+                popup_42ba21155ca3c3ebb6f21733c3e8ce9a.setContent(html_998b94b284bcc961e0b8e91988d543d5);
+            
+        
+
+        marker_afa3ab5f738b6be9e8bf26b4a9ba8baf.bindPopup(popup_42ba21155ca3c3ebb6f21733c3e8ce9a)
+        ;
+
+        
+    
+    
+                marker_afa3ab5f738b6be9e8bf26b4a9ba8baf.setIcon(div_icon_53f4e230ccee364b713e99d2ba175e35);
+            
+    
+            var marker_aa508eade229e778a88680942062f1af = L.marker(
+                [-8.821213376648215, 125.85320561931425],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_11380464cef924085e9c2e83a3bbbae9 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_514e47287d28d2ec1010480da06f3222 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_db430ee8019774144abbd13b166bfdcd = $(`<div id="html_db430ee8019774144abbd13b166bfdcd" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Timor-Leste</div>           <div><b>Capital:</b> Dili</div>           <div><b>Ruling:</b> Revolutionary Front for an Independent East Timor (FRETILIN)</div>           <div><b>Opposition:</b> CNRT</div>           <div><b>Religions:</b> Roman Catholic (97.6%), Protestant (2%)</div>         </div>         </div>`)[0];
+                popup_514e47287d28d2ec1010480da06f3222.setContent(html_db430ee8019774144abbd13b166bfdcd);
+            
+        
+
+        marker_aa508eade229e778a88680942062f1af.bindPopup(popup_514e47287d28d2ec1010480da06f3222)
+        ;
+
+        
+    
+    
+                marker_aa508eade229e778a88680942062f1af.setIcon(div_icon_11380464cef924085e9c2e83a3bbbae9);
+            
+    
+            var marker_5c5767eb2040c0f76a7cab571e893cbc = L.marker(
+                [3.811659318597391, 109.7190027834344],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_b0f237b75f8430a81391ffe3a587cd9a = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_1dfec393869d54c89a56983a6cc35c6e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ced5f96d6fc8e5f8d4424df41bc5c611 = $(`<div id="html_ced5f96d6fc8e5f8d4424df41bc5c611" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Malaysia</div>           <div><b>Capital:</b> Kuala Lumpur</div>           <div><b>Ruling:</b> Pakatan Harapan (PH)</div>           <div><b>Opposition:</b> Perikatan Nasional (PN)</div>           <div><b>Religions:</b> Islam (63.5%), Buddhism (18.7%)</div>         </div>         </div>`)[0];
+                popup_1dfec393869d54c89a56983a6cc35c6e.setContent(html_ced5f96d6fc8e5f8d4424df41bc5c611);
+            
+        
+
+        marker_5c5767eb2040c0f76a7cab571e893cbc.bindPopup(popup_1dfec393869d54c89a56983a6cc35c6e)
+        ;
+
+        
+    
+    
+                marker_5c5767eb2040c0f76a7cab571e893cbc.setIcon(div_icon_b0f237b75f8430a81391ffe3a587cd9a);
+            
+    
+            var marker_0f00e6cf2ad4db72922d6343828fb5f2 = L.marker(
+                [15.091658103416334, 101.01282994522896],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_bc951df9f013e846121d336ec4049894 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6b4315dcd9052a70460601d87ed720e7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1bca0e76282ad0ddbcca6ca3ecf1de98 = $(`<div id="html_1bca0e76282ad0ddbcca6ca3ecf1de98" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Thailand</div>           <div><b>Capital:</b> Bangkok</div>           <div><b>Ruling:</b> Pheu Thai coalition</div>           <div><b>Opposition:</b> People's Party (formerly MFP)</div>           <div><b>Religions:</b> Theravada Buddhism (90–95%), Muslim (~5%)</div>         </div>         </div>`)[0];
+                popup_6b4315dcd9052a70460601d87ed720e7.setContent(html_1bca0e76282ad0ddbcca6ca3ecf1de98);
+            
+        
+
+        marker_0f00e6cf2ad4db72922d6343828fb5f2.bindPopup(popup_6b4315dcd9052a70460601d87ed720e7)
+        ;
+
+        
+    
+    
+                marker_0f00e6cf2ad4db72922d6343828fb5f2.setIcon(div_icon_bc951df9f013e846121d336ec4049894);
+            
+    
+            var marker_a18272791e1ab6ef51dcc5afbb77bc0d = L.marker(
+                [21.061131105881508, 96.51642838308169],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_c4492a923063705274122bb667b40229 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_d71f14721d20c5818748291a9a80967a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c5776923553ac62bc984f075f6cb72a4 = $(`<div id="html_c5776923553ac62bc984f075f6cb72a4" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Burma</div>           <div><b>Capital:</b> Naypyidaw</div>           <div><b>Ruling:</b> Military Junta (SAC)</div>           <div><b>Opposition:</b> National Unity Government (NUG)</div>           <div><b>Religions:</b> Buddhism (87.9%), Christianity (6.2%)</div>         </div>         </div>`)[0];
+                popup_d71f14721d20c5818748291a9a80967a.setContent(html_c5776923553ac62bc984f075f6cb72a4);
+            
+        
+
+        marker_a18272791e1ab6ef51dcc5afbb77bc0d.bindPopup(popup_d71f14721d20c5818748291a9a80967a)
+        ;
+
+        
+    
+    
+                marker_a18272791e1ab6ef51dcc5afbb77bc0d.setIcon(div_icon_c4492a923063705274122bb667b40229);
+            
+    
+            var marker_6c3a0f326ee333229e4a2f6749220d3e = L.marker(
+                [18.481964676964097, 103.80470439075098],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_be1af8f1539d9a8c28a087f5a076435d = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_b9b15f281b504a07143512b59456873a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e9116d76db39f4b97e455d4a33d5c7d6 = $(`<div id="html_e9116d76db39f4b97e455d4a33d5c7d6" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Laos</div>           <div><b>Capital:</b> Vientiane</div>           <div><b>Ruling:</b> Lao People’s Revolutionary Party (LPRP)</div>           <div><b>Opposition:</b> None (one-party)</div>           <div><b>Religions:</b> Buddhism (64.7%), Folk/Other (31.4%)</div>         </div>         </div>`)[0];
+                popup_b9b15f281b504a07143512b59456873a.setContent(html_e9116d76db39f4b97e455d4a33d5c7d6);
+            
+        
+
+        marker_6c3a0f326ee333229e4a2f6749220d3e.bindPopup(popup_b9b15f281b504a07143512b59456873a)
+        ;
+
+        
+    
+    
+                marker_6c3a0f326ee333229e4a2f6749220d3e.setIcon(div_icon_be1af8f1539d9a8c28a087f5a076435d);
+            
+    
+            var marker_86930c61252cd13cca07fdc81f7b0b16 = L.marker(
+                [12.712646900782518, 104.91760401001636],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_415a0163c48c05deaca3d07ff3cd3863 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_712ebff07808610fe3fc54edd42af5e6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ab67717afe86004f4d2ff1a27ee40750 = $(`<div id="html_ab67717afe86004f4d2ff1a27ee40750" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Cambodia</div>           <div><b>Capital:</b> Phnom Penh</div>           <div><b>Ruling:</b> Cambodian People’s Party (CPP)</div>           <div><b>Opposition:</b> Candlelight Party</div>           <div><b>Religions:</b> Theravada Buddhism (97.9%), Islam (1.1%)</div>         </div>         </div>`)[0];
+                popup_712ebff07808610fe3fc54edd42af5e6.setContent(html_ab67717afe86004f4d2ff1a27ee40750);
+            
+        
+
+        marker_86930c61252cd13cca07fdc81f7b0b16.bindPopup(popup_712ebff07808610fe3fc54edd42af5e6)
+        ;
+
+        
+    
+    
+                marker_86930c61252cd13cca07fdc81f7b0b16.setIcon(div_icon_415a0163c48c05deaca3d07ff3cd3863);
+            
+    
+            var marker_6fc8cef4a07662c734883bc5a6f37366 = L.marker(
+                [16.550457571831, 106.35068105868669],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_4af569fe179c305a6003b6dacb53006d = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_3096e75c72d25a1898ba12c3a2756485 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_054cd1f97f428c1569ea89e5a23ab17b = $(`<div id="html_054cd1f97f428c1569ea89e5a23ab17b" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Vietnam</div>           <div><b>Capital:</b> Hanoi</div>           <div><b>Ruling:</b> Communist Party of Vietnam (CPV)</div>           <div><b>Opposition:</b> None (one-party)</div>           <div><b>Religions:</b> Irreligion/Folk Religion (76.5%), Buddhism (13.3%)</div>         </div>         </div>`)[0];
+                popup_3096e75c72d25a1898ba12c3a2756485.setContent(html_054cd1f97f428c1569ea89e5a23ab17b);
+            
+        
+
+        marker_6fc8cef4a07662c734883bc5a6f37366.bindPopup(popup_3096e75c72d25a1898ba12c3a2756485)
+        ;
+
+        
+    
+    
+                marker_6fc8cef4a07662c734883bc5a6f37366.setIcon(div_icon_4af569fe179c305a6003b6dacb53006d);
+            
+    
+            var marker_5efb7bf25c4a74552a5bd15876dd5919 = L.marker(
+                [-25.765568325727887, 134.30234228701],
+                {
+}
+            ).addTo(feature_group_4aee08b4d9a76d83347479c361281f71);
+        
+    
+            var div_icon_6830748bd47bf63733a2becfccc851be = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_6c8604986864dc73a137cab880eef956 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9586ed5634ca08b18c17ef853d0c48dc = $(`<div id="html_9586ed5634ca08b18c17ef853d0c48dc" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Australia</div>           <div><b>Capital:</b> Canberra</div>           <div><b>Ruling:</b> Australian Labor Party</div>           <div><b>Opposition:</b> Liberal-Nationals Coalition</div>           <div><b>Religions:</b> No Religion (38.7%), Catholic (19.6%)</div>         </div>         </div>`)[0];
+                popup_6c8604986864dc73a137cab880eef956.setContent(html_9586ed5634ca08b18c17ef853d0c48dc);
+            
+        
+
+        marker_5efb7bf25c4a74552a5bd15876dd5919.bindPopup(popup_6c8604986864dc73a137cab880eef956)
+        ;
+
+        
+    
+    
+                marker_5efb7bf25c4a74552a5bd15876dd5919.setIcon(div_icon_6830748bd47bf63733a2becfccc851be);
+            
+    
+            var layer_control_74ad3d54b2d21c04af31e04e139cdba0_layers = {
+                base_layers : {
+                    "Simple Map" : tile_layer_6c6ad21d380238f050bf6bb692f6a04d,
+                    "Satellite Map" : tile_layer_8321851740915c01fe854a8f05677c0b,
+                    "Street Map" : tile_layer_77ce0fbaf6929077e23888c94cfb36b0,
+                },
+                overlays :  {
+                    "IndoPacific (fill)" : tile_layer_0f9d774ea86fa0411016b21c82219ca3,
+                    "IndoPacific (outline)" : tile_layer_3ae582ce172b2eaeabdf59f4c28d9c43,
+                    "Population Density" : tile_layer_fd9e03d52fce3e5d2348eb9f48189b57,
+                    "Country markers" : feature_group_4aee08b4d9a76d83347479c361281f71,
+                },
+            };
+            let layer_control_74ad3d54b2d21c04af31e04e139cdba0 = L.control.layers(
+                layer_control_74ad3d54b2d21c04af31e04e139cdba0_layers.base_layers,
+                layer_control_74ad3d54b2d21c04af31e04e139cdba0_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_951cd4dbfb455b827fcc841dc833d4cf);
+
+        
+</script>
+</html>

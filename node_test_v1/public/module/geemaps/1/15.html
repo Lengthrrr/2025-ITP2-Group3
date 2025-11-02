@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2eff1806a62f3741c0105808d10cb7df {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+</head>
+<body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    
+<style>
+  #help-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: white;
+    border: 2px solid #888;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    z-index: 10000;
+    display: none;
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    resize: both;
+    min-width: 400px;
+    min-height: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  
+  #help-popup .header {
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    color: white;
+    padding: 12px 16px;
+    border-bottom: 1px solid #005a9e;
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    cursor: move;
+    user-select: none;
+  }
+  
+  #help-popup .main-container {
+    display: flex;
+    height: calc(100% - 49px);
+  }
+  
+  #help-popup .sidebar {
+    width: 180px;
+    background: #f8f9fa;
+    border-right: 2px solid #dee2e6;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  
+  #help-popup .sidebar ul {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+  }
+  
+  #help-popup .sidebar li {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  #help-popup .sidebar li:hover {
+    background: #e3f2fd;
+    color: #0078d4;
+    padding-left: 24px;
+  }
+  
+  #help-popup .sidebar li.active {
+    background: #0078d4;
+    color: white;
+    font-weight: 600;
+    border-left: 4px solid #005a9e;
+  }
+  
+  #help-popup .sidebar li.active:hover {
+    padding-left: 20px;
+  }
+  
+  #help-popup .content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: white;
+  }
+  
+  #help-popup .section {
+    display: none;
+  }
+  
+  #help-popup .section.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  #help-popup .section h2 {
+    color: #0078d4;
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 24px;
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 8px;
+  }
+  
+  #help-popup .section h3 {
+    color: #0078d4;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  #help-popup .section p {
+    line-height: 1.6;
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  
+  #help-popup .section ul {
+    line-height: 1.6;
+    color: #333;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  
+  #help-popup .section li {
+    margin-bottom: 8px;
+  }
+  
+  #help-popup .citation {
+    background: #f8f9fa;
+    border-left: 4px solid #0078d4;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 4px;
+  }
+  
+  #help-popup .citation strong {
+    color: #0078d4;
+    display: block;
+    margin-bottom: 6px;
+  }
+  
+  #help-popup .team-member {
+    background: #e3f2fd;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  #help-popup .video-placeholder {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+  }
+  
+  #help-popup .section video {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    margin-top: 16px;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  #close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    line-height: 1;
+  }
+  
+  #close-btn:hover {
+    background: rgba(255, 0, 0, 0.6);
+    transform: scale(1.05);
+  }
+  
+  #help-button {
+    position: fixed;
+    bottom: 280px;
+    left: 20px;
+    background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    z-index: 9999;
+    font-size: 32px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+  }
+  
+  #help-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 120, 212, 0.6);
+    background: linear-gradient(135deg, #005a9e 0%, #003d6b 100%);
+  }
+  
+  #help-button:active {
+    transform: scale(0.95);
+  }
+  
+  #help-button::before {
+    content: '?';
+    display: block;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    }
+    50% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4), 0 0 0 10px rgba(0, 120, 212, 0.1);
+    }
+    100% {
+      box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+    }
+  }
+  
+  #help-button.pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  #help-popup .content::-webkit-scrollbar,
+  #help-popup .sidebar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-track,
+  #help-popup .sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-thumb,
+  #help-popup .sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
+  #help-popup .content::-webkit-scrollbar-thumb:hover,
+  #help-popup .sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+</style>
+
+<div id="help-popup">
+  <div class="header">
+    The GIST Map - Help Guide and Tutorial
+    <button id="close-btn" title="Close">×</button>
+  </div>
+  <div class="main-container">
+    <div class="sidebar">
+      <ul>
+        <li data-section="draw-tools" class="active">Draw Tools</li>
+        <li data-section="map-layers">Map Layers</li>
+        <li data-section="map-type">Map Type</li>
+        <li data-section="search">Search</li>
+        <li data-section="legend">Legend</li>
+        <li data-section="data-sources">Data Sources</li>
+        <li data-section="attribution">Attribution</li>
+  
+      </ul>
+    </div>
+    <div class="content">
+      <div id="draw-tools" class="section active">
+        <h2>Draw Tools</h2>
+        <p>Use the draw tools in the top-left corner of the map to add custom shapes and markers:</p>
+        <ul>
+          <li><strong>Polylines:</strong> Draw connected line segments to mark routes or boundaries</li>
+          <li><strong>Polygons:</strong> Create closed shapes to define areas of interest</li>
+          <li><strong>Rectangles:</strong> Quick way to define rectangular regions</li>
+          <li><strong>Markers:</strong> Place point markers at specific locations</li>
+        </ul>
+        <p>Click on any drawn shape to see detailed information including coordinates, area, and bounds. You can edit or remove shapes using the edit tools in the drawing toolbar.</p>
+        <p><strong>Note:</strong> Drawn shapes are temporary and will disappear when you refresh the page.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Draw_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="map-layers" class="section">
+        <h2>Map Layers</h2>
+        <p>Toggle various data overlays using the layer control in the top-right corner. Available layers for the Indo-Pacific region include:</p>
+        <ul>
+          <li><strong>Indo-Pacific (fill):</strong> Yellow fill showing Indo-Pacific countries</li>
+          <li><strong>Indo-Pacific (outline):</strong> White outline around the Indo-Pacific region</li>
+          <li><strong>Country markers:</strong> Diamond icons at country centroids with detailed country profiles</li>
+          <li><strong>Volcanoes:</strong> Holocene volcano locations, colour-coded by type (stratovolcano, shield volcano, caldera, etc.)</li>
+          <li><strong>Tectonic Plates:</strong> Major plate boundaries showing collision zones, subduction zones, spreading centres, and transform faults</li>
+          <li><strong>Cyclones:</strong> Historical tropical cyclone tracks since 2000, colour-coded by category</li>
+          <li><strong>Earthquakes:</strong> Significant earthquakes (M4+) since 2000, colour-coded by magnitude</li>
+          <li><strong>Rivers:</strong> Major rivers in the Indo-Pacific (Indus, Ganges, Brahmaputra, Mekong, Yangtze, Yellow River, etc.)</li>
+          <li><strong>Population Density:</strong> LandScan 2022 population distribution as a coloured raster layer</li>
+        </ul>
+        <p>Tick or untick layers to show or hide them on the map. Multiple layers can be active simultaneously for comparative analysis.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Overlays_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="map-type" class="section">
+        <h2>Map Type</h2>
+        <p>Switch between different basemap styles to suit your needs. Only one basemap can be active at a time:</p>
+        <ul>
+          <li><strong>Simple Map (CartoDB Positron):</strong> Clean, minimalist light basemap - perfect for seeing land-based boundaries and country-level subdivisions. This map presents all geographical names in English.</li>
+          <li><strong>Satellite Map (Esri WorldImagery):</strong> High-resolution satellite imagery - ideal for viewing terrain, land use, and physical features</li>
+          <li><strong>Street Map (OpenStreetMap):</strong> Standard street map showing roads, cities, maritime borders, and human infrastructure. This map presents geographical names in the languages native to each location.</li>
+        </ul>
+        <p>Use the radio buttons in the layer control panel (top-right) to switch between map types. The Satellite Map is set as the default view.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Map_Type_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="search" class="section">
+        <h2>Search</h2>
+        <p>Use the search bar at the top of the map to quickly find and navigate to locations.</p>
+        <p>When you search for a location within the Indo-Pacific region, the map will:</p>
+        <ul>
+          <li>Centre on the location and zoom appropriately</li>
+          <li>Place a pulsing blue marker at the coordinates</li>
+          <li>Display country information if the location is within an Indo-Pacific country</li>
+          <li>Show relevant data including capital city, ruling party, opposition, and major religions</li>
+          <li>Automatically remove the search marker after 10 seconds</li>
+        </ul>
+        <p>The search functionality uses the Turf.js library to determine which country contains your searched location and retrieves the corresponding profile data.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Search_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      <div id="legend" class="section">
+        <h2>Legend</h2>
+        <p>The dynamic legend appears at the bottom-right of the map and explains all symbols and colours used for currently visible layers.</p>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+          <li>Updates automatically based on which layers are active - keeping it relevant and uncluttered</li>
+          <li>Shows colour coding for different feature types (e.g., volcano types, tectonic boundaries)</li>
+          <li>Explains symbol meanings (triangles for volcanoes, circles for cyclones and earthquakes, etc.)</li>
+          <li>Provides intensity scales (cyclone categories 1-5, earthquake magnitudes M4-7+)</li>
+          <li>Displays gradient scales for continuous data (e.g., population density)</li>
+        </ul>
+        <p>The legend only displays information for layers that are currently turned on, so it remains clean and easy to read. Toggle layers off to simplify the legend view.</p>
+        <video controls>
+          <source src="https://itp2-videos.s3.ap-southeast-2.amazonaws.com/Legend_Tutorial.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+
+      <div id="data-sources" class="section">
+        <h2>Data Sources & Citations</h2>
+        <p>This map integrates data from multiple authoritative sources. Please cite the appropriate references when using this tool in your research.</p>
+        
+        <div class="citation">
+          <strong>Base Maps (Tile Layers)</strong>
+          <div><strong>Simple Map:</strong> © CartoDB – OpenStreetMap Contributors</div>
+          <div><strong>Street Map:</strong> © OpenStreetMap – OpenStreetMap Contributors</div>
+          <div><strong>Satellite Map:</strong> © Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community</div>
+        </div>
+        
+        <div class="citation">
+          <strong>Cyclones – IBTrACS</strong>
+          Knapp, K. R., M. C. Kruk, D. H. Levinson, H. J. Diamond, and C. J. Neumann, 2010: The International Best Track Archive for Climate Stewardship (IBTrACS): Unifying tropical cyclone best track data. <em>Bulletin of the American Meteorological Society</em>, 91, 363-376. doi:10.1175/2009BAMS2755.1
+          <br><br>
+          Gahtan, J., K. R. Knapp, C. J. Schreck, H. J. Diamond, J. P. Kossin, M. C. Kruk, 2024: International Best Track Archive for Climate Stewardship (IBTrACS) Project, Version 4r01. NOAA National Centers for Environmental Information. doi:10.25921/82ty-9e16
+          <br><br>
+          <a href="https://www.ncei.noaa.gov/products/international-best-track-archive" target="_blank" style="color: #0078d4;">https://www.ncei.noaa.gov/products/international-best-track-archive</a>
+        </div>
+        
+        <div class="citation">
+          <strong>Volcanoes – Global Volcanism Program</strong>
+          Global Volcanism Program, 2025. [Database] Volcanoes of the World (v. 5.3.1; 6 Aug 2025). Distributed by Smithsonian Institution, compiled by Venzke, E. https://doi.org/10.5479/si.GVP.VOTW5-2025.5.3
+          <br><br>
+          <a href="https://volcano.si.edu/volcanolist_holocene.cfm" target="_blank" style="color: #0078d4;">https://volcano.si.edu/volcanolist_holocene.cfm</a>
+        </div>
+        
+        <div class="citation">
+          <strong>Earthquakes – ISC-GEM Catalogue</strong>
+          International Seismological Centre (20XX), ISC-GEM Earthquake Catalogue, https://doi.org/10.31905/d808b825
+          <br><br>
+          Storchak, D.A., D. Di Giacomo, I. Bondár, E.R. Engdahl, J. Harris, W.H.K. Lee, A. Villaseñor and P. Bormann (2013). Public Release of the ISC-GEM Global Instrumental Earthquake Catalogue (1900-2009). <em>Seism. Res. Lett.</em>, 84, 5, 810-815, doi: 10.1785/0220130034.
+          <br><br>
+          Di Giacomo, D., E.R. Engdahl and D.A. Storchak (2018). The ISC-GEM Earthquake Catalogue (1904–2014): status after the Extension Project, <em>Earth Syst. Sci. Data</em>, 10, 1877-1899, doi: 10.5194/essd-10-1877-2018.
+        </div>
+        
+        <div class="citation">
+          <strong>Population Density – LandScan 2022</strong>
+          Dobson, J. E., Bright, E. A., Coleman, P. R., Durfee, R. C., and Worley, B. A. (2000). LandScan: A global population database for estimating populations at risk, <em>Photogramm. Eng. Rem. S.</em>, Vol 66, No 7, 849-857.
+          <br><br>
+          Raster hosted on AWS S3: itp2-population-data.s3.ap-southeast-2.amazonaws.com/landscan-indo-pacific-40res-cog.tif
+        </div>
+        
+        <div class="citation">
+          <strong>Tectonic Plates</strong>
+          Hasterok, D., Halpin, J. A., Collins, A. S., Hand, M., Kreemer, C., Gard, M. G., and Glorie, S. (2022). New maps of global geological provinces and tectonic plates, <em>Earth Sci. Rev.</em>, Vol 231, 104069, doi: 10.1016/j.earscirev.2022.104069.
+          <br><br>
+          Bird, P. (2003). An updated digital model of plate boundaries, <em>Geochem. Geophy. Geosy.</em>, Vol 4, No 3, 1027, doi:10.1029/2001GC000252.
+        </div>
+
+        <div class="citation">
+          <strong>Rivers</strong>
+          World Bank Group (2018). <em>Major Rivers of the World</em> [Shapefile]. World Bank Data Catalog.
+          <a href="https://datacatalog.worldbank.org/search/dataset/0042032/major-rivers-of-the-world" target="_blank" style="color:#0078d4;">
+            https://datacatalog.worldbank.org/search/dataset/0042032/major-rivers-of-the-world
+          </a>
+          <br><br>
+          License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+          <br>
+          Metadata last updated: January 19, 2023. Dataset last updated: July 21, 2018.
+        </div>
+      </div>
+
+
+      <div id="attribution" class="section">
+        <h2>Attribution</h2>
+        <p>This interactive map was developed by the <strong>MIP (Map of the Indo-Pacific)</strong> team as part of the GIST project.</p>
+        
+        <div style="margin: 20px 0;">
+          <h3>Development Team</h3>
+          <div class="team-member">Kurtis Chen – MIP Team Member</div>
+          <div class="team-member">Danesha Varman – MIP Team Member</div>
+          <div class="team-member">Marija Kolundzija – MIP Team Member</div>
+          <div class="team-member">Patrick Cunningham – MIP Team Member</div>
+          <div class="team-member">Lucia Pelle – MIP Team Member</div>
+        </div>
+        
+        <div style="margin: 20px 0;">
+          <h3>Project Coordination</h3>
+          <div class="team-member">Dr Clinton Fernandes – GIST Project Coordinator</div>
+          <div class="team-member">Dr Fiona Allen – GIST Project Coordinator</div>
+        </div>
+        
+        <p style="margin-top: 20px; font-style: italic; color: #666;">The GIST (Geospatial Information System Tool) project aims to provide comprehensive, interactive mapping resources for understanding the Indo-Pacific region's geopolitical, environmental, and demographic characteristics.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div id="help-button" class="pulse" title="Need Help? Click here!"></div>
+
+<script>
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHelpPopup);
+  } else {
+    initHelpPopup();
+  }
+
+  function initHelpPopup() {
+    const popup = document.getElementById('help-popup');
+    const button = document.getElementById('help-button');
+    const closeBtn = document.getElementById('close-btn');
+    const navItems = document.querySelectorAll('#help-popup .sidebar li');
+    const header = document.querySelector('#help-popup .header');
+
+    popup.style.display = 'block';
+
+    // Dragging variables
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let popupStartX = 0;
+    let popupStartY = 0;
+
+    header.addEventListener('mousedown', function(e) {
+      // Don't drag if clicking the close button
+      if (e.target.id === 'close-btn' || e.target === closeBtn) {
+        return;
+      }
+
+      isDragging = true;
+      
+      // Get current popup position
+      const rect = popup.getBoundingClientRect();
+      popupStartX = rect.left + rect.width / 2; // center X
+      popupStartY = rect.top + rect.height / 2; // center Y
+      
+      // Store initial mouse position
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      
+      e.preventDefault();
+      
+      // Calculate how far the mouse has moved
+      const deltaX = e.clientX - dragStartX;
+      const deltaY = e.clientY - dragStartY;
+      
+      // Calculate new center position
+      const newCenterX = popupStartX + deltaX;
+      const newCenterY = popupStartY + deltaY;
+      
+      // Set position using left/top instead of transform
+      popup.style.left = newCenterX + 'px';
+      popup.style.top = newCenterY + 'px';
+      popup.style.transform = 'translate(-50%, -50%)';
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+      button.style.display = 'flex';
+      button.classList.add('pulse');
+      setTimeout(() => {
+        button.classList.remove('pulse');
+      }, 6000);
+    });
+
+    button.addEventListener('click', () => {
+      popup.style.display = 'block';
+      button.style.display = 'none';
+      button.classList.remove('pulse');
+    });
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        const sectionId = item.dataset.section;
+        document.getElementById(sectionId).classList.add('active');
+      });
+    });
+  }
+})();
+</script>
+    
+<div id="map-legend" style="
+  position: fixed; bottom: 20px; right: 20px;
+  width: 240px; max-height: 420px; overflow-y: auto;
+  background: #fff; border: 2px solid #888; border-radius: 8px;
+  z-index: 9999; font-size: 12px; padding: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,.3); line-height: 1.4;">
+  <h4 style="margin:0 0 8px 0; text-align:center;">Legend</h4>
+
+  <div class="legend-item" data-layer="Indo-Pacific (fill)" style="display:none">
+    <span style="display:inline-block;width:18px;height:12px;background:#ffcc00;border:1px solid #999;margin-right:6px;"></span>
+    Indo-Pacific country
+  </div>
+
+  <div class="legend-item" data-layer="Indo-Pacific (outline)" style="display:none">
+    <span style="background:#000;width:20px;height:2px;display:inline-block;margin-right:6px;"></span>
+    Indo-Pacific outline
+  </div>
+
+  <div class="legend-item" data-layer="Country markers" style="display:none">
+    <span style="display:inline-block;width:14px;height:14px;background:#ffcc00;border:2px solid #fff;transform:rotate(45deg);margin-right:6px;"></span>
+    Country centroid
+  </div>
+
+  <div class="legend-item" data-layer="Population Density" style="display:none">
+    <b>Population Density</b><br>
+    <div style="height: 12px; width: 120px; 
+      background: linear-gradient(to right, #ffffcc, #ffeda0, #feb24c, #f03b20, #bd0026); 
+      border:1px solid #999; margin-bottom:4px;"></div>
+    <span style="font-size:11px;">Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;High</span>
+  </div>
+</div>
+
+<script>
+// Sync legend purely from LayerControl
+(function() {
+  function wireLegend() {
+    var rows = document.querySelectorAll('.leaflet-control-layers-overlays label');
+    if (!rows.length) { setTimeout(wireLegend, 200); return; }
+    rows.forEach(function(labelEl) {
+      var input = labelEl.querySelector('input[type=checkbox]');
+      var name = (labelEl.querySelector('span')?.textContent || labelEl.textContent).trim();
+      var legendItem = document.querySelector('.legend-item[data-layer="' + name + '"]');
+      if (!legendItem) return;
+      legendItem.style.display = input.checked ? 'block' : 'none';
+      input.addEventListener('change', function() {
+        legendItem.style.display = this.checked ? 'block' : 'none';
+      });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireLegend);
+  else wireLegend();
+})();
+</script>
+    
+<script>
+(function() {
+  function addLayerTooltips() {
+    const tooltips = {
+      "Simple Map": "Clean light basemap (CartoDB Positron) / Perfect for seeing land-based boundaries and country level sub-divisions.",
+      "Satellite Map": "High-resolution Satellite imagery from Esri.",
+      "Street Map": "Standard OpenStreetMap basemap. / Perfect for seeing roads, cities, maritime borders and human infrastructure.",
+
+      "Indo-Pacific (fill)": "Yellow fill for Indo-Pacific countries.",
+      "Indo-Pacific (outline)": "White outline around Indo-Pacific region.",
+      "Country markers": "Diamond icons at country centroids with popups.",
+      "Volcanoes": "Holocene volcano locations, coloured by type.",
+      "Tectonic Plates": "Major plate boundaries (collision, spreading, etc.).",
+      "Cyclones": "Tracks of tropical cyclones since 2000.",
+      "Earthquakes": "Significant earthquakes (M4+) since 2000.",
+      "Rivers": "Major rivers in the Indo-Pacific region.",
+      "Population Density": "LandScan 2022 population distribution (coloured raster)."
+    };
+
+    // Attach tooltip to each label in the LayerControl
+    document.querySelectorAll('.leaflet-control-layers label').forEach(function(label) {
+      const span = label.querySelector('span');
+      if (!span) return;
+      const name = span.textContent.trim();
+      if (tooltips[name]) {
+        label.title = tooltips[name];  // native browser tooltip
+      }
+    });
+  }
+
+  setTimeout(addLayerTooltips, 800); // delay to ensure LayerControl renders
+})();
+</script>
+    
+<script>
+(function() {
+  function addMapTypeLabel() {
+    var baseContainer = document.querySelector('.leaflet-control-layers-base');
+    if (baseContainer && !document.getElementById('map-type-label')) {
+      var label = document.createElement('div');
+      label.id = 'map-type-label';
+      label.innerHTML = '<b style="font-size:12px;">Map Type</b>';
+      label.style.marginBottom = '4px';
+      baseContainer.prepend(label);
+    }
+  }
+  setTimeout(addMapTypeLabel, 500);
+})();
+</script>
+    
+<script>
+(function() {
+  function addOverlayLabel() {
+    var overlayContainer = document.querySelector('.leaflet-control-layers-overlays');
+    if (overlayContainer && !document.getElementById('overlays-label')) {
+      var label = document.createElement('div');
+      label.id = 'overlays-label';
+      label.innerHTML = '<b style="font-size:12px;">Overlays</b>';
+      label.style.margin = '6px 0 4px 0';
+      overlayContainer.prepend(label);
+    }
+  }
+  setTimeout(addOverlayLabel, 500);
+})();
+</script>
+    
+    <div style="
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 6px 12px;
+        border-radius: 8px;
+        box-shadow: 0 0 6px rgba(0,0,0,0.3);
+        font-family: system-ui, sans-serif;
+    ">
+      GIST : SouthEastAsia Geopolitics Map
+    </div>
+    
+    
+    <script>
+    (function waitForDrawReady() {
+        const map = window["map_2eff1806a62f3741c0105808d10cb7df"];
+        if (!map) {
+            setTimeout(waitForDrawReady, 1000);
+            return;
+        }
+        if (typeof L === 'undefined' || !L.Draw || !map.on) {
+            setTimeout(waitForDrawReady, 1000);
+            return;
+        }
+        console.log("Draw popup formatter loaded for SouthEastAsia (map_2eff1806a62f3741c0105808d10cb7df)");
+
+        const originalAlert = window.alert;
+        window.alert = (msg) => {
+            if (typeof msg === 'string' && msg.includes('"coordinates"')) return;
+            originalAlert(msg);
+        };
+
+        // ---- Popup formatter ----
+        function shapePopup(layer) {
+            const gj = layer.toGeoJSON();
+            const geom = gj.geometry;
+            let html = '<div style="font-family:system-ui;min-width:220px;">';
+            html += `<b>${geom?.type || 'Shape'}</b><br>`;
+
+            // ---- Circles: radius only ----
+            if (layer.getLatLng && layer.getRadius) {
+                try {
+                    const radius = layer.getRadius();
+                    if (radius < 1000) {
+                        html += `<b>Radius:</b> ${radius.toFixed(0)} m`;
+                    } else {
+                        html += `<b>Radius:</b> ${(radius / 1000).toFixed(2)} km`;
+                    }
+                } catch (e) {
+                    console.warn("Circle info unavailable:", e);
+                }
+            }
+            // ---- Point ----
+            else if (geom && geom.type === "Point") {
+                const [lng, lat] = geom.coordinates;
+                html += `Lat: ${lat.toFixed(4)}°<br>Lng: ${lng.toFixed(4)}°`;
+            }
+            // ---- Polygon or Rectangle ----
+            else if (geom && (geom.type === "Polygon" || geom.type === "Rectangle")) {
+                const coords = geom.coordinates[0];
+                const lats = coords.map(c => c[1]);
+                const lngs = coords.map(c => c[0]);
+                const n = Math.max(...lats).toFixed(4);
+                const s = Math.min(...lats).toFixed(4);
+                const e = Math.max(...lngs).toFixed(4);
+                const w = Math.min(...lngs).toFixed(4);
+                html += `N: ${n}°<br>S: ${s}°<br>E: ${e}°<br>W: ${w}°`;
+
+                try {
+                    const area_m2 = turf.area(gj);
+                    const area_km2 = area_m2 / 1e6;
+                    const perimeter_km = turf.length(gj, { units: 'kilometers' });
+                    html += `<br><b>Area:</b> ${area_km2.toLocaleString(undefined, { maximumFractionDigits: 2 })} km²<br>`;
+                    html += `<b>Perimeter:</b> ${perimeter_km.toLocaleString(undefined, { maximumFractionDigits: 2 })} km`;
+                } catch (e) {
+                    console.warn("Area/perimeter calculation failed:", e);
+                }
+            }
+            // ---- LineString ----
+            else if (geom && geom.type === "LineString") {
+                try {
+                    const length_km = turf.length(gj, { units: 'kilometers' });
+                    html += `<b>Length:</b> ${length_km.toLocaleString(undefined, { maximumFractionDigits: 2 })} km<br>`;
+                } catch (e) {
+                    console.warn("Line length calculation failed:", e);
+                }
+                html += `Points: ${geom.coordinates.length}`;
+            }
+
+            html += `<hr style="margin:6px 0;"><small>${new Date().toLocaleString()}</small></div>`;
+            return html;
+        }
+
+        // ---- Bind popup when a shape is created ----
+        map.on('draw:created', (e) => {
+            const layer = e.layer;
+            const html = shapePopup(layer);
+            layer.bindPopup(html).addTo(map);
+            layer.openPopup();
+        });
+    })();
+    </script>
+    
+    
+            <div class="folium-map" id="map_2eff1806a62f3741c0105808d10cb7df" ></div>
+        
+    
+            
+        
+</body>
+<script>
+    
+    
+            var map_2eff1806a62f3741c0105808d10cb7df = L.map(
+                "map_2eff1806a62f3741c0105808d10cb7df",
+                {
+                    center: [5.0, 110.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+  "eeInitialize": true,
+  "addGoogleMap": false,
+  "pluginLatlngpopup": false,
+  "pluginFullscreen": true,
+  "pluginDraw": true,
+  "DrawExport": false,
+  "pluginMinimap": false,
+  "locateControl": false,
+  "searchControl": true,
+  "layersControl": true,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_2eff1806a62f3741c0105808d10cb7df);
+        
+    
+            var options = {
+              position: "topleft",
+              draw: {},
+              edit: {},
+            }
+                // FeatureGroup is to store editable layers.
+                var drawnItems_draw_control_1d89a15f0815c34418ce27a4bd0507c0 =
+                    new L.featureGroup().addTo(
+                        map_2eff1806a62f3741c0105808d10cb7df
+                    );
+
+            options.edit.featureGroup = drawnItems_draw_control_1d89a15f0815c34418ce27a4bd0507c0;
+            var draw_control_1d89a15f0815c34418ce27a4bd0507c0 = new L.Control.Draw(
+                options
+            ).addTo( map_2eff1806a62f3741c0105808d10cb7df );
+            map_2eff1806a62f3741c0105808d10cb7df.on(L.Draw.Event.CREATED, function(e) {
+                var layer = e.layer,
+                    type = e.layerType;
+                var coords = JSON.stringify(layer.toGeoJSON());
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                });
+                drawnItems_draw_control_1d89a15f0815c34418ce27a4bd0507c0.addLayer(layer);
+            });
+            map_2eff1806a62f3741c0105808d10cb7df.on('draw:created', function(e) {
+                drawnItems_draw_control_1d89a15f0815c34418ce27a4bd0507c0.addLayer(e.layer);
+            });
+
+            
+        
+    
+
+            var geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862 = {
+  "collapsed": true,
+  "position": "topleft",
+  "defaultMarkGeocode": true,
+  "zoom": 11,
+  "provider": "nominatim",
+  "providerOptions": {
+},
+};
+
+            // note: geocoder name should start with lowercase
+            var geocoderName_geocoder_1c203d23af6c5094f90caf9779bbd862 = geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862["provider"];
+
+            var customGeocoder_geocoder_1c203d23af6c5094f90caf9779bbd862 = L.Control.Geocoder[ geocoderName_geocoder_1c203d23af6c5094f90caf9779bbd862 ](
+                geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862['providerOptions']
+            );
+            geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862["geocoder"] = customGeocoder_geocoder_1c203d23af6c5094f90caf9779bbd862;
+
+            L.Control.geocoder(
+                geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862
+            ).on('markgeocode', function(e) {
+                var zoom = geocoderOpts_geocoder_1c203d23af6c5094f90caf9779bbd862['zoom'] || map_2eff1806a62f3741c0105808d10cb7df.getZoom();
+                map_2eff1806a62f3741c0105808d10cb7df.setView(e.geocode.center, zoom);
+            }).addTo(map_2eff1806a62f3741c0105808d10cb7df);
+
+        
+    
+            map_2eff1806a62f3741c0105808d10cb7df.fitBounds(
+                [[5, 110], [5, 110]],
+                {"maxZoom": 4}
+            );
+        
+    
+            var tile_layer_9d01c05f890162749b735c6437ee52ee = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/f8fe0fe1747fb503476e667c8f4a8070-ecd4707be4212bbc9006fbfed995b00e/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.9,
+}
+
+            );
+        
+    
+            var tile_layer_ea1bd4c92af6f725affc2ed115656ef2 = L.tileLayer(
+                "https://earthengine.googleapis.com/v1/projects/gist-itproject2/maps/6a36030fde47a09bc68725a94903d0c7-394516c5e16db934e12e1351d5d69084/tiles/{z}/{x}/{y}",
+                {
+  "minZoom": 0,
+  "maxZoom": 24,
+  "maxNativeZoom": 24,
+  "noWrap": false,
+  "attribution": "Google Earth Engine",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1.0,
+}
+
+            );
+        
+    
+            tile_layer_ea1bd4c92af6f725affc2ed115656ef2.addTo(map_2eff1806a62f3741c0105808d10cb7df);
+        
+    
+            var tile_layer_966f67e5ca23854dd44716b89dd01d82 = L.tileLayer(
+                "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https://itp2-population-data.s3.ap-southeast-2.amazonaws.com/landscan-indo-pacific-40res-cog.tif\u0026bidx=1\u0026rescale=42,255\u0026colormap_name=ylorrd",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "LandScan 2022 \u00a9 Oak Ridge National Laboratory, via TiTiler",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 0.9,
+}
+
+            );
+        
+    
+            var tile_layer_8ae5c4e16e15dd7cf6821c3204bc647c = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var tile_layer_f2ceb5feb75ce5fef3d3f8e626e9e281 = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Tiles \u0026copy; Esri \u0026mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f2ceb5feb75ce5fef3d3f8e626e9e281.addTo(map_2eff1806a62f3741c0105808d10cb7df);
+        
+    
+            var tile_layer_1bc5bdc275af289aeaa216083c476738 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var feature_group_855a2048eb87c6ed20585c9045897d0e = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_523c311c001299af6cc296d4686e0fa5 = L.marker(
+                [-2.272295717746994, 117.20707912628488],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_6db08c7b472e0c0adad70feed76d4e21 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_a5538e1fa7e795c1b26067fae30d074c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6b45ca9783b731e2c723002cc25267da = $(`<div id="html_6b45ca9783b731e2c723002cc25267da" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Indonesia</div>           <div><b>Capital:</b> Nusantara (transitional)</div>           <div><b>Ruling:</b> Gerindra (President)</div>           <div><b>Opposition:</b> PDI-P (role in flux)</div>           <div><b>Religions:</b> Muslim (87.2%), Protestant (7%)</div>         </div>         </div>`)[0];
+                popup_a5538e1fa7e795c1b26067fae30d074c.setContent(html_6b45ca9783b731e2c723002cc25267da);
+            
+        
+
+        marker_523c311c001299af6cc296d4686e0fa5.bindPopup(popup_a5538e1fa7e795c1b26067fae30d074c)
+        ;
+
+        
+    
+    
+                marker_523c311c001299af6cc296d4686e0fa5.setIcon(div_icon_6db08c7b472e0c0adad70feed76d4e21);
+            
+    
+            var marker_ef59b5918c586eaa3c0f0ac8fb4c477e = L.marker(
+                [1.3570675569067032, 103.8184748218595],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_b1021157d04b06e2992bc33fe00364bd = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_c1d0979d6dd1563170c9bd76801a829b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f578fa5f1219236a055ce7c3f9d5307a = $(`<div id="html_f578fa5f1219236a055ce7c3f9d5307a" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Singapore</div>           <div><b>Capital:</b> Singapore</div>           <div><b>Ruling:</b> People’s Action Party (PAP)</div>           <div><b>Opposition:</b> Workers’ Party (WP)</div>           <div><b>Religions:</b> Buddhism (31.1%), Christianity (18.9%)</div>         </div>         </div>`)[0];
+                popup_c1d0979d6dd1563170c9bd76801a829b.setContent(html_f578fa5f1219236a055ce7c3f9d5307a);
+            
+        
+
+        marker_ef59b5918c586eaa3c0f0ac8fb4c477e.bindPopup(popup_c1d0979d6dd1563170c9bd76801a829b)
+        ;
+
+        
+    
+    
+                marker_ef59b5918c586eaa3c0f0ac8fb4c477e.setIcon(div_icon_b1021157d04b06e2992bc33fe00364bd);
+            
+    
+            var marker_ee474b4cc5c24ae767edd3e490c4530f = L.marker(
+                [4.52140660887556, 114.74898511561206],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_ea9ed7160b27d880361fedb721a492aa = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_8bbbcc1e6563b8a6a8ed695790132474 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e2eb43a0fc2f9ae88acbea8f0f83e2d5 = $(`<div id="html_e2eb43a0fc2f9ae88acbea8f0f83e2d5" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Brunei</div>           <div><b>Capital:</b> Bandar Seri Begawan</div>           <div><b>Ruling:</b> Absolute Monarchy (Sultan Hassanal Bolkiah)</div>           <div><b>Opposition:</b> nan</div>           <div><b>Religions:</b> Islam (82%), Christianity (9%)</div>         </div>         </div>`)[0];
+                popup_8bbbcc1e6563b8a6a8ed695790132474.setContent(html_e2eb43a0fc2f9ae88acbea8f0f83e2d5);
+            
+        
+
+        marker_ee474b4cc5c24ae767edd3e490c4530f.bindPopup(popup_8bbbcc1e6563b8a6a8ed695790132474)
+        ;
+
+        
+    
+    
+                marker_ee474b4cc5c24ae767edd3e490c4530f.setIcon(div_icon_ea9ed7160b27d880361fedb721a492aa);
+            
+    
+            var marker_3a7a37807d24470c4b8ae023b32f1388 = L.marker(
+                [11.715520965690407, 122.91816679938358],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_a29976f8b2a3346207607aae923a0451 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_c307b14eb66684cfbc7482de6355ce9b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f492553ea5df01855a03877ddd2ebbf9 = $(`<div id="html_f492553ea5df01855a03877ddd2ebbf9" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Philippines</div>           <div><b>Capital:</b> Manila</div>           <div><b>Ruling:</b> Alyansa para sa Bagong Pilipinas</div>           <div><b>Opposition:</b> DuterTen coalition</div>           <div><b>Religions:</b> Roman Catholic (78.8%), Islam (6.4%)</div>         </div>         </div>`)[0];
+                popup_c307b14eb66684cfbc7482de6355ce9b.setContent(html_f492553ea5df01855a03877ddd2ebbf9);
+            
+        
+
+        marker_3a7a37807d24470c4b8ae023b32f1388.bindPopup(popup_c307b14eb66684cfbc7482de6355ce9b)
+        ;
+
+        
+    
+    
+                marker_3a7a37807d24470c4b8ae023b32f1388.setIcon(div_icon_a29976f8b2a3346207607aae923a0451);
+            
+    
+            var marker_74aa04315fa3adb220555cc1a5d2a967 = L.marker(
+                [-8.821213376648215, 125.85320561931425],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_80f75a8ae77f76ae4caa4ef9983de29a = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_c34c3c0264256f0cf564a9db94b29ebd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8ac30411c935d901d157d1a64272132b = $(`<div id="html_8ac30411c935d901d157d1a64272132b" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Timor-Leste</div>           <div><b>Capital:</b> Dili</div>           <div><b>Ruling:</b> Revolutionary Front for an Independent East Timor (FRETILIN)</div>           <div><b>Opposition:</b> CNRT</div>           <div><b>Religions:</b> Roman Catholic (97.6%), Protestant (2%)</div>         </div>         </div>`)[0];
+                popup_c34c3c0264256f0cf564a9db94b29ebd.setContent(html_8ac30411c935d901d157d1a64272132b);
+            
+        
+
+        marker_74aa04315fa3adb220555cc1a5d2a967.bindPopup(popup_c34c3c0264256f0cf564a9db94b29ebd)
+        ;
+
+        
+    
+    
+                marker_74aa04315fa3adb220555cc1a5d2a967.setIcon(div_icon_80f75a8ae77f76ae4caa4ef9983de29a);
+            
+    
+            var marker_70c9ba137d8bc7e9d3f276df1e75681b = L.marker(
+                [3.811659318597391, 109.7190027834344],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_b4e19c67b0f83fad82af1658f4a5c388 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_c1a832e274c14175230fe3d6f31c65ac = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_70a6f9057795a2f95011f41c1d1f6a7e = $(`<div id="html_70a6f9057795a2f95011f41c1d1f6a7e" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Malaysia</div>           <div><b>Capital:</b> Kuala Lumpur</div>           <div><b>Ruling:</b> Pakatan Harapan (PH)</div>           <div><b>Opposition:</b> Perikatan Nasional (PN)</div>           <div><b>Religions:</b> Islam (63.5%), Buddhism (18.7%)</div>         </div>         </div>`)[0];
+                popup_c1a832e274c14175230fe3d6f31c65ac.setContent(html_70a6f9057795a2f95011f41c1d1f6a7e);
+            
+        
+
+        marker_70c9ba137d8bc7e9d3f276df1e75681b.bindPopup(popup_c1a832e274c14175230fe3d6f31c65ac)
+        ;
+
+        
+    
+    
+                marker_70c9ba137d8bc7e9d3f276df1e75681b.setIcon(div_icon_b4e19c67b0f83fad82af1658f4a5c388);
+            
+    
+            var marker_a4628404abbd0a2c357e95d601efba43 = L.marker(
+                [15.091658103416334, 101.01282994522896],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_051d969450383cef3ea507223a262996 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_412db35e4f35b47b5d08162c427dbd9a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_272027830b7785ea11e2bcf492406b9a = $(`<div id="html_272027830b7785ea11e2bcf492406b9a" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Thailand</div>           <div><b>Capital:</b> Bangkok</div>           <div><b>Ruling:</b> Pheu Thai coalition</div>           <div><b>Opposition:</b> People's Party (formerly MFP)</div>           <div><b>Religions:</b> Theravada Buddhism (90–95%), Muslim (~5%)</div>         </div>         </div>`)[0];
+                popup_412db35e4f35b47b5d08162c427dbd9a.setContent(html_272027830b7785ea11e2bcf492406b9a);
+            
+        
+
+        marker_a4628404abbd0a2c357e95d601efba43.bindPopup(popup_412db35e4f35b47b5d08162c427dbd9a)
+        ;
+
+        
+    
+    
+                marker_a4628404abbd0a2c357e95d601efba43.setIcon(div_icon_051d969450383cef3ea507223a262996);
+            
+    
+            var marker_7a4c6e8720729843d05fbc8f857bdd05 = L.marker(
+                [21.061131105881508, 96.51642838308169],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_492f29b5d943f7ff6857d2b9983f10e3 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_2762c6ebbd90f70b77d6c5c5f5b7a174 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f434665e5c093ae39596944efc48a1a3 = $(`<div id="html_f434665e5c093ae39596944efc48a1a3" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Burma</div>           <div><b>Capital:</b> Naypyidaw</div>           <div><b>Ruling:</b> Military Junta (SAC)</div>           <div><b>Opposition:</b> National Unity Government (NUG)</div>           <div><b>Religions:</b> Buddhism (87.9%), Christianity (6.2%)</div>         </div>         </div>`)[0];
+                popup_2762c6ebbd90f70b77d6c5c5f5b7a174.setContent(html_f434665e5c093ae39596944efc48a1a3);
+            
+        
+
+        marker_7a4c6e8720729843d05fbc8f857bdd05.bindPopup(popup_2762c6ebbd90f70b77d6c5c5f5b7a174)
+        ;
+
+        
+    
+    
+                marker_7a4c6e8720729843d05fbc8f857bdd05.setIcon(div_icon_492f29b5d943f7ff6857d2b9983f10e3);
+            
+    
+            var marker_390e44efa71265d7d3726c9ab5e857ed = L.marker(
+                [18.481964676964097, 103.80470439075098],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_0e7e241aa17014d6e83b76b736a4f538 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_2981a1d62a372ebd1068b6eec27123c4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1ed7b9f83f830e3923256f028b56fb94 = $(`<div id="html_1ed7b9f83f830e3923256f028b56fb94" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Laos</div>           <div><b>Capital:</b> Vientiane</div>           <div><b>Ruling:</b> Lao People’s Revolutionary Party (LPRP)</div>           <div><b>Opposition:</b> None (one-party)</div>           <div><b>Religions:</b> Buddhism (64.7%), Folk/Other (31.4%)</div>         </div>         </div>`)[0];
+                popup_2981a1d62a372ebd1068b6eec27123c4.setContent(html_1ed7b9f83f830e3923256f028b56fb94);
+            
+        
+
+        marker_390e44efa71265d7d3726c9ab5e857ed.bindPopup(popup_2981a1d62a372ebd1068b6eec27123c4)
+        ;
+
+        
+    
+    
+                marker_390e44efa71265d7d3726c9ab5e857ed.setIcon(div_icon_0e7e241aa17014d6e83b76b736a4f538);
+            
+    
+            var marker_4e23ac7ef0d59126632c826392b69703 = L.marker(
+                [12.712646900782518, 104.91760401001636],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_74d04a1bf5e25e08e2b7399da50ea200 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_0b1656ee8468d2984e8190c79769277e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_95efa05d32dbcef6d9e5589be09d62e2 = $(`<div id="html_95efa05d32dbcef6d9e5589be09d62e2" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Cambodia</div>           <div><b>Capital:</b> Phnom Penh</div>           <div><b>Ruling:</b> Cambodian People’s Party (CPP)</div>           <div><b>Opposition:</b> Candlelight Party</div>           <div><b>Religions:</b> Theravada Buddhism (97.9%), Islam (1.1%)</div>         </div>         </div>`)[0];
+                popup_0b1656ee8468d2984e8190c79769277e.setContent(html_95efa05d32dbcef6d9e5589be09d62e2);
+            
+        
+
+        marker_4e23ac7ef0d59126632c826392b69703.bindPopup(popup_0b1656ee8468d2984e8190c79769277e)
+        ;
+
+        
+    
+    
+                marker_4e23ac7ef0d59126632c826392b69703.setIcon(div_icon_74d04a1bf5e25e08e2b7399da50ea200);
+            
+    
+            var marker_0a2faf1acdfaad38925324c613c6929b = L.marker(
+                [16.550457571831, 106.35068105868669],
+                {
+}
+            ).addTo(feature_group_855a2048eb87c6ed20585c9045897d0e);
+        
+    
+            var div_icon_91372c077ded11acffd14b47c7f1abc9 = L.divIcon({
+  "html": "\n    \u003cdiv style=\"width:14px;height:14px;background:#ffcc00;border:2px solid white;\n                transform: rotate(45deg);box-shadow:0 0 3px rgba(0,0,0,.35);\n                border-radius:1px;\"\u003e\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+        var popup_d486f38b014826c14f6017b69e7a8e4b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_75736db48d99d5f02dfd83e38dc33e8f = $(`<div id="html_75736db48d99d5f02dfd83e38dc33e8f" style="width: 100.0%; height: 100.0%;">         <div style="font-family:system-ui;min-width:240px;line-height:1.35">           <div style="font-weight:700;margin-bottom:4px">Vietnam</div>           <div><b>Capital:</b> Hanoi</div>           <div><b>Ruling:</b> Communist Party of Vietnam (CPV)</div>           <div><b>Opposition:</b> None (one-party)</div>           <div><b>Religions:</b> Irreligion/Folk Religion (76.5%), Buddhism (13.3%)</div>         </div>         </div>`)[0];
+                popup_d486f38b014826c14f6017b69e7a8e4b.setContent(html_75736db48d99d5f02dfd83e38dc33e8f);
+            
+        
+
+        marker_0a2faf1acdfaad38925324c613c6929b.bindPopup(popup_d486f38b014826c14f6017b69e7a8e4b)
+        ;
+
+        
+    
+    
+                marker_0a2faf1acdfaad38925324c613c6929b.setIcon(div_icon_91372c077ded11acffd14b47c7f1abc9);
+            
+    
+            var layer_control_b83ed986beaf52b5918acad9833f72e0_layers = {
+                base_layers : {
+                    "Simple Map" : tile_layer_8ae5c4e16e15dd7cf6821c3204bc647c,
+                    "Satellite Map" : tile_layer_f2ceb5feb75ce5fef3d3f8e626e9e281,
+                    "Street Map" : tile_layer_1bc5bdc275af289aeaa216083c476738,
+                },
+                overlays :  {
+                    "SouthEastAsia (fill)" : tile_layer_9d01c05f890162749b735c6437ee52ee,
+                    "SouthEastAsia (outline)" : tile_layer_ea1bd4c92af6f725affc2ed115656ef2,
+                    "Population Density" : tile_layer_966f67e5ca23854dd44716b89dd01d82,
+                    "Country markers" : feature_group_855a2048eb87c6ed20585c9045897d0e,
+                },
+            };
+            let layer_control_b83ed986beaf52b5918acad9833f72e0 = L.control.layers(
+                layer_control_b83ed986beaf52b5918acad9833f72e0_layers.base_layers,
+                layer_control_b83ed986beaf52b5918acad9833f72e0_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_2eff1806a62f3741c0105808d10cb7df);
+
+        
+</script>
+</html>
